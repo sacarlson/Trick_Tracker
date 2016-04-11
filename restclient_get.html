@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Restclient Post Test</title>
+  </head>
+  <body>
+
+    <h1>Restclient Get Test</h1>
+    <ul></ul>
+
+    <script type="text/javascript">
+// http://track.surething.biz/restclient_get.html
+ window.addEventListener("load", function(event) {
+var http = new XMLHttpRequest();
+
+var url = "http://track.surething.biz/track.php/?id=206648&count=10&start=1459830074&stop=1459843874&extra=1";  // if fails Access-Control-Allow-Origi  problem need added headers on server side
+
+http.open("GET", url, true);
+
+http.onreadystatechange = function() {//Call a function when the state changes.
+    console.log("readyState: ");
+    console.log(http.readyState);
+    console.log(http.status);
+    if(http.readyState == 4 && http.status == 200) {
+        console.log("response: ");
+        console.log(http.responseText);
+        alert(http.responseText);
+    }
+}
+
+console.log("send : " + url);
+http.send();
+});
+    </script>
+
+  </body>
+</html>

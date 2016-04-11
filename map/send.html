@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
+<html>
+<head>
+ <title>Trick Tracker Send</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+ <script>
+  "use strict";
+  var type = 0;
+  var url = "http://track.surething.biz/";
+  var info ;
+    
+  var id = 0;
+  
+  var http = new XMLHttpRequest();
+// starts from index 0
+//var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon}];
+  function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+  }
+
+  function getId() {
+    if (typeof(Storage) !== "undefined") {
+       id = localStorage.getItem("id");
+       info = encodeURI(localStorage.getItem("id"));
+       url = localStorage.getItem("tracker_server");
+       console.log(id == null);
+       if (id == null) {
+         console.log("id was undefined will create one");
+         id = randomIntFromInterval(300000,999000);
+         localStorage.setItem("id", id);
+       } 
+    } else {
+       id = randomIntFromInterval(300000,999000);
+       alert("Sorry, your browser does not support Web Storage.. your ID now: " + id);       
+    }
+  }
+  
+function getLocation() {
+    if (navigator.geolocation) {
+        //navigator.geolocation.watchPosition(showPosition);
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+       alert("Geolocation is not supported by this browser.");
+    }
+}
+    
+function showPosition(position) {
+    console.log( position.coords.latitude ); 
+    console.log( position.coords.longitude );
+    console.log( type);
+    var timestamp = Math.floor(Date.now() / 1000);
+//GET /?id=206648&timestamp=1459757028&lat=12.9304184&lon=100.8798106&speed=0.0&bearing=0.0&altitude=0.0&batt=100.0
+    url = url + "?id=" + id + "&timestamp=" + timestamp + "&lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&type=" + type;
+    console.log("url: " + url);	
+    http.open("GET", url, true);
+    http.send();
+    alert(" position sent lat: " + position.coords.latitude + " lon: " + position.coords.longitude + " type: " + type );
+}
+
+  function i_here() {
+    type = 12;
+    console.log("clicked i_here");
+    getLocation();
+  }
+
+  // type 0 is also i_here but conflicts with other parts so i_here is also type 12
+
+  // type 1 is scotty icon so don't use here
+
+  function sexy() {
+    type = 2;
+    console.log("clicked sexy");
+    getLocation();
+  }
+
+   function girl() {
+    type = 3;
+    console.log("clicked girl");
+    getLocation();
+  }
+
+  // type 4 is short_girl but not supported yet
+
+  function skiny_girl() {
+    type = 5;
+    console.log("clicked skiny_girl");
+    getLocation();
+  }
+
+  function fat_girl() {
+    type = 6;
+    console.log("clicked fat_girl");
+    getLocation();
+  }
+
+  function lady_boy() {
+    type = 7;
+    console.log("clicked lady_boy");
+    getLocation();
+  }
+
+  function police_standing() {
+    type = 8;
+    console.log("clicked police_standing");
+    getLocation();
+  }
+
+  function cop_running() {
+    type = 9;
+    console.log("clicked cop_running");
+    getLocation();
+  }
+
+  function police_truck() {
+    type = 10;
+    console.log("clicked police_truck");
+    getLocation();
+  }
+   
+  function money_man() {
+    type = 11;
+    console.log("clicked money_man");
+    getLocation();
+  }
+
+  function beer_party() {
+    type = 13;
+    console.log("clicked beer_party");
+    getLocation();
+  }
+
+  function eating_here() {
+    type = 14;
+    console.log("clicked eating_here");
+    getLocation();
+  }
+   
+ getId(); 
+ //id = "206648"
+ console.log ("id: " + id);
+
+ function dropDown() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+                               
+  </script>
+<style>
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #3e8e41;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #f1f1f1}
+
+.show {display:block;}
+</style>
+</head>
+<body>
+
+<div class="w3-container w3-teal">
+  <div class="dropdown">
+    <button onclick="dropDown()" class="dropbtn">Menu</button>
+    <div id="myDropdown" class="dropdown-content">
+      <a href="index.html">Map</a>
+      <a href="config.html">Config</a>
+      <a href="send.html">Send Trick</a>
+    </div>
+  </div>
+  <h1>Send Position to Trick Tracker</h1>
+</div>
+
+<div class="w3-row-padding w3-margin-top">
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="sexy" onclick="sexy();" >
+<img src="sexy_girl_20x60.png" >
+<p>Super Star</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="i_here" onclick="i_here();" >
+<img src="Im_here45x60.png" >
+<p>I'm Here!</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="lady_boy" onclick="lady_boy();">
+<img src="lady_boy_39x61.png" >
+<p>Lady Boy</p>
+</div>
+</div>
+</div>
+
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="money_man" onclick="money_man();">
+<img src="man_with_money_49x61.png" >
+<p>Ho Hunter</p>
+</div>
+</div>
+</div>
+
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="fat_girl" onclick="fat_girl();">
+<img src="fat_girl_47x60.png" >
+<p>Fat Girl</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="skiny_girl" onclick="skiny_girl();">
+<img src="skiny_no_tits_18x60.png">
+<p>Skiny Girl</p>
+</div>
+</div>
+</div>
+
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="girl" onclick="girl();">
+<img src="nice_girl_21x62.png" >
+<p>Nice Girl</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="cop_running" onclick="cop_running();">
+<img src="running_cop_50x61.png">
+<p>Cop Running</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="police_truck" onclick="police_truck();">
+<img src="police_truck_60x23.png" >
+<p>Police Truck</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="police_standing" onclick="police_standing();">
+<img src="police_standing_25x94.png" >
+<p>Police Standing</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="beer_party" onclick="beer_party();">
+<img src="beer_party60x48.png" >
+<p>Beer Party</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="eating_here" onclick="eating_here();">
+<img src="eat_food47x60.png" >
+<p>Eating Here</p>
+</div>
+</div>
+</div>
+
+
+</div>
+
+
+</body>
+</html>

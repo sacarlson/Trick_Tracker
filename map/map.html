@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trick Tracker Map</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <style type="text/css">
+		#map { width: 700px; height: 433px; }
+		.fullscreen-icon { background-image: url(icon-fullscreen.png); }
+		/* on selector per rule as explained here : http://www.sitepoint.com/html5-full-screen-api/ */
+		#map:-webkit-full-screen { width: 100% !important; height: 100% !important; z-index: 99999; }
+		#map:-moz-full-screen { width: 100% !important; height: 100% !important; z-index: 99999; }
+		#map:full-screen { width: 100% !important; height: 100% !important; z-index: 99999; }
+		.leaflet-pseudo-fullscreen { position: fixed !important; width: 100% !important; height: 100% !important; top: 0px !important; left: 0px !important; z-index: 99999; }
+	</style>
+</head>
+<body>
+    <div class="w3-container w3-teal">
+  <div class="dropdown">
+    <button onclick="dropDown()" class="dropbtn">Menu</button>
+    <div id="myDropdown" class="dropdown-content">      
+      <a href="config.html">Config</a>
+      <a href="send.html">Send Trick</a>
+      <a href="map.html">Map</a>
+    </div>
+  </div>
+  <h1>Trick Tracker Map</h1>
+</div>
+    <div id="map" style="width: 1000px; height: 800px"></div>
+
+  
+        <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+	<script src="Control.FullScreen.js"></script>   
+
+    <script>
+
+    function dropDown() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+  window.addEventListener("load", function(event) {
+    //var url = "http://track.surething.biz/track.php/?type=1&extra=1";
+    var url = "http://track.surething.biz/track.php/?last=1";
+
+    var http = new XMLHttpRequest();
+    var markers = [];
+    var markers_data = [];
+    var lines = [];
+    var myLines = [];
+    var last_marker_count = 0;
+    var last_data_marker_count = 0;
+    //var flip_flop = 0;
+    var url_position = 0;
+    var timestamp = Math.floor(Date.now() / 1000);
+    
+    var params = {};
+    // example trailing url input
+    // http://track.surething.biz/map/?json={%22lat%22:%2212.123%22,%22lon%22:%22112.00%22} 
+    var json_param = window.location.href.match(/\?json=(.*)/);
+    if (json_param != null) {
+      json_param = unescape(json_param[1]);
+      params = JSON.parse(json_param);
+    }
+    console.log("params");
+    console.log(params);
+    
+
+    http.onreadystatechange = function() {//Call a function when the state changes.
+      //console.log("readyState: ");
+      //console.log(http.readyState);
+      //console.log(http.status);
+      if(http.readyState == 4 && http.status == 200) {
+         console.log("response: ");
+         console.log(http.responseText);
+         var obj = JSON.parse(http.responseText);        
+         //update_icons(obj);
+         update_icons(obj);
+      }
+    }
+
+   function update_icons(user_obj) {
+     // http://track.surething.biz/track.php/?type=2&extra=1&id=0
+     //{"id":"0","track":[{"lat":"13.8994973","lon":"100.5426442","timestamp":"1460102406","speed":"0","bearing":"0","alt":"0","id":"986007","comment":"","type":"2"},{"lat":"13.8994973","lon":"100.5426442","timestamp":"1460101117","speed":"0","bearing":"0","alt":"0","id":"986007","comment":"","type":"2"},{"lat":"13.8994973","lon":"100.5426442","timestamp":"1460096130","speed":"0","bearing":"0","alt":"0","id":"986007","comment":"","type":"2"}],"count":"3"}
+     //var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon}];
+    console.log("user_obj");
+    console.log(user_obj);
+    if (user_obj.id == '206648') {
+      update_tracks(user_obj,myLines);
+      return;
+    }
+    var points = user_obj.track;
+    var info ;
+    if (user_obj.id == 0){
+       points = user_obj.track;
+       markers_data
+       for (var i = 0; i < last_data_marker_count; i++ ) {
+          map.removeLayer(markers_data[i]);
+       }
+       last_data_marker_count = points.length;
+          
+    } else {
+       points = user_obj.users;
+       for (var i = 0; i < last_marker_count; i++ ) {
+          map.removeLayer(markers[i]);
+       } 
+       last_marker_count = points.length;
+       //console.log("remove lines");
+       //map.removeLayer(lines); 
+    }
+       
+
+    for ( i = 0; i < points.length; i++) {
+        if (typeof points[i]['info'] == "undefined") {
+          points[i]['info'] = "";
+        }
+        if (user_obj.id == 0){               
+          info = "id: " + points[i]['id'] + " " + points[i]['info'];
+          if (points[i]['type']== 10) { 
+            markers_data[i] = L.marker([points[i]['lat'],points[i]['lon']])
+	    .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
+	    .addTo(map);
+          } else { 
+            markers_data[i] = L.marker([points[i]['lat'],points[i]['lon']],icon_type[points[i]['type']])
+	    .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
+	    .addTo(map);
+          }
+          markers_data[i].setOpacity(0.65);  
+        } else {
+          info = "user: " + points[i]['username'] + " " + points[i]['info'];
+          if (points[i]['type']== 10) { 
+            markers[i] = L.marker([points[i]['lat'],points[i]['lon']])
+	    .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
+	    .addTo(map);
+          } else { 
+            markers[i] = L.marker([points[i]['lat'],points[i]['lon']],icon_type[points[i]['type']])
+	    .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
+	    .addTo(map);
+          } 
+          markers[i].setOpacity(0.65);        
+        }       
+      }
+      
+   }
+
+   function update_tracks(track_obj,myLines) {
+     console.log("update_tracks");
+     map.removeLayer(lines);
+     myLines = []; 
+     //data = '{"id":"206648","track":[{"lat":"12.9304566","lon":"100.8798508","timestamp":"1460252155","speed":"0","bearing":"0","alt":"0","id":"206648","comment":"","type":"0"},{"lat":"12.9304432","lon":"100.8798094","timestamp":"1460251915","speed":"0","bearing":"0","alt":"0","id":"206648","comment":"","type":"0"},{"lat":"12.9304504","lon":"100.8798188","timestamp":"1460249625","speed":"0","bearing":"0","alt":"0","id":"206648","comment":"","type":"0"}],"count":"20"}'
+
+     //var track_obj = JSON.parse(data);
+     console.log("track_obj");
+     console.log(track_obj);
+     
+     var line = {
+       "type": "LineString",
+       "coordinates": []
+     };
+     
+     var track = track_obj.track;
+     for (var i = 0; i < track.length; ++i) {
+       var a = [];
+       a.push(track[i]['lon']);
+       a.push(track[i]['lat']);
+       line['coordinates'].push(a);
+     }
+     myLines.push(line);
+     console.log("myLines");
+     console.log(myLines);
+     lines = L.geoJson(myLines).addTo(map);
+     console.log(lines);
+   }
+
+  
+
+
+  var myVar = setInterval(myTimer, 20000);
+
+  function myTimer() {
+    var url_list = ["http://track.surething.biz/track.php/?type=99&extra=1&id=0", "http://track.surething.biz/track.php/?last=1","http://track.surething.biz/track.php/?id=206648&count=100&extra=1"];
+    var ts = Date.now() /1000 |0;
+    // start time of 25 hours ago
+    var start = ts - 90000;
+    // start time of 6 hours ago
+    //var start = ts - 21600;
+    console.log("timestamp: " + ts); 
+    url = url_list[url_position];
+    url = url + "&start=" + start
+    console.log("url now");
+    console.log(url);
+    http.open("GET", url, true);
+    http.send();
+    var d = new Date();
+    console.log("timer");
+    console.log( d.toLocaleTimeString());
+    //if (url_position == 0) {
+    //  myLines = [];
+    //}
+    url_position = url_position + 1;
+    if (url_position > url_list.length-1) {
+      url_position = 0;
+    }
+  }
+
+  function remove_marker(m) {
+       map.removeLayer(m);
+  }
+
+  function move_marker(m,lat,lon,info,timestamp) {
+    console.log("lon");
+    console.log(lon);
+    console.log("m");
+    console.log(m);
+    m._latlng.lat = lat;
+    m._latlng.lng = lon;
+    m._popup._content = info + " " + timestampToString(timestamp);
+    m.update();
+  }
+
+  function timestampToString(t) {
+    if (typeof t == "undefined"){
+      return " Unknown";
+    }
+    var options = {
+        year: 'numeric', month: 'numeric', day: 'numeric',
+        hour: 'numeric', minute: 'numeric', second: 'numeric',
+        hour12: true,  timeZoneName: 'short'
+      }; 
+    var dt = new Intl.DateTimeFormat('en-US',options).format( t * 1000);
+    return dt;
+  }
+
+  var scottyIcon = L.icon({
+    iconUrl: 'scotty_map_icon75x75.png',    
+    iconSize:     [75, 75], // size of the icon
+    iconAnchor:   [37, 75], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -77], // point from which the popup should open relative to the iconAnchor
+  });
+ 
+
+  var cop_runingIcon = L.icon({
+    iconUrl: 'running_cop_50x61.png',
+    iconSize:     [50, 61], // size of the icon
+    iconAnchor:   [25, 61], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -76] // point from which the popup should open relative to the iconAnchor
+  });
+
+  var copIcon = L.icon({
+    iconUrl: 'police_standing_25x94.png',
+    iconSize:     [25, 94], // size of the icon
+    iconAnchor:   [17, 61], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -96] // point from which the popup should open relative to the iconAnchor
+  });
+
+  var johnIcon = L.icon({
+    iconUrl: 'man_with_money_49x61.png',
+    iconSize:     [49, 61], // size of the icon
+    iconAnchor:   [25, 61], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -64] // point from which the popup should open relative to the iconAnchor
+  });
+
+  var fat_girlIcon = L.icon({
+    iconUrl: 'fat_girl_47x60.png',
+    iconSize:     [47, 60], // size of the icon
+    iconAnchor:   [25, 60], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -65] // point from which the popup should open relative to the iconAnchor
+  });
+
+  var police_truckIcon = L.icon({
+    iconUrl: 'police_truck_60x23.png',
+    iconSize:     [60, 23], // size of the icon
+    iconAnchor:   [30, 23], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -25] // point from which the popup should open relative to the iconAnchor
+  });
+
+  var girlIcon = L.icon({
+    iconUrl: 'nice_girl_21x62.png',
+    iconSize:     [21, 62], // size of the icon
+    iconAnchor:   [10, 62], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -65] // point from which the popup should open relative to the iconAnchor
+  });
+
+  var sexyIcon = L.icon({
+    iconUrl: 'sexy_girl_20x60.png',
+    iconSize:     [20, 60], // size of the icon
+    iconAnchor:   [10, 60], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -65] // point from which the popup should open relative to the iconAnchor
+  });
+
+  var ihereIcon = L.icon({
+    iconUrl: 'Im_here45x60.png',    
+    iconSize:     [45, 60], // size of the icon
+    iconAnchor:   [22, 60], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -65], // point from which the popup should open relative to the iconAnchor
+  });
+
+  var skiny_girlIcon = L.icon({
+    iconUrl: 'skiny_no_tits_18x60.png',    
+    iconSize:     [18, 60], // size of the icon
+    iconAnchor:   [9, 60], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -65], // point from which the popup should open relative to the iconAnchor
+  });
+
+  var lady_boyIcon = L.icon({
+    iconUrl: 'lady_boy_39x61.png',    
+    iconSize:     [39, 61], // size of the icon
+    iconAnchor:   [19, 61], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -65], // point from which the popup should open relative to the iconAnchor
+  });
+
+  var short_girlIcon = L.icon({
+    iconUrl: 'short_girl_18x40.png',    
+    iconSize:     [18, 40], // size of the icon
+    iconAnchor:   [9, 40], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -45], // point from which the popup should open relative to the iconAnchor
+  });
+
+  // icon 13
+  var partyIcon = L.icon({
+    iconUrl: 'beer_party60x48.png',    
+    iconSize:     [60, 48], // size of the icon
+    iconAnchor:   [30, 24], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
+  });
+
+  // icon 14
+  var eatingIcon = L.icon({
+    iconUrl: 'eat_food47x60.png',    
+    iconSize:     [47, 60], // size of the icon
+    iconAnchor:   [23, 24], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
+  });
+	
+  var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon}];
+
+  function get_config() {
+    if (typeof(Storage) !== "undefined") {
+       params.id = localStorage.getItem("id");
+       params.lat = localStorage.getItem("lat");
+       params.lon = localStorage.getItem("lon");
+       params.zoom = localStorage.getItem("zoom");
+       params.track_id = localStorage.getItem("track_id");
+       params.track_time_min = localStorage.getItem("track_time_min");
+       params.info = localStorage.getItem("info");
+       console.log("params.id");
+       console.log(params.id.length);
+       console.log(params.id);
+       if (params.id.length == 0) {
+         console.log("id was undefined will create one");
+         params.id = randomIntFromInterval(300000,999000);
+         localStorage.setItem("id", params.id);
+         localStorage.setItem("lat", 12.93419);
+         localStorage.setItem("lon", 100.892515 );
+         localStorage.setItem("zoom", 15);
+         localStorage.setItem("track_id", 206648);
+         localStorage.setItem("track_time_min", 120);
+         localStorage.setItem("info", "");
+         get_config();
+       } 
+    } else {
+       params.id = randomIntFromInterval(300000,999000);
+       alert("Sorry, your browser does not support Web Storage, time to upgrade.. your ID now: " + id);       
+    }
+  }
+
+      if (json_param == null) {
+        get_config();       
+      } else {
+        if (params.zoom == null) {
+          params.zoom = 15;
+        }
+      }
+
+        
+
+        mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+        var base = new L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; ' + mapLink + ' Contributors',
+            maxZoom: 19,
+            });
+         
+        var map = new L.Map('map', {
+			layers: [base],
+			center: new L.LatLng(params.lat, params.lon),
+			zoom: params.zoom,
+			fullscreenControl: true,
+			fullscreenControlOptions: { // optional
+				title:"Show me the fullscreen !",
+				titleCancel:"Exit fullscreen mode"
+			}
+		});
+
+		// detect fullscreen toggling
+		map.on('enterFullscreen', function(){
+			if(window.console) window.console.log('enterFullscreen');
+		});
+		map.on('exitFullscreen', function(){
+			if(window.console) window.console.log('exitFullscreen');
+		});       
+
+
+      if (json_param != null) {
+        if (params.info == null){
+          params.info = "";
+        }
+        console.log("params2");
+        console.log(params);
+        console.log(params.info + " last updated: " + timestampToString(params.timestamp));
+        if (params.type !== null) {
+          console.log("type not null");
+          L.marker([params.lat,params.lon],icon_type[params.type])
+          //.bindPopup(params.info + " last updated: " + timestampToString(params.timestamp))
+	  .addTo(map);
+        } else {
+          //L.marker(params.lat,params.lon,icon_type[0])
+          L.marker([params.lat,params.lon],icon_type[0])
+          //.bindPopup(params.info + " last updated: " + timestampToString(params.timestamp))
+	  .addTo(map);
+        }        
+      }
+
+
+    //url = "http://track.surething.biz/track.php/?type=1&extra=1";
+    //url = "http://track.surething.biz/track.php/?id=206648&count=1"
+    //url = "http://track.surething.biz/track.php/?last=1";
+    //url = "http://track.surething.biz/track.php/?id=206648&count=100&extra=1"
+    url = "http://track.surething.biz/track.php/?type=99&extra=1&id=0"
+    http.open("GET", url, true);
+    http.send();
+
+        
+  });
+            
+               
+    </script>
+  <style>
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #3e8e41;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #f1f1f1}
+
+.show {display:block;}
+</style>
+</body>
+</html>
+

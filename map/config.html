@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
+<html>
+<head>
+ <title>Trick Tracker Cfg</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+ <script>
+  "use strict";
+  window.addEventListener("load", function(event) { 
+
+  var lat = document.getElementById("lat");
+  var lon = document.getElementById("lon");
+  var zoom = document.getElementById("zoom");
+  var id = document.getElementById("id");
+  var track_id = document.getElementById("track_id");
+  var track_time_min = document.getElementById("track_time_min");
+  var map_link = document.getElementById("map_link");
+  var icon_type = document.getElementById("icon_type");
+  var info = document.getElementById("info");
+  var tracker_server = document.getElementById("tracker_server");
+  var timestamp = Math.floor(Date.now() / 1000);
+  
+  
+  get_config();
+  make_map_link();
+
+  function reset_default_(){
+    // reset to all default configs
+    localStorage.removeItem('id'); 
+    get_config();
+  }
+
+  function make_map_link() {
+    var info_fixed = encodeURI(info.value);
+    //http://track.surething.biz/map/?json={%22lat%22:%2212.889783494440438%22,%22lon%22:%22100.92255592346191%22,%22zoom%22:%2215%22,%22type%22:%221%22,%22info%22:%22it%20be%20Scotty%20%22,%22timestamp%22:%221460190435%22} 
+    var link_url = tracker_server.value + "/map/?json={%22lat%22:%22" + lat.value + "%22,%22lon%22:%22" + lon.value + "%22,%22zoom%22:%22" + zoom.value + "%22,%22type%22:%22" + icon_type.value + "%22,%22info%22:%22" + info_fixed + "%22,%22timestamp%22:%22" + timestamp + "%22}";
+    map_link.innerHTML = '<h4>' + link_url + '</h4>'; 
+  } 
+
+  function get_config() {
+    if (typeof(Storage) !== "undefined") {
+       id.value = localStorage.getItem("id");
+       lat.value = localStorage.getItem("lat");
+       lon.value = localStorage.getItem("lon");
+       zoom.value = localStorage.getItem("zoom");
+       track_id.value = localStorage.getItem("track_id");
+       track_time_min.value = localStorage.getItem("track_time_min");
+       icon_type.value = localStorage.getItem("icon_type");
+       info.value = localStorage.getItem("info");
+       tracker_server.value = localStorage.getItem("tracker_server");
+       console.log("id");
+       console.log(id.value);
+       if (id.value.length == 0) {
+         console.log("id was undefined will create one");
+         id.value = randomIntFromInterval(300000,999000);
+         localStorage.setItem("id", id.value);
+         localStorage.setItem("lat", 12.93419);
+         localStorage.setItem("lon", 100.892515 );
+         localStorage.setItem("zoom", 15);
+         localStorage.setItem("track_id", 206648);
+         localStorage.setItem("track_time_min", 120);
+         localStorage.setItem("icon_type", 0);
+         localStorage.setItem("info", "");
+         localStorage.setItem("tracker_server", "track.surething.biz");
+         get_config();
+       } 
+    } else {
+       id = randomIntFromInterval(300000,999000);
+       alert("Sorry, your browser does not support Web Storage.. your ID now: " + id);       
+    }
+  }
+
+  function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+  }
+
+  function save_configs() {
+    localStorage.setItem("id", id.value);
+    localStorage.setItem("lat", lat.value);
+    localStorage.setItem("lon", lon.value );
+    localStorage.setItem("zoom", zoom.value);
+    localStorage.setItem("track_id", track_id.value);
+    localStorage.setItem("track_time_min", track_time_min.value);
+    localStorage.setItem("icon_type", icon_type.value);
+    localStorage.setItem("info", info.value);
+    localStorage.setItem("tracker_server", tracker_server.value);
+  }
+
+  function getLocation() {
+    if (navigator.geolocation) {
+        //navigator.geolocation.watchPosition(showPosition);
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+       alert("Geolocation is not supported by this browser.");
+    }
+  }
+
+  function showPosition(position) {
+    console.log( position.coords.latitude ); 
+    console.log( position.coords.longitude );
+    var timestamp = Math.floor(Date.now() / 1000);
+    lat.value = position.coords.latitude;
+    lon.value = position.coords.longitude;
+    save_configs();
+    make_map_link();
+    alert(" Map position now set to present location: lat: " + position.coords.latitude + " lon: " + position.coords.longitude  );
+  }
+
+
+  //function dropDown() {
+  //  document.getElementById("myDropdown").classList.toggle("show");
+  //}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+ submit.addEventListener("click", function(event) {
+    console.log("submit clicked");
+    make_map_link();  
+ });
+
+  recenter_map.addEventListener("click", function(event) {
+    console.log("recenter_map clicked");
+    getLocation();
+ });
+
+  reset_default.addEventListener("click", function(event) {
+    console.log("reset_default clicked");
+    reset_default_();
+ });
+
+
+  console.log("page loaded");
+ }); // end  window.addEventListener("load", function(event) { 
+     function dropDown() {
+       document.getElementById("myDropdown").classList.toggle("show");
+     } 
+     console.log("page loaded2");                         
+  </script>
+<style>
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #3e8e41;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #f1f1f1}
+
+.show {display:block;}
+</style>
+</head>
+<body>
+
+<div class="w3-container w3-teal">
+  <div class="dropdown">
+    <button onclick="dropDown()" class="dropbtn">Menu</button>
+    <div id="myDropdown" class="dropdown-content">
+      <a href="index.html">Map </a>
+      <a href="config.html">Config</a>
+      <a href="send.html">Send Trick</a>      
+    </div>
+  </div>
+  <h1>Trick Tracker Config</h1>
+</div>
+
+
+<div class="w3-row-padding w3-margin-top">
+
+ <form class="w3-container">
+
+<label class="w3-label">Map Center Lat</label>
+<input class="w3-input" type="text" id="lat" >
+
+<label class="w3-label">Map Center Lon</label>
+<input class="w3-input" type="text" id="lon">
+
+<label class="w3-label">Map Zoom Factor</label>
+<input class="w3-input" type="text" id="zoom">
+
+<label class="w3-label">Your User ID#</label>
+<input class="w3-input" type="text" id="id">
+
+<label class="w3-label">Track ID</label>
+<input class="w3-input" type="text" id="track_id">
+
+<label class="w3-label">Track Trail Time (minutes)</label>
+<input class="w3-input" type="text" id="track_time_min">
+<label class="w3-label">Link Icon Type number (0 - 14)</label>
+<input class="w3-input" type="text" id="icon_type">
+<label class="w3-label">Link added Popup Info</label>
+<input class="w3-input" type="text" id="info">
+<label class="w3-label">Tracker Server URL</label>
+<input class="w3-input" type="text" id="tracker_server">
+
+<input type="button" value="Submit" id="submit" >
+<input type="button" value="Set loc to position" id="recenter_map" >
+<input type="button" value="Reset to Default Configs" id="reset_default" >
+
+</form>
+<div>
+<h2> Map link </h2>
+ 
+<p><span id="map_link"> </span></p>
+</div>
+
+</div>
+
+
+</body>
+</html>
