@@ -2,7 +2,7 @@
 <!-- Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
 <html>
 <head>
- <title>Trick Tracker Cfg</title>
+ <title>Trick Traker Cfg</title>
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
  <script>
@@ -51,7 +51,7 @@
        tracker_server.value = localStorage.getItem("tracker_server");
        console.log("id");
        console.log(id.value);
-       if (id.value.length == 0) {
+        if ( id.value == null) {
          console.log("id was undefined will create one");
          id.value = randomIntFromInterval(300000,999000);
          localStorage.setItem("id", id.value);
@@ -202,7 +202,7 @@ window.onclick = function(event) {
       <a href="send.html">Send Trick</a>      
     </div>
   </div>
-  <h1>Trick Tracker Config</h1>
+  <h1>Trick Traker Config</h1>
 </div>
 
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Trick Tracker Map</title>
+    <title>Trick Traker Map</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
     <style type="text/css">
@@ -24,7 +24,7 @@
       <a href="map.html">Map</a>
     </div>
   </div>
-  <h1>Trick Tracker Map</h1>
+  <h1>Trick Traker Map</h1>
 </div>
     <div id="map" style="width: 1000px; height: 800px"></div>
 
@@ -369,8 +369,20 @@
     iconAnchor:   [23, 24], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
   });
+
+  var weedIcon = L.icon({
+    iconUrl: 'weed_icon41x61.png',    
+    iconSize:     [41, 61], // size of the icon
+    iconAnchor:   [20, 61], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -62], // point from which the popup should open relative to the iconAnchor
+  });
 	
-  var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon}];
+  //var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon}];
+  var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon},{icon: weedIcon}];
+
+  function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+  }
 
   function get_config() {
     if (typeof(Storage) !== "undefined") {
@@ -381,10 +393,11 @@
        params.track_id = localStorage.getItem("track_id");
        params.track_time_min = localStorage.getItem("track_time_min");
        params.info = localStorage.getItem("info");
-       console.log("params.id");
-       console.log(params.id.length);
+       console.log("typeof params.id");
+       console.log(typeof params.id);
        console.log(params.id);
-       if (params.id.length == 0) {
+       //console.log(params.id);
+       if ( params.id == null) {
          console.log("id was undefined will create one");
          params.id = randomIntFromInterval(300000,999000);
          localStorage.setItem("id", params.id);

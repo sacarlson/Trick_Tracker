@@ -2,7 +2,7 @@
 <!-- Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
 <html>
 <head>
- <title>Trick Tracker Send</title>
+ <title>Trick Traker Send</title>
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
  <script>
@@ -17,7 +17,7 @@
   http.withCredentials = true;
 
 // starts from index 0
-//var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon}];
+//var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon},{icon: weedIcon}];
   function randomIntFromInterval(min,max) {
     return Math.floor(Math.random()*(max-min+1)+min);
   }
@@ -142,6 +142,12 @@ function showPosition(position) {
     console.log("clicked eating_here");
     getLocation();
   }
+
+  function weed_party() {
+    type = 15;
+    console.log("clicked weed_party");
+    getLocation();
+  }
    
  getId(); 
  //id = "206648"
@@ -219,7 +225,7 @@ window.onclick = function(event) {
       <a href="send.html">Send Trick</a>
     </div>
   </div>
-  <h1>Send Position to Trick Tracker</h1>
+  <h1>Send Position to Trick Traker</h1>
 </div>
 
 <div class="w3-row-padding w3-margin-top">
@@ -335,6 +341,14 @@ window.onclick = function(event) {
 </div>
 </div>
 
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="weed_party" onclick="weed_party();">
+<img src="weed_icon41x61.png" >
+<p>Weed Party</p>
+</div>
+</div>
+</div>
 
 </div>
 
