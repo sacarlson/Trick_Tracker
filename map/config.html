@@ -33,7 +33,6 @@
 
   function make_map_link() {
     var info_fixed = encodeURI(info.value);
-    //http://track.surething.biz/map/?json={%22lat%22:%2212.889783494440438%22,%22lon%22:%22100.92255592346191%22,%22zoom%22:%2215%22,%22type%22:%221%22,%22info%22:%22it%20be%20Scotty%20%22,%22timestamp%22:%221460190435%22} 
     var link_url = tracker_server.value + "map/?json={%22lat%22:%22" + lat.value + "%22,%22lon%22:%22" + lon.value + "%22,%22zoom%22:%22" + zoom.value + "%22,%22type%22:%22" + icon_type.value + "%22,%22info%22:%22" + info_fixed + "%22,%22timestamp%22:%22" + timestamp + "%22}";
     map_link.innerHTML = '<h4>' + link_url + '</h4>'; 
   } 
@@ -51,7 +50,9 @@
        tracker_server.value = localStorage.getItem("tracker_server");
        console.log("id");
        console.log(id.value);
-        if ( id.value == null) {
+       console.log(typeof id.value);
+       console.log(id.value.length);
+        if ( id.value == null || id.value.length == 0) {
          console.log("id was undefined will create one");
          id.value = randomIntFromInterval(300000,999000);
          localStorage.setItem("id", id.value);
@@ -62,7 +63,7 @@
          localStorage.setItem("track_time_min", 1500); //1500 = 25 hours
          localStorage.setItem("icon_type", 0);
          localStorage.setItem("info", "");
-         localStorage.setItem("tracker_server", "http://track.surething.biz/");
+         localStorage.setItem("tracker_server", "http://zipperhead.ddns.net/tricktraker/");
          get_config();
        } 
     } else {

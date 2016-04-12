@@ -39,8 +39,7 @@
     }
 
   window.addEventListener("load", function(event) {
-    //var url = "http://track.surething.biz/track.php/?type=1&extra=1";
-    var url = "http://track.surething.biz/track.php/?last=1";
+    var url ;
 
     var http = new XMLHttpRequest();
     var markers = [];
@@ -53,8 +52,6 @@
     var timestamp = Math.floor(Date.now() / 1000);
     
     var params = {};
-    // example trailing url input
-    // http://track.surething.biz/map/?json={%22lat%22:%2212.123%22,%22lon%22:%22112.00%22} 
     var json_param = window.location.href.match(/\?json=(.*)/);
     if (json_param != null) {
       json_param = unescape(json_param[1]);
@@ -131,7 +128,6 @@
    }
 
    function update_icons(user_obj) {
-     // http://track.surething.biz/track.php/?type=2&extra=1&id=0
      //{"id":"0","track":[{"lat":"13.8994973","lon":"100.5426442","timestamp":"1460102406","speed":"0","bearing":"0","alt":"0","id":"986007","comment":"","type":"2"},{"lat":"13.8994973","lon":"100.5426442","timestamp":"1460101117","speed":"0","bearing":"0","alt":"0","id":"986007","comment":"","type":"2"},{"lat":"13.8994973","lon":"100.5426442","timestamp":"1460096130","speed":"0","bearing":"0","alt":"0","id":"986007","comment":"","type":"2"}],"count":"3"}
      //var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon}];
     console.log("user_obj");
@@ -202,8 +198,7 @@
   var myVar = setInterval(myTimer, 20000);
 
   function myTimer() {
-    //var url_list = ["http://track.surething.biz/track.php/?type=99&extra=1&id=0", "http://track.surething.biz/track.php/?last=1","http://track.surething.biz/track.php/?id=206648&count=100&extra=1"];
-    var url_list = ["http://track.surething.biz/track.php/?type=99&extra=1&id=1", "http://track.surething.biz/track.php/?last=1","http://track.surething.biz/track.php/?count=100&extra=1"];
+    var url_list = [params.tracker_server + "track.php/?type=99&extra=1&id=1", params.tracker_server + "track.php/?last=1", params.tracker_server + "track.php/?count=100&extra=1"];
     var ts = Date.now() /1000 |0;
     // start time of 25 hours ago
     var start = ts - (60* params.track_time_min);
@@ -393,6 +388,7 @@
        params.track_id = localStorage.getItem("track_id");
        params.track_time_min = localStorage.getItem("track_time_min");
        params.info = localStorage.getItem("info");
+       params.tracker_server = localStorage.getItem("tracker_server");
        console.log("typeof params.id");
        console.log(typeof params.id);
        console.log(params.id);
@@ -407,7 +403,7 @@
          localStorage.setItem("track_id", 206648);
          localStorage.setItem("track_time_min", 120);
          localStorage.setItem("info", "");
-         localStorage.setItem("tracker_server", "http://track.surething.biz/");
+         localStorage.setItem("tracker_server", "http://zipperhead.ddns.net/tricktraker/");
          get_config();
        } 
     } else {
@@ -474,12 +470,7 @@
       }
 
 
-    //url = "http://track.surething.biz/track.php/?type=1&extra=1";
-    //url = "http://track.surething.biz/track.php/?id=206648&count=1"
-    //url = "http://track.surething.biz/track.php/?last=1";
-    //url = "http://track.surething.biz/track.php/?id=206648&count=100&extra=1"
-    //url = "http://track.surething.biz/track.php/?type=99&extra=1&id=0"
-    url = "http://track.surething.biz/track.php/?type=99&extra=1&id=1"
+    url = params.tracker_server + "track.php/?type=99&extra=1&id=1"
     http.open("GET", url, true);
     http.send();
 
