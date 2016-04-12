@@ -49,7 +49,6 @@
     var myLines = [];
     var last_marker_count = 0;
     var last_data_marker_count = 0;
-    //var flip_flop = 0;
     var url_position = 0;
     var timestamp = Math.floor(Date.now() / 1000);
     
@@ -63,20 +62,73 @@
     }
     console.log("params");
     console.log(params);
-    
+  
 
-    http.onreadystatechange = function() {//Call a function when the state changes.
-      //console.log("readyState: ");
-      //console.log(http.readyState);
-      //console.log(http.status);
-      if(http.readyState == 4 && http.status == 200) {
-         console.log("response: ");
-         console.log(http.responseText);
-         var obj = JSON.parse(http.responseText);        
-         //update_icons(obj);
-         update_icons(obj);
-      }
-    }
+   function update_tracks(data_obj) {
+     if (data_obj.id == 0) {
+       console.log("data_obj.id == 0");
+     }
+     map.removeLayer(lines);
+     mylines2 = [];
+     console.log("update_tracks");
+     console.log("data_obj");
+     console.log(data_obj);
+     var points = data_obj.track;
+     var tracks = {};
+     for ( var i = 0; i < points.length; i++) {
+       if (typeof tracks[points[i]['id']] == "undefined") {
+         tracks[points[i]['id']] = [];
+         points[i]['lng'] = points[i]['lon'];
+         tracks[points[i]['id']].push(points[i]);
+       } else {
+         points[i]['lng'] = points[i]['lon'];
+         tracks[points[i]['id']].push(points[i]);
+       }         
+     }
+     console.log("tracks")
+     console.log(tracks);
+     var line = {
+       "type": "LineString",
+       "coordinates": []
+     };
+     var track = [];
+     var a;
+     var chosen_tracks = {};
+     console.log("params.track_id");
+     console.log(params.track_id);
+
+     if (params.track_id.length > 0) {
+       chosen_tracks[params.track_id] = tracks[params.track_id];
+     }else {
+       chosen_tracks = tracks;
+     }
+     console.log("chosen_tracks");
+     console.log(chosen_tracks); 
+     for (var key in chosen_tracks) {          
+       track = clone(chosen_tracks[key]);
+       line['coordinates'] = [];       
+       for (var i = 0; i < chosen_tracks[key].length; ++i) {
+         a = [];
+         a.push(chosen_tracks[key][i]['lon']);
+         a.push(chosen_tracks[key][i]['lat']);
+         line['coordinates'].push(a);
+       }
+       mylines2.push(clone(line));
+     }
+     console.log("myline2");
+     console.log(mylines2)
+     lines = L.geoJson(mylines2).addTo(map);
+     console.log(lines);
+   }
+
+   function clone(obj) {
+     if (null == obj || "object" != typeof obj) return obj;
+     var copy = obj.constructor();
+     for (var attr in obj) {
+       if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
+     }
+     return copy;
+   }
 
    function update_icons(user_obj) {
      // http://track.surething.biz/track.php/?type=2&extra=1&id=0
@@ -84,15 +136,18 @@
      //var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon}];
     console.log("user_obj");
     console.log(user_obj);
-    if (user_obj.id == '206648') {
-      update_tracks(user_obj,myLines);
-      return;
+    //if (user_obj.id == '206648') {
+    if (typeof user_obj.track != 'undefined') {
+      if (user_obj.id != 1){
+        update_tracks(user_obj);
+        return;
+      }
     }
-    var points = user_obj.track;
+    var points ;
     var info ;
-    if (user_obj.id == 0){
+    if (user_obj.id == 1){
        points = user_obj.track;
-       markers_data
+       //markers_data
        for (var i = 0; i < last_data_marker_count; i++ ) {
           map.removeLayer(markers_data[i]);
        }
@@ -142,45 +197,16 @@
       
    }
 
-   function update_tracks(track_obj,myLines) {
-     console.log("update_tracks");
-     map.removeLayer(lines);
-     myLines = []; 
-     //data = '{"id":"206648","track":[{"lat":"12.9304566","lon":"100.8798508","timestamp":"1460252155","speed":"0","bearing":"0","alt":"0","id":"206648","comment":"","type":"0"},{"lat":"12.9304432","lon":"100.8798094","timestamp":"1460251915","speed":"0","bearing":"0","alt":"0","id":"206648","comment":"","type":"0"},{"lat":"12.9304504","lon":"100.8798188","timestamp":"1460249625","speed":"0","bearing":"0","alt":"0","id":"206648","comment":"","type":"0"}],"count":"20"}'
-
-     //var track_obj = JSON.parse(data);
-     console.log("track_obj");
-     console.log(track_obj);
-     
-     var line = {
-       "type": "LineString",
-       "coordinates": []
-     };
-     
-     var track = track_obj.track;
-     for (var i = 0; i < track.length; ++i) {
-       var a = [];
-       a.push(track[i]['lon']);
-       a.push(track[i]['lat']);
-       line['coordinates'].push(a);
-     }
-     myLines.push(line);
-     console.log("myLines");
-     console.log(myLines);
-     lines = L.geoJson(myLines).addTo(map);
-     console.log(lines);
-   }
-
   
-
 
   var myVar = setInterval(myTimer, 20000);
 
   function myTimer() {
-    var url_list = ["http://track.surething.biz/track.php/?type=99&extra=1&id=0", "http://track.surething.biz/track.php/?last=1","http://track.surething.biz/track.php/?id=206648&count=100&extra=1"];
+    //var url_list = ["http://track.surething.biz/track.php/?type=99&extra=1&id=0", "http://track.surething.biz/track.php/?last=1","http://track.surething.biz/track.php/?id=206648&count=100&extra=1"];
+    var url_list = ["http://track.surething.biz/track.php/?type=99&extra=1&id=1", "http://track.surething.biz/track.php/?last=1","http://track.surething.biz/track.php/?count=100&extra=1"];
     var ts = Date.now() /1000 |0;
     // start time of 25 hours ago
-    var start = ts - 90000;
+    var start = ts - (60* params.track_time_min);
     // start time of 6 hours ago
     //var start = ts - 21600;
     console.log("timestamp: " + ts); 
@@ -201,6 +227,19 @@
       url_position = 0;
     }
   }
+
+   http.onreadystatechange = function() {//Call a function when the state changes.
+      //console.log("readyState: ");
+      //console.log(http.readyState);
+      //console.log(http.status);
+      if(http.readyState == 4 && http.status == 200) {
+         console.log("response: ");
+         console.log(http.responseText);
+         var obj = JSON.parse(http.responseText);        
+         //update_icons(obj);
+         update_icons(obj);
+      }
+    }
 
   function remove_marker(m) {
        map.removeLayer(m);
@@ -355,6 +394,7 @@
          localStorage.setItem("track_id", 206648);
          localStorage.setItem("track_time_min", 120);
          localStorage.setItem("info", "");
+         localStorage.setItem("tracker_server", "http://track.surething.biz/");
          get_config();
        } 
     } else {
@@ -376,7 +416,7 @@
         mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
         var base = new L.tileLayer(
             'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; ' + mapLink + ' Contributors',
+            attribution: '&copy; ' + mapLink + ' Contributors, Trick Traker',
             maxZoom: 19,
             });
          
@@ -425,7 +465,8 @@
     //url = "http://track.surething.biz/track.php/?id=206648&count=1"
     //url = "http://track.surething.biz/track.php/?last=1";
     //url = "http://track.surething.biz/track.php/?id=206648&count=100&extra=1"
-    url = "http://track.surething.biz/track.php/?type=99&extra=1&id=0"
+    //url = "http://track.surething.biz/track.php/?type=99&extra=1&id=0"
+    url = "http://track.surething.biz/track.php/?type=99&extra=1&id=1"
     http.open("GET", url, true);
     http.send();
 

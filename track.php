@@ -1,5 +1,8 @@
 <?php
  // Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
+  //header('Content-type: text/html');
+  header('Access-Control-Allow-Origin: *');
+
  include('config.php');
 
  $id = $_GET['id'];
@@ -48,7 +51,7 @@ $conn->close();
 
   $sql = "SELECT * FROM `data`";
 
-if (!empty($_GET['id'])) {
+if (!empty($_GET['id']) && ($_GET['id'] > 10)) {
   $sql = $sql . " WHERE id = ". $id;
 } else {
   if (!empty($_GET['type'])) {

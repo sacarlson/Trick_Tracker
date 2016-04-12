@@ -62,10 +62,19 @@ http://track.surething.biz/track.php/?type=2&extra=1
 
 http://track.surething.biz/track.php/?last=1
 
-{"users":[{"username":"Scotty","lat":"12.9304142","lon":"100.8798171","timestamp":"1460010165","id":"206648","info":"Scotty is a cool dude.","type":""},{"username":"acer","lat":"12.9304351","lon":"100.8798416","timestamp":"1460010138","id":"951342","info":"the white acer android phone used in test","type":""}],"count":"2"}
+{"users":[{"username":"Scotty","lat":"12.9303985","lon":"100.8798076","timestamp":"1460446473","id":"206648","info":"Scotty is a cool dude.","type":"1"},{"username":"acer","lat":"12.9303765","lon":"100.8797842","timestamp":"1460446531","id":"951342","info":"the white acer android phone used in test","type":"0"}],"count":"2"}
 
 http://track.surething.biz/track.php/?type=99&extra=1&id=0
   special case when type=99 we pass all tracks accept type=0 (tracked devices)
   only manualy entered positions with manual types are displayed.
 {"id":"0","track":[{"lat":"12.9304148","lon":"100.8798189","timestamp":"1460114835","speed":"0","bearing":"0","alt":"0","id":"717355","comment":"","type":"2"},{"lat":"12.9304351","lon":"100.8798171","timestamp":"1460114226","speed":"0","bearing":"0","alt":"0","id":"717355","comment":"","type":"11"}],"count":"2"}
+
+in this case also id can be from 0 - 10 (without added id filters) to allow it's use in signaling in post processing of data on map side
+
+
+On the Traccar recording side we have the index.php setup to record to mysql for input that looks something like this:
+?id=206648&timestamp=1459757028&lat=12.9304184&lon=100.8798106&speed=0.0&bearing=0.0&altitude=0.0&batt=100.0
+or 
+http://track.surething.biz/?id=206648&timestamp=1459757028&lat=12.9304184&lon=100.8798106&speed=0.0&bearing=0.0&altitude=0.0&batt=100.0
+
 

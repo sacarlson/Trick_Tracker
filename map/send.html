@@ -8,12 +8,14 @@
  <script>
   "use strict";
   var type = 0;
-  var url = "http://track.surething.biz/";
+  var tracker_server = "http://track.surething.biz/";
   var info ;
     
   var id = 0;
   
   var http = new XMLHttpRequest();
+  http.withCredentials = true;
+
 // starts from index 0
 //var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon}];
   function randomIntFromInterval(min,max) {
@@ -23,9 +25,10 @@
   function getId() {
     if (typeof(Storage) !== "undefined") {
        id = localStorage.getItem("id");
-       info = encodeURI(localStorage.getItem("id"));
-       url = localStorage.getItem("tracker_server");
-       console.log(id == null);
+       info = encodeURI(localStorage.getItem("info"));
+       tracker_server = localStorage.getItem("tracker_server");
+       console.log("tracker_server");
+       console.log(tracker_server);
        if (id == null) {
          console.log("id was undefined will create one");
          id = randomIntFromInterval(300000,999000);
@@ -52,11 +55,14 @@ function showPosition(position) {
     console.log( type);
     var timestamp = Math.floor(Date.now() / 1000);
 //GET /?id=206648&timestamp=1459757028&lat=12.9304184&lon=100.8798106&speed=0.0&bearing=0.0&altitude=0.0&batt=100.0
-    url = url + "?id=" + id + "&timestamp=" + timestamp + "&lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&type=" + type;
+    var url = tracker_server + "?id=" + id + "&timestamp=" + timestamp + "&lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&type=" + type;
+    
     console.log("url: " + url);	
     http.open("GET", url, true);
     http.send();
-    alert(" position sent lat: " + position.coords.latitude + " lon: " + position.coords.longitude + " type: " + type );
+    console.log("post url");
+    console.log(url);
+    alert(" position sent lat: " + position.coords.latitude + " lon: " + position.coords.longitude + " type: " + type + " id: " + id );
 }
 
   function i_here() {
@@ -147,6 +153,7 @@ function showPosition(position) {
 
 // Close the dropdown if the user clicks outside of it
 window.onclick = function(event) {
+  console.log("window onclick detected");
   if (!event.target.matches('.dropbtn')) {
 
     var dropdowns = document.getElementsByClassName("dropdown-content");
@@ -159,7 +166,7 @@ window.onclick = function(event) {
     }
   }
 }
-                               
+   console.log("script loaded");                       
   </script>
 <style>
 .dropbtn {

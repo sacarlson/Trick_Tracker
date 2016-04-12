@@ -34,7 +34,7 @@
   function make_map_link() {
     var info_fixed = encodeURI(info.value);
     //http://track.surething.biz/map/?json={%22lat%22:%2212.889783494440438%22,%22lon%22:%22100.92255592346191%22,%22zoom%22:%2215%22,%22type%22:%221%22,%22info%22:%22it%20be%20Scotty%20%22,%22timestamp%22:%221460190435%22} 
-    var link_url = tracker_server.value + "/map/?json={%22lat%22:%22" + lat.value + "%22,%22lon%22:%22" + lon.value + "%22,%22zoom%22:%22" + zoom.value + "%22,%22type%22:%22" + icon_type.value + "%22,%22info%22:%22" + info_fixed + "%22,%22timestamp%22:%22" + timestamp + "%22}";
+    var link_url = tracker_server.value + "map/?json={%22lat%22:%22" + lat.value + "%22,%22lon%22:%22" + lon.value + "%22,%22zoom%22:%22" + zoom.value + "%22,%22type%22:%22" + icon_type.value + "%22,%22info%22:%22" + info_fixed + "%22,%22timestamp%22:%22" + timestamp + "%22}";
     map_link.innerHTML = '<h4>' + link_url + '</h4>'; 
   } 
 
@@ -59,10 +59,10 @@
          localStorage.setItem("lon", 100.892515 );
          localStorage.setItem("zoom", 15);
          localStorage.setItem("track_id", 206648);
-         localStorage.setItem("track_time_min", 120);
+         localStorage.setItem("track_time_min", 1500); //1500 = 25 hours
          localStorage.setItem("icon_type", 0);
          localStorage.setItem("info", "");
-         localStorage.setItem("tracker_server", "track.surething.biz");
+         localStorage.setItem("tracker_server", "http://track.surething.biz/");
          get_config();
        } 
     } else {
@@ -129,6 +129,7 @@ window.onclick = function(event) {
 
  submit.addEventListener("click", function(event) {
     console.log("submit clicked");
+    save_configs();
     make_map_link();  
  });
 

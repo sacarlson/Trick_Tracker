@@ -1,5 +1,7 @@
 <?php
 // Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
+  //header('Content-type: text/html');
+  header('Access-Control-Allow-Origin: *');
 
  include('config.php');
  
@@ -10,26 +12,30 @@
  $speed = $_GET['speed'];
  $bearing = $_GET['bearing'];
  $altitude = $_GET['altitude'];
- $batt = $_GET['batt'];
- $type = $_GET['type'];
+ if (empty( $_GET['batt'])) {
+   $batt = "0";
+ } else {
+   $batt = $_GET['batt'];
+ }
+ if (empty( $_GET['type'])) {
+   $type = "0";
+ } else {
+   $type = $_GET['type'];
+ }
  date_default_timezone_set('Asia/Bangkok');
  $time = date("F j, Y, g:i a");
- if (strlen( $_GET['type']) == 0) {
-   $type = "0";
- }
+ 
  if (strlen( $_GET['speed']) == 0) {
    $speed = "0";
  }
-if (strlen( $_GET['bearing']) == 0) {
+ if (strlen( $_GET['bearing']) == 0) {
    $bearing = "0";
  }
-if (strlen( $_GET['altitude']) == 0) {
+ if (strlen( $_GET['altitude']) == 0) {
    $altitude = "0";
  }
-if (strlen( $_GET['batt']) == 0) {
-   $batt = "0";
- }
-if (strlen( $_GET['id']) == 0) {
+
+ if (strlen( $_GET['id']) == 0) {
    $id = "0";
  }
 
@@ -77,11 +83,11 @@ if ($conn->query($sql2) === TRUE) {
     $status = " record success";
 } else {
     //echo "Error: " . $sql . "<br>" . $conn->error;
-    //$status = "Error: " . $conn->error;
-    $status = $sql;
+    $status = "Error: " . $conn->error;
+    //$status = $sql;
 }
  //echo "ok";
-$status = $sql;
+//$status = $sql;
 $conn->close();
 logsession();
 ?>
