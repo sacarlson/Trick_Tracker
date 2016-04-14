@@ -1,7 +1,8 @@
 <?php
 // Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
-  //header('Content-type: text/html');
-  header('Access-Control-Allow-Origin:','*');
+  //header('Content-type: text/html'); 
+  header('Access-Control-Allow-Origin: *'); 
+  header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT');
 
  include('config.php');
  

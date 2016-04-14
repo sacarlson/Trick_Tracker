@@ -3,7 +3,8 @@
 <head>
     <title>Trick Traker Map</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <link rel="stylesheet" href="w3.css">
+    <link rel="stylesheet" href="leaflet.css" />     
     <style type="text/css">
 		#map { width: 700px; height: 433px; }
 		.fullscreen-icon { background-image: url(icon-fullscreen.png); }
@@ -29,7 +30,7 @@
     <div id="map" style="width: 1000px; height: 800px"></div>
 
   
-        <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+        <script src="leaflet.js"></script>
 	<script src="Control.FullScreen.js"></script>   
 
     <script>
@@ -52,6 +53,7 @@
     var timestamp = Math.floor(Date.now() / 1000);
     
     var params = {};
+    get_config();
     var json_param = window.location.href.match(/\?json=(.*)/);
     if (json_param != null) {
       json_param = unescape(json_param[1]);
@@ -59,9 +61,123 @@
     }
     console.log("params");
     console.log(params);
-  
+    
+
+   var scottyIcon = L.icon({
+    iconUrl: 'scotty_map_icon75x75.png',    
+    iconSize:     [75, 75], // size of the icon
+    iconAnchor:   [37, 75], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -77], // point from which the popup should open relative to the iconAnchor
+  });
+ 
+
+  var cop_runingIcon = L.icon({
+    iconUrl: 'running_cop_50x61.png',
+    iconSize:     [50, 61], // size of the icon
+    iconAnchor:   [25, 61], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -76] // point from which the popup should open relative to the iconAnchor
+  });
+
+  var copIcon = L.icon({
+    iconUrl: 'police_standing_25x94.png',
+    iconSize:     [25, 94], // size of the icon
+    iconAnchor:   [17, 61], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -96] // point from which the popup should open relative to the iconAnchor
+  });
+
+  var johnIcon = L.icon({
+    iconUrl: 'man_with_money_49x61.png',
+    iconSize:     [49, 61], // size of the icon
+    iconAnchor:   [25, 61], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -64] // point from which the popup should open relative to the iconAnchor
+  });
+
+  var fat_girlIcon = L.icon({
+    iconUrl: 'fat_girl_47x60.png',
+    iconSize:     [47, 60], // size of the icon
+    iconAnchor:   [25, 60], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -65] // point from which the popup should open relative to the iconAnchor
+  });
+
+  var police_truckIcon = L.icon({
+    iconUrl: 'police_truck_60x23.png',
+    iconSize:     [60, 23], // size of the icon
+    iconAnchor:   [30, 23], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -25] // point from which the popup should open relative to the iconAnchor
+  });
+
+  var girlIcon = L.icon({
+    iconUrl: 'nice_girl_21x62.png',
+    iconSize:     [21, 62], // size of the icon
+    iconAnchor:   [10, 62], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -65] // point from which the popup should open relative to the iconAnchor
+  });
+
+  var sexyIcon = L.icon({
+    iconUrl: 'sexy_girl_20x60.png',
+    iconSize:     [20, 60], // size of the icon
+    iconAnchor:   [10, 60], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -65] // point from which the popup should open relative to the iconAnchor
+  });
+
+  var ihereIcon = L.icon({
+    iconUrl: 'Im_here45x60.png',    
+    iconSize:     [45, 60], // size of the icon
+    iconAnchor:   [22, 60], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -65], // point from which the popup should open relative to the iconAnchor
+  });
+
+  var skiny_girlIcon = L.icon({
+    iconUrl: 'skiny_no_tits_18x60.png',    
+    iconSize:     [18, 60], // size of the icon
+    iconAnchor:   [9, 60], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -65], // point from which the popup should open relative to the iconAnchor
+  });
+
+  var lady_boyIcon = L.icon({
+    iconUrl: 'lady_boy_39x61.png',    
+    iconSize:     [39, 61], // size of the icon
+    iconAnchor:   [19, 61], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -65], // point from which the popup should open relative to the iconAnchor
+  });
+
+  var short_girlIcon = L.icon({
+    iconUrl: 'short_girl_18x40.png',    
+    iconSize:     [18, 40], // size of the icon
+    iconAnchor:   [9, 40], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -45], // point from which the popup should open relative to the iconAnchor
+  });
+
+  // icon 13
+  var partyIcon = L.icon({
+    iconUrl: 'beer_party60x48.png',    
+    iconSize:     [60, 48], // size of the icon
+    iconAnchor:   [30, 24], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
+  });
+
+  // icon 14
+  var eatingIcon = L.icon({
+    iconUrl: 'eat_food47x60.png',    
+    iconSize:     [47, 60], // size of the icon
+    iconAnchor:   [23, 24], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
+  });
+
+  //icon 15
+  var weedIcon = L.icon({
+    iconUrl: 'weed_icon41x61.png',    
+    iconSize:     [41, 61], // size of the icon
+    iconAnchor:   [20, 61], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -62], // point from which the popup should open relative to the iconAnchor
+  });
+	
+
+  var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon},{icon: weedIcon}];
+
 
    function update_tracks(data_obj) {
+     console.log("udate_tracks");
      if (data_obj.id == 0) {
        console.log("data_obj.id == 0");
      }
@@ -183,6 +299,10 @@
 	    .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
 	    .addTo(map);
           } else { 
+            console.log("points points[i]['type']");
+            console.log(points[i]['type']);
+            console.log(points);
+            console.log(i);
             markers[i] = L.marker([points[i]['lat'],points[i]['lon']],icon_type[points[i]['type']])
 	    .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
 	    .addTo(map);
@@ -264,116 +384,7 @@
     return dt;
   }
 
-  var scottyIcon = L.icon({
-    iconUrl: 'scotty_map_icon75x75.png',    
-    iconSize:     [75, 75], // size of the icon
-    iconAnchor:   [37, 75], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -77], // point from which the popup should open relative to the iconAnchor
-  });
- 
-
-  var cop_runingIcon = L.icon({
-    iconUrl: 'running_cop_50x61.png',
-    iconSize:     [50, 61], // size of the icon
-    iconAnchor:   [25, 61], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -76] // point from which the popup should open relative to the iconAnchor
-  });
-
-  var copIcon = L.icon({
-    iconUrl: 'police_standing_25x94.png',
-    iconSize:     [25, 94], // size of the icon
-    iconAnchor:   [17, 61], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -96] // point from which the popup should open relative to the iconAnchor
-  });
-
-  var johnIcon = L.icon({
-    iconUrl: 'man_with_money_49x61.png',
-    iconSize:     [49, 61], // size of the icon
-    iconAnchor:   [25, 61], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -64] // point from which the popup should open relative to the iconAnchor
-  });
-
-  var fat_girlIcon = L.icon({
-    iconUrl: 'fat_girl_47x60.png',
-    iconSize:     [47, 60], // size of the icon
-    iconAnchor:   [25, 60], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -65] // point from which the popup should open relative to the iconAnchor
-  });
-
-  var police_truckIcon = L.icon({
-    iconUrl: 'police_truck_60x23.png',
-    iconSize:     [60, 23], // size of the icon
-    iconAnchor:   [30, 23], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -25] // point from which the popup should open relative to the iconAnchor
-  });
-
-  var girlIcon = L.icon({
-    iconUrl: 'nice_girl_21x62.png',
-    iconSize:     [21, 62], // size of the icon
-    iconAnchor:   [10, 62], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -65] // point from which the popup should open relative to the iconAnchor
-  });
-
-  var sexyIcon = L.icon({
-    iconUrl: 'sexy_girl_20x60.png',
-    iconSize:     [20, 60], // size of the icon
-    iconAnchor:   [10, 60], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -65] // point from which the popup should open relative to the iconAnchor
-  });
-
-  var ihereIcon = L.icon({
-    iconUrl: 'Im_here45x60.png',    
-    iconSize:     [45, 60], // size of the icon
-    iconAnchor:   [22, 60], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -65], // point from which the popup should open relative to the iconAnchor
-  });
-
-  var skiny_girlIcon = L.icon({
-    iconUrl: 'skiny_no_tits_18x60.png',    
-    iconSize:     [18, 60], // size of the icon
-    iconAnchor:   [9, 60], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -65], // point from which the popup should open relative to the iconAnchor
-  });
-
-  var lady_boyIcon = L.icon({
-    iconUrl: 'lady_boy_39x61.png',    
-    iconSize:     [39, 61], // size of the icon
-    iconAnchor:   [19, 61], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -65], // point from which the popup should open relative to the iconAnchor
-  });
-
-  var short_girlIcon = L.icon({
-    iconUrl: 'short_girl_18x40.png',    
-    iconSize:     [18, 40], // size of the icon
-    iconAnchor:   [9, 40], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -45], // point from which the popup should open relative to the iconAnchor
-  });
-
-  // icon 13
-  var partyIcon = L.icon({
-    iconUrl: 'beer_party60x48.png',    
-    iconSize:     [60, 48], // size of the icon
-    iconAnchor:   [30, 24], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-  // icon 14
-  var eatingIcon = L.icon({
-    iconUrl: 'eat_food47x60.png',    
-    iconSize:     [47, 60], // size of the icon
-    iconAnchor:   [23, 24], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-  var weedIcon = L.icon({
-    iconUrl: 'weed_icon41x61.png',    
-    iconSize:     [41, 61], // size of the icon
-    iconAnchor:   [20, 61], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -62], // point from which the popup should open relative to the iconAnchor
-  });
-	
-  //var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon}];
-  var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon},{icon: weedIcon}];
+  
 
   function randomIntFromInterval(min,max) {
     return Math.floor(Math.random()*(max-min+1)+min);
@@ -389,11 +400,13 @@
        params.track_time_min = localStorage.getItem("track_time_min");
        params.info = localStorage.getItem("info");
        params.tracker_server = localStorage.getItem("tracker_server");
+       console.log("params");
+       console.log(params);
        console.log("typeof params.id");
        console.log(typeof params.id);
        console.log(params.id);
        //console.log(params.id);
-       if ( params.id == null) {
+       if ( params.id == null || params.id.length == 0) {
          console.log("id was undefined will create one");
          params.id = randomIntFromInterval(300000,999000);
          localStorage.setItem("id", params.id);
@@ -403,7 +416,7 @@
          localStorage.setItem("track_id", 206648);
          localStorage.setItem("track_time_min", 120);
          localStorage.setItem("info", "");
-         localStorage.setItem("tracker_server", "http://zipperhead.ddns.net/tricktraker/");
+         localStorage.setItem("tracker_server", "https://api.tricktraker.com");
          get_config();
        } 
     } else {
@@ -413,7 +426,7 @@
   }
 
       if (json_param == null) {
-        get_config();       
+        //get_config();   
       } else {
         if (params.zoom == null) {
           params.zoom = 15;
@@ -422,9 +435,9 @@
 
         
 
-        mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+        mapLink = '<a href="https://openstreetmap.org">OpenStreetMap</a>';
         var base = new L.tileLayer(
-            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; ' + mapLink + ' Contributors, Trick Traker',
             maxZoom: 19,
             });

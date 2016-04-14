@@ -4,7 +4,8 @@
 <head>
  <title>Trick Traker Cfg</title>
  <meta name="viewport" content="width=device-width, initial-scale=1">
- <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+ <!<link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+ <link rel="stylesheet" href="w3.css">
  <script>
   "use strict";
   window.addEventListener("load", function(event) { 
@@ -63,7 +64,7 @@
          localStorage.setItem("track_time_min", 1500); //1500 = 25 hours
          localStorage.setItem("icon_type", 0);
          localStorage.setItem("info", "");
-         localStorage.setItem("tracker_server", "http://zipperhead.ddns.net/tricktraker/");
+         localStorage.setItem("tracker_server", "https://api.tricktraker.com/");
          get_config();
        } 
     } else {
