@@ -34,7 +34,10 @@
 
   function make_map_link() {
     var info_fixed = encodeURI(info.value);
-    var link_url = tracker_server.value + "map/?json={%22lat%22:%22" + lat.value + "%22,%22lon%22:%22" + lon.value + "%22,%22zoom%22:%22" + zoom.value + "%22,%22type%22:%22" + icon_type.value + "%22,%22info%22:%22" + info_fixed + "%22,%22timestamp%22:%22" + timestamp + "%22}";
+    //var link_url = tracker_server.value + "map/?json={%22lat%22:%22" + lat.value + "%22,%22lon%22:%22" + lon.value + "%22,%22zoom%22:%22" + zoom.value + "%22,%22type%22:%22" + icon_type.value + "%22,%22info%22:%22" + info_fixed + "%22,%22timestamp%22:%22" + timestamp + "%22}";
+
+    var link_url = "https://www.tricktraker.com/?json={%22lat%22:%22" + lat.value + "%22,%22lon%22:%22" + lon.value + "%22,%22zoom%22:%22" + zoom.value + "%22,%22type%22:%22" + icon_type.value + "%22,%22info%22:%22" + info_fixed + "%22,%22timestamp%22:%22" + timestamp + "%22}";
+
     map_link.innerHTML = '<h4>' + link_url + '</h4>'; 
   } 
 
@@ -201,7 +204,8 @@ window.onclick = function(event) {
     <div id="myDropdown" class="dropdown-content">
       <a href="index.html">Map </a>      
       <a href="send.html">Send Trick</a>
-      <a href="./shoot/index.html">Shoot Pic</a>      
+      <a href="./shoot/index.html">Shoot Pic</a> 
+      <a href="./shoot/gallery.php">Gallery</a>    
     </div>
   </div>
   <h1>Trick Traker Config</h1>
