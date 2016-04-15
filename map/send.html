@@ -28,7 +28,7 @@
        tracker_server = localStorage.getItem("tracker_server");
        console.log("tracker_server");
        console.log(tracker_server);
-       if (id == null) {
+       if (id == null || id.length == 0) {
          console.log("id was undefined will create one");
          id = randomIntFromInterval(300000,999000);
          localStorage.setItem("id", id);
@@ -38,6 +38,7 @@
        alert("Sorry, your browser does not support Web Storage.. your ID now: " + id);       
     }
   }
+
   
 function getLocation() {
     if (navigator.geolocation) {
@@ -221,7 +222,7 @@ window.onclick = function(event) {
     <div id="myDropdown" class="dropdown-content">
       <a href="index.html">Map</a>
       <a href="config.html">Config</a>
-      <a href="send.html">Send Trick</a>
+      <a href="./shoot/index.html">Shoot Pic</a>
     </div>
   </div>
   <h1>Send Position to Trick Traker</h1>

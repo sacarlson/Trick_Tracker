@@ -1,0 +1,239 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Trick Traker Cam</title>
+        <link rel="stylesheet" href="../w3.css">
+	<style type="text/css">
+		body { font-family: Helvetica, sans-serif; }
+		h1, h2, h3 { margin-top:0; margin-bottom:0; }
+		form { margin-top: 15px; }
+		form input { margin-right: 2px; }
+		#results { display:inline-block; margin:1px; padding:1px; border:1px solid; background:#ccc; }
+
+
+
+.center {
+    margin: auto;
+    width: 100%;
+}
+
+h1 { text-align: center;}
+
+.center60 {
+    margin: auto;
+    width: 60%;
+}
+
+.right {
+    position: absolute;
+    right: 0px;
+    padding: 100px;
+}
+
+.floating-box {
+    display: inline-block;
+    width: 210px;
+    height: 210px;
+    margin: 30px; 
+}
+
+.h_yellow:hover {
+    background-color: yellow;
+}
+
+img {
+    margin: auto;
+    width: 100%;
+    height: auto;
+}
+
+
+	</style>
+</head>
+<body>
+	
+	<h1>TrickTraker Cam </h1>
+		
+	<div id="my_photo_booth">
+		<div class="center" > <div id="my_camera" ></div> </div>
+		
+		<!-- First, include the Webcam.js JavaScript Library -->
+		<script type="text/javascript" src="webcam.js"></script>
+		
+		<!-- Configure a few settings and attach camera -->
+		<script language="JavaScript">
+			Webcam.set({
+				// live preview size
+				width: 640,
+				height: 480,
+				
+				// device capture size
+				dest_width: 640,
+				dest_height: 480,
+				
+				// final cropped size
+				//crop_width: 480,
+				//crop_height: 480,
+				
+				// format and quality
+				image_format: 'jpeg',
+				jpeg_quality: 90,
+				
+				// flip horizontal (mirror mode)
+				//flip_horiz: true
+			});
+			Webcam.attach( '#my_camera' );
+                        
+		</script>
+		
+		<!-- A button for taking snaps -->
+		<form>
+			<div id="pre_take_buttons">
+				<!-- This button is shown before the user takes a snapshot -->
+                        <h1>Click Button to take Picture </h1>
+                        <div class="center60 h_yellow"> <img src="button200x60.png" onclick="preview_snapshot()" > </div>
+                         
+			</div>
+			<div id="post_take_buttons" style="display:none">
+				<!-- These buttons are shown after a snapshot is taken -->
+                          <h1>Take another picture or send it to Tricktraker.com</h1>
+			  <div class="floating-box h_yellow"> <img src="turn_back_button200x202_red.png" onClick="cancel_preview()"> </div>
+                          <div class="floating-box h_yellow"> <img src="email_button200x200.png" onClick="save_photo()"></div>                               
+		        </div>
+		</form>
+	</div>
+	
+	<div id="results" style="display:none";>
+		<!-- Your captured image will appear here... -->
+	</div>
+	
+	<!-- Code to handle taking the snapshot and displaying it locally -->
+	<script language="JavaScript">
+		// preload shutter audio clip
+		var shutter = new Audio();
+		shutter.autoplay = false;
+		shutter.src = navigator.userAgent.match(/Firefox/) ? 'shutter.ogg' : 'shutter.mp3';
+
+                var canvas = document.getElementById('results')
+                var lat;
+                var lon;
+                var id;
+                var info;
+  
+                getLocation();
+                getId();
+
+                function getId() {
+                  if (typeof(Storage) !== "undefined") {
+                    id = localStorage.getItem("id");
+                    info = encodeURI(localStorage.getItem("info"));
+                    //tracker_server = localStorage.getItem("tracker_server");
+                    //console.log("tracker_server");
+                    //console.log(tracker_server);
+                    console.log("id");
+                    console.log(id);
+                    if (id == null || id.length == 0) {
+                      console.log("id was undefined will create one");
+                      id = randomIntFromInterval(300000,999000);
+                      localStorage.setItem("id", id);
+                    } 
+                  } else {
+                    id = randomIntFromInterval(300000,999000);
+                    alert("Sorry, your browser does not support Web Storage.. your ID now: " + id);       
+                  }
+                }
+
+                function getLocation() {
+                  if (navigator.geolocation) {
+                    navigator.geolocation.watchPosition(showPosition);
+                  } else { 
+                    alert("Geolocation is not supported by this browser.");
+                  }
+                }
+    
+               function showPosition(position) {
+                 console.log("lat: " + position.coords.latitude + " Lon: " + position.coords.longitude);
+                 lat = position.coords.latitude;
+                 lon = position.coords.longitude
+                 console.log("got GPS position info");	
+               }              	
+	
+		function preview_snapshot() {
+                        console.log("start preview_shot");
+			// play sound effect
+			try { shutter.currentTime = 0; } catch(e) { console.log("shuter.play fail");} // fails in IE
+			shutter.play();
+			
+			// freeze camera so user can preview current frame
+                        try {
+			  Webcam.freeze();
+                         } catch(e) { console.log("webcam.freeze error");}
+			
+			// swap button sets
+			document.getElementById('pre_take_buttons').style.display = 'none';
+			document.getElementById('post_take_buttons').style.display = '';
+                        
+		}
+		
+		function cancel_preview() {
+                        console.log("start cancel_previw");
+			// cancel preview freeze and return to live camera view
+                        try {
+			Webcam.unfreeze();
+			} catch(e) { console.log("wecam.unfreeze error");}
+			// swap buttons back to first set
+			document.getElementById('pre_take_buttons').style.display = '';
+			document.getElementById('post_take_buttons').style.display = 'none';
+		}
+		
+		function save_photo() {
+                        console.log("start save_photo");
+			// actually snap photo (from preview freeze) and display it
+			Webcam.snap( function(data_uri) {
+                                console.log("webcam.snap");
+				// display results in page
+				//document.getElementById('results').innerHTML = 
+				//	'<h3>Here is the image we sent to tricktraker.com:</h3>' + 
+				//	'<img src=' + '"' + data_uri + '"' + '><br> ' ;
+
+                                Webcam.on( 'uploadProgress', function(progress) {
+                                  // Upload in progress
+                                  // 'progress' will be between 0.0 and 1.0
+                                  console.log("progress");
+                                  console.log(progress);
+                                } );
+
+                                Webcam.on( 'uploadComplete', function(code, text) {
+                                  // Upload complete!
+                                  // 'code' will be the HTTP response code from the server, e.g. 200
+                                  // 'text' will be the raw response content
+                                  console.log("code");
+                                  console.log(code);
+                                  console.log("text");
+                                  console.log(text);
+                                    alert("Upload image complete");
+                                } );
+				var url = 'https://www.tricktraker.com/shoot/upload.php'
+                                var timestamp = Math.floor(Date.now() / 1000);
+                                url = url + "/?lat="+lat+"&lon="+lon+"&timestamp="+timestamp+"&info="+info+"&id="+id;
+                                console.log("url");
+                                console.log(url);
+                                Webcam.upload( data_uri, url); 
+
+				// shut down camera, stop capturing
+				//Webcam.reset();
+				
+				// show results, hide photo booth
+				//document.getElementById('results').style.display = '';
+				//document.getElementById('my_photo_booth').style.display = 'none';
+                               
+			} );
+		}
+
+                
+	</script>
+	
+</body>
+</html>
