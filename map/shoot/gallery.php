@@ -103,9 +103,91 @@ div.desc {
 
  <script>
 
-    function dropDown() {
-      document.getElementById("myDropdown").classList.toggle("show");
+  "use strict";
+  var type = 0;
+  var tracker_server ;
+  var info ;
+    
+  var id = 0;
+  
+  var http = new XMLHttpRequest();
+
+
+  function dropDown() {
+    document.getElementById("myDropdown").classList.toggle("show");
+  }
+
+  
+
+  function get_config() {
+    console.log("get_config called");
+    if (typeof(Storage) !== "undefined") {
+       id = localStorage.getItem("id");
+       //lat = localStorage.getItem("lat");
+       //lon = localStorage.getItem("lon");
+       //zoom = localStorage.getItem("zoom");
+       //track_id = localStorage.getItem("track_id");
+       //track_time_min = localStorage.getItem("track_time_min");
+       type = localStorage.getItem("icon_type");
+       info = localStorage.getItem("info");
+       tracker_server = localStorage.getItem("tracker_server");
+       console.log("id");
+       console.log(id);
+       console.log(typeof id);
+       console.log(id.length);
+        if ( id == null || id.length == 0) {
+         console.log("id was undefined will create one");
+         id = randomIntFromInterval(300000,999000);
+         localStorage.setItem("id", id);
+         localStorage.setItem("lat", 12.93419);
+         localStorage.setItem("lon", 100.892515 );
+         localStorage.setItem("zoom", 15);
+         localStorage.setItem("track_id", 206648);
+         localStorage.setItem("track_time_min", 1500); //1500 = 25 hours
+         localStorage.setItem("icon_type", 0);
+         localStorage.setItem("info", "");
+         localStorage.setItem("tracker_server", "https://api.tricktraker.com/");
+         get_config();
+       } 
+    } else {
+       id = randomIntFromInterval(300000,999000);
+       alert("Sorry, your browser does not support Web Storage.. your ID now: " + id);       
     }
+  }
+
+  function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+  }
+
+  function getLocation() {
+    console.log("getLocation called");
+    if (navigator.geolocation) {
+        //navigator.geolocation.watchPosition(showPosition);
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+       alert("Geolocation is not supported by this browser.");
+    }
+  }
+    
+function showPosition(position) {
+    console.log( position.coords.latitude ); 
+    console.log( position.coords.longitude );
+    console.log( type);
+    var timestamp = Math.floor(Date.now() / 1000);
+//GET /?id=206648&timestamp=1459757028&lat=12.9304184&lon=100.8798106&speed=0.0&bearing=0.0&altitude=0.0&batt=100.0
+    var url = tracker_server + "?id=" + id + "&timestamp=" + timestamp + "&lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&type=" + type;
+    
+    console.log("url: " + url);	
+    http.open("GET", url, true);
+    http.send();
+    console.log("post url");
+    console.log(url);
+    alert(" your position seen as lat: " + position.coords.latitude + " lon: " + position.coords.longitude + " type: " + type + " id: " + id );
+}
+ 
+  get_config();
+  getLocation();
+
  </script>
 </head>
 <body>

@@ -24,6 +24,8 @@
   <div class="dropdown">
     <button onclick="dropDown()" class="dropbtn">Menu</button>
     <div id="myDropdown" class="dropdown-content">
+      <a href="http://news.tricktraker.com/">TrickTraker News</a> 
+      <a href="chat.html">Real Time Chat</a>
       <a href="send.html">Send Trick</a>      
       <a href="config.html">Config</a>      
       <a href="./shoot/index.html">Shoot Pic</a>
@@ -319,11 +321,11 @@
    }
 
   
-
-  var myVar = setInterval(myTimer, 20000);
+  // default time 20 sec or 20000
+  var myVar = setInterval(myTimer, (Math.round(params.update_interval * 1000)));
 
   function myTimer() {
-    var url_list = [params.tracker_server + "track.php/?type=99&extra=1&id=1", params.tracker_server + "track.php/?last=1", params.tracker_server + "track.php/?count=100&extra=1"];
+    var url_list = [params.tracker_server + "/track.php/?type=99&extra=1&id=1", params.tracker_server + "/track.php/?last=1", params.tracker_server + "/track.php/?count=100&extra=1"];
     var ts = Date.now() /1000 |0;
     // start time of 25 hours ago
     var start = ts - (60* params.track_time_min);
@@ -405,6 +407,7 @@
        params.track_time_min = localStorage.getItem("track_time_min");
        params.info = localStorage.getItem("info");
        params.tracker_server = localStorage.getItem("tracker_server");
+       params.update_interval = localStorage.getItem("update_interval");
        console.log("params");
        console.log(params);
        console.log("typeof params.id");
@@ -422,6 +425,7 @@
          localStorage.setItem("track_time_min", 120);
          localStorage.setItem("info", "");
          localStorage.setItem("tracker_server", "https://api.tricktraker.com");
+         localStorage.setItem("update_interval", "20");
          get_config();
        } 
     } else {
@@ -488,7 +492,7 @@
       }
 
 
-    url = params.tracker_server + "track.php/?type=99&extra=1&id=1"
+    url = params.tracker_server + "/track.php/?type=99&extra=1&id=1"
     http.open("GET", url, true);
     http.send();
 

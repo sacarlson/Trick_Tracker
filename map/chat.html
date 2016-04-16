@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
+<html>
+<head>
+ <title>Trick Traker Chat</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <!<link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+ <link rel="stylesheet" href="w3.css">
+
+ <style type="text/css">
+.box_auto { 
+  margin: auto;
+  width: 100%;
+  height: auto;
+  margin: 10px;
+}
+
+
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #3e8e41;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #f1f1f1}
+
+.show {display:block;}
+
+
+ </style>
+
+ <script>
+  "use strict";
+  window.addEventListener("load", function(event) { 
+  console.log("start loading page");
+
+  //var lat = document.getElementById("lat");
+  //var lon = document.getElementById("lon");
+  //var zoom = document.getElementById("zoom");
+  var id = document.getElementById("id");
+ // var track_id = document.getElementById("track_id");
+ // var track_time_min = document.getElementById("track_time_min");
+  //var map_link = document.getElementById("map_link");
+  //var icon_type = document.getElementById("icon_type");
+  //var info = document.getElementById("info");
+  //var tracker_server = document.getElementById("tracker_server");
+  //var update_interval = document.getElementById("update_interval");
+  var irc_server = document.getElementById("irc_server");
+
+  var timestamp = Math.floor(Date.now() / 1000);
+  
+  
+  get_config();
+  document.getElementById('irc_link').href = get_irc_url();
+
+   function get_config() {
+    if (typeof(Storage) !== "undefined") {
+       id.value = localStorage.getItem("id");
+       //lat.value = localStorage.getItem("lat");
+       //lon.value = localStorage.getItem("lon");
+       //zoom.value = localStorage.getItem("zoom");
+       //track_id.value = localStorage.getItem("track_id");
+       //track_time_min.value = localStorage.getItem("track_time_min");
+       //icon_type.value = localStorage.getItem("icon_type");
+       //info.value = localStorage.getItem("info");
+       //tracker_server.value = localStorage.getItem("tracker_server");
+       //update_interval.value = localStorage.getItem("update_interval");
+       irc_server.value = localStorage.getItem("irc_server");
+       console.log(id.value);
+       console.log(typeof id.value);
+       console.log(id.value.length);
+        if ( id.value == null || id.value.length == 0) {
+         console.log("id was undefined will create one");
+         id.value = randomIntFromInterval(300000,999000);
+         localStorage.setItem("id", id.value);
+         localStorage.setItem("lat", 12.93419);
+         localStorage.setItem("lon", 100.892515 );
+         localStorage.setItem("zoom", 15);
+         localStorage.setItem("track_id", 206648);
+         localStorage.setItem("track_time_min", 1500); //1500 = 25 hours
+         localStorage.setItem("icon_type", 0);
+         localStorage.setItem("info", "");
+         localStorage.setItem("tracker_server", "https://api.tricktraker.com");
+         localStorage.setItem("update_interval", "5");
+         localStorage.setItem("irc_server", "wilhelm.freenode.net");
+         get_config();
+       } 
+    } else {
+       id = randomIntFromInterval(300000,999000);
+       alert("Sorry, your browser does not support Web Storage.. your ID now: " + id);       
+    }
+  }
+
+  function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+  }
+
+//get_irc_url()
+
+  function get_irc_url() {
+    console.log("get_irc_url");
+    //https://kiwiirc.com/client/wilhelm.freenode.net/?nick=sacarlson|?#tricktraker
+    var url = "https://kiwiirc.com/client/" + irc_server.value + "/?nick=tt" + id.value + "|?#tricktraker";
+    console.log(url);    
+    return url;
+ }
+
+
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+ 
+  console.log("page loaded");
+ }); // end  window.addEventListener("load", function(event) { 
+
+     function dropDown() {
+       document.getElementById("myDropdown").classList.toggle("show");
+     } 
+     console.log("page loaded2");   
+
+ </script>
+
+</head>
+ <body>
+
+<div class="w3-container w3-teal">
+  <div class="dropdown">
+    <button onclick="dropDown()" class="dropbtn">Menu</button>
+    <div id="myDropdown" class="dropdown-content">
+      <a href="http://news.tricktraker.com/">TrickTraker News</a> 
+      <a href="index.html">Map </a>  
+      <a href="config.html">Config</a>     
+      <a href="send.html">Send Trick</a>
+      <a href="./shoot/index.html">Shoot Pic</a> 
+      <a href="./shoot/gallery.php">Gallery</a>    
+    </div>
+  </div>
+  <h1>Trick Traker Real Time Chat</h1>
+</div>
+
+
+<div class="w3-row-padding w3-margin-top">
+
+ <form class="w3-container">
+
+<label class="w3-label">IRC Chat Nick</label>
+<input class="w3-input" type="text" id="id" >
+
+<label class="w3-label">IRC Server</label>
+<input class="w3-input" type="text" id="irc_server">
+
+<a id="irc_link">Start IRC Chat</a>
+
+</form>
+<div>
+
+</body>
+</html>
+

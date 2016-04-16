@@ -14,7 +14,16 @@
  $type = $_GET['type'];
  $last = $_GET['last'];
  
- 
+ function logsession() {
+ global $datetime, $id,  $status, $sql;
+ //date_default_timezone_set('Asia/Bangkok');
+ $datetime = date("F j, Y, g:i a");
+ $outString =  $datetime . " : " . $id . " : ".  $status . " : " . $sql . "\n";
+ $f = fopen("./session_track_get.log", "a");
+ fwrite( $f, $outString );
+ fclose( $f );
+ return;
+ }
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -24,6 +33,7 @@ if ($conn->connect_error) {
 }
 
 if (!empty( $_GET['last'])) {
+  // search in user table
   $sql = "SELECT * FROM `users`";
 
   if(!$result = $conn->query($sql)){
@@ -48,7 +58,7 @@ $result->free();
 $conn->close();
 
 } else {
-  // ***************************************************************
+  //search in data table ***************************************************************
 
   $sql = "SELECT * FROM `data`";
 
@@ -122,5 +132,6 @@ $result->free();
 $conn->close();
 
 } // end if last
+ logsession();
 
 ?>
