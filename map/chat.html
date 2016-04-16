@@ -79,7 +79,6 @@
   
   
   get_config();
-  document.getElementById('irc_link').href = get_irc_url();
 
    function get_config() {
     if (typeof(Storage) !== "undefined") {
@@ -125,13 +124,21 @@
 
 //get_irc_url()
 
-  function get_irc_url() {
+  function open_irc_url() {
     console.log("get_irc_url");
     //https://kiwiirc.com/client/wilhelm.freenode.net/?nick=sacarlson|?#tricktraker
     var url = "https://kiwiirc.com/client/" + irc_server.value + "/?nick=tt" + id.value + "|?#tricktraker";
-    console.log(url);    
-    return url;
+    console.log(url); 
+    var win = window.open(url, "_blank");   
  }
+
+  function open_voice_chat() {
+    //https://peercalls.com/call/3986bb98-e3e4-41b1-a179-d32fff1eaca9
+    console.log("open_voice_chat");
+    var url = "https://peercalls.com/call/3986bb98-e3e4-41b1-a179-d32fff1eaca9";
+    console.log(url); 
+    var win = window.open(url, "_blank"); 
+  }
 
 
 window.onclick = function(event) {
@@ -147,6 +154,20 @@ window.onclick = function(event) {
     }
   }
 }
+
+ submit.addEventListener("click", function(event) {
+    console.log("submit clicked");
+    //save_configs();
+    //make_map_link();
+    open_irc_url();  
+ });
+
+ voice.addEventListener("click", function(event) {
+    console.log("submit clicked");
+    //save_configs();
+    //make_map_link();
+    open_voice_chat();  
+ });
 
  
   console.log("page loaded");
@@ -188,7 +209,8 @@ window.onclick = function(event) {
 <label class="w3-label">IRC Server</label>
 <input class="w3-input" type="text" id="irc_server">
 
-<a id="irc_link">Start IRC Chat</a>
+<input type="button" value="Start Real Time Text Chat" id="submit" >
+<input type="button" value="Start Real Time Voice/video Chat (expermental)" id="voice" >
 
 </form>
 <div>
