@@ -3,38 +3,77 @@
 <head>
     <title>Trick Traker Map</title>
     <meta charset="utf-8" />
+     
     <link rel="stylesheet" href="w3.css">
-    <link rel="stylesheet" href="leaflet.css" />     
+    <link rel="stylesheet" href="leaflet.css" />
+        
     <style type="text/css">
 		#map { width: 700px; height: 433px; }
 		.fullscreen-icon { background-image: url(icon-fullscreen.png); }
 		/* on selector per rule as explained here : http://www.sitepoint.com/html5-full-screen-api/ */
-		#map:-webkit-full-screen { width: 100% !important; height: 100% !important; z-index: 99999; }
-		#map:-moz-full-screen { width: 100% !important; height: 100% !important; z-index: 99999; }
-		#map:full-screen { width: 100% !important; height: 100% !important; z-index: 99999; }
-		.leaflet-pseudo-fullscreen { position: fixed !important; width: 100% !important; height: 100% !important; top: 0px !important; left: 0px !important; z-index: 99999; }
+		#map:-webkit-full-screen { width: 100% ; height: 100% ; z-index: 99999; }
+		#map:-moz-full-screen { width: 100% ; height: 100% ; z-index: 99999; }
+		#map:full-screen { width: 100% ; height: 100% ; z-index: 99999; }
+		.leaflet-pseudo-fullscreen { position: fixed ; width: 100% ; height: 100% ; top: 0px ; left: 0px ; z-index: 99999; }
   .box {
-     height: 300px;
+     height: 230px;
      margin: 30px; 
   }
+
+ ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+    background-color: #111;
+}
+
+.active {
+    background-color: #4CAF50;
+}
+
+li {
+    border-right: 3px solid #bbb;
+    border-bottom: 3px solid #bbb;
+}
+
+a {
+  font-size: calc(1.5vw + 1.5vh + 1.5vmin);
+ }
+
+
+
 	</style>
 </head>
 <body>
     <div class="box">
-  <div class="dropdown">
-    <button onclick="dropDown()" class="dropbtn">Menu</button>
-    <div id="myDropdown" class="dropdown-content">
-      <a href="http://news.tricktraker.com/">TrickTraker News</a> 
-      <a href="chat.html">Real Time Chat</a>
-      <a href="send.html">Send Trick</a>      
-      <a href="config.html">Config</a>      
-      <a href="./shoot/index.html">Shoot Pic</a>
-      <a href="./shoot/gallery.php">Gallery</a>   
-    </div>
-  </div>
+  <ul>
+  <li><a href="send.html">Send Cords</a></li>
+  <li><a href="http://news.tricktraker.com/">News</a></li>
+  <li><a href="config.html">Config</a></li>
+  <li><a href="./shoot/index.html">Shoot Pic</a></li>
+  <li><a href="./shoot/gallery.php">Gallery</a></li>
+  <li><a href="chat.html">Real Time Chat</a></li>
+</ul>
   <h1>Trick Traker Map</h1>
 </div>
-    <div id="map" style="width: 1000px; height: 800px"></div>
+    <div id="map" style="width: 100%; height: 800px"></div>
 
   
         <script src="leaflet.js"></script>
@@ -64,8 +103,11 @@
     var json_param = window.location.href.match(/\?json=(.*)/);
     if (json_param != null) {
       json_param = unescape(json_param[1]);
-      params = JSON.parse(json_param);
+      var params2 = JSON.parse(json_param);
+      //params = merge_options(params2,params);
+      params = merge_options(params,params2);
     }
+    
     console.log("params");
     console.log(params);
     
@@ -183,6 +225,20 @@
   var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon},{icon: weedIcon}];
 
 
+  /**
+ * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
+ * @param obj1
+ * @param obj2
+ * @returns obj3 a new object based on obj1 and obj2
+ */
+  function merge_options(obj1,obj2){
+    var obj3 = {};
+    for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
+    for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
+    return obj3;
+  }
+
+
    function update_tracks(data_obj) {
      console.log("udate_tracks");
      if (data_obj.id == 0) {
@@ -251,6 +307,7 @@
    }
 
    function update_icons(user_obj) {
+     console.log("update_icons");
      //{"id":"0","track":[{"lat":"13.8994973","lon":"100.5426442","timestamp":"1460102406","speed":"0","bearing":"0","alt":"0","id":"986007","comment":"","type":"2"},{"lat":"13.8994973","lon":"100.5426442","timestamp":"1460101117","speed":"0","bearing":"0","alt":"0","id":"986007","comment":"","type":"2"},{"lat":"13.8994973","lon":"100.5426442","timestamp":"1460096130","speed":"0","bearing":"0","alt":"0","id":"986007","comment":"","type":"2"}],"count":"3"}
      //var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon}];
     console.log("user_obj");
@@ -287,9 +344,12 @@
         if (typeof points[i]['info'] == "undefined") {
           points[i]['info'] = "";
         }
-        if (user_obj.id == 0){               
+        if (user_obj.id == 0){
+          console.log("id = 0");               
           info = "id: " + points[i]['id'] + " " + points[i]['info'];
-          if (points[i]['type']== 10) { 
+          console.log("bindPopup");
+          console.log(info + " last updated: " + timestampToString(points[i]['timestamp']));
+          if (points[i]['type'] > 14) { 
             markers_data[i] = L.marker([points[i]['lat'],points[i]['lon']])
 	    .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
 	    .addTo(map);
@@ -298,34 +358,44 @@
 	    .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
 	    .addTo(map);
           }
-          markers_data[i].setOpacity(0.65);  
+          markers_data[i].setOpacity(0.60);  
         } else {
           info = "user: " + points[i]['username'] + " " + points[i]['info'];
-          if (points[i]['type']== 10) { 
+          console.log("bindPopup");
+          console.log(info + " last updated: " + timestampToString(points[i]['timestamp']));
+          // if type > 14 then we will go with default icon type 
+          if (points[i]['type'] > 14) {
+            console.log("type > 14"); 
             markers[i] = L.marker([points[i]['lat'],points[i]['lon']])
-	    .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
+            .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
 	    .addTo(map);
+            
           } else { 
             console.log("points points[i]['type']");
             console.log(points[i]['type']);
             console.log(points);
             console.log(i);
             markers[i] = L.marker([points[i]['lat'],points[i]['lon']],icon_type[points[i]['type']])
-	    .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
+            .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
 	    .addTo(map);
+            
           } 
-          markers[i].setOpacity(0.65);        
+          markers[i].setOpacity(0.60);        
         }       
       }
-      
+      console.log("markers");
+      console.log(markers);
    }
 
   
   // default time 20 sec or 20000
-  var myVar = setInterval(myTimer, (Math.round(params.update_interval * 1000)));
+  if (params.update_interval > 1){         
+    var myVar = setInterval(myTimer, (Math.round(params.update_interval * 1000)));
+  }
 
   function myTimer() {
-    var url_list = [params.tracker_server + "/track.php/?type=99&extra=1&id=1", params.tracker_server + "/track.php/?last=1", params.tracker_server + "/track.php/?count=100&extra=1"];
+    
+    var url_list = [params.tracker_get_server + "/?type=99&extra=1&id=1", params.tracker_get_server + "/?last=1", params.tracker_get_server + "/?count=100&extra=1"];
     var ts = Date.now() /1000 |0;
     // start time of 25 hours ago
     var start = ts - (60* params.track_time_min);
@@ -405,8 +475,10 @@
        params.zoom = localStorage.getItem("zoom");
        params.track_id = localStorage.getItem("track_id");
        params.track_time_min = localStorage.getItem("track_time_min");
+       params.icon_type = localStorage.getItem("icon_type");
        params.info = localStorage.getItem("info");
        params.tracker_server = localStorage.getItem("tracker_server");
+       params.tracker_get_server = localStorage.getItem("tracker_get_server");
        params.update_interval = localStorage.getItem("update_interval");
        console.log("params");
        console.log(params);
@@ -423,9 +495,13 @@
          localStorage.setItem("zoom", 15);
          localStorage.setItem("track_id", 206648);
          localStorage.setItem("track_time_min", 120);
+         localStorage.setItem("icon_type", 0);
          localStorage.setItem("info", "");
-         localStorage.setItem("tracker_server", "https://api.tricktraker.com");
-         localStorage.setItem("update_interval", "20");
+         localStorage.setItem("tracker_server", "https://www.tricktraker.com/track.php");
+         localStorage.setItem("tracker_get_server", "https://www.tricktraker.com/get_track.php");
+         localStorage.setItem("update_interval", "3");
+         localStorage.setItem("irc_server", "wilhelm.freenode.net");
+         localStorage.setItem("cam_resolution", "low");
          get_config();
        } 
     } else {
@@ -451,24 +527,16 @@
             maxZoom: 19,
             });
          
+          
         var map = new L.Map('map', {
 			layers: [base],
-			center: new L.LatLng(params.lat, params.lon),
-			zoom: params.zoom,
+                        zoomControl:false,
 			fullscreenControl: true,
 			fullscreenControlOptions: { // optional
 				title:"Show me the fullscreen !",
 				titleCancel:"Exit fullscreen mode"
 			}
-		});
-
-		// detect fullscreen toggling
-		map.on('enterFullscreen', function(){
-			if(window.console) window.console.log('enterFullscreen');
-		});
-		map.on('exitFullscreen', function(){
-			if(window.console) window.console.log('exitFullscreen');
-		});       
+		}).setView([params.lat,params.lon], params.zoom);
 
 
       if (json_param != null) {
@@ -478,21 +546,22 @@
         console.log("params2");
         console.log(params);
         console.log(params.info + " last updated: " + timestampToString(params.timestamp));
-        if (params.type !== null) {
+        if (params.icon_type !== null) {
           console.log("type not null");
-          L.marker([params.lat,params.lon],icon_type[params.type])
-          //.bindPopup(params.info + " last updated: " + timestampToString(params.timestamp))
+          L.marker([params.lat,params.lon],icon_type[params.icon_type])
+          .bindPopup(params.info + " last updated: " + timestampToString(params.timestamp) + " pic_file: " + params.pic_file)
 	  .addTo(map);
         } else {
-          //L.marker(params.lat,params.lon,icon_type[0])
           L.marker([params.lat,params.lon],icon_type[0])
-          //.bindPopup(params.info + " last updated: " + timestampToString(params.timestamp))
+          .bindPopup(params.info + " last updated: " + timestampToString(params.timestamp) + " pic_file: " + params.pic_file)
 	  .addTo(map);
         }        
       }
 
 
-    url = params.tracker_server + "/track.php/?type=99&extra=1&id=1"
+    url = params.tracker_get_server + "/?type=99&extra=1&id=1"
+    console.log("url");
+    console.log(url);
     http.open("GET", url, true);
     http.send();
 

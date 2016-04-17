@@ -64,14 +64,24 @@ img {
 		
 		<!-- Configure a few settings and attach camera -->
 		<script language="JavaScript">
+
+                        var cam_resolution = localStorage.getItem("cam_resolution");
+                        var width = 640;
+                        var height = 480;
+                        if (cam_resolution == "high"){
+                          console.log("cam high res mode 1280x720");
+                          width = 1280;
+                          height = 720;
+                        }                          
+                        
 			Webcam.set({
 				// live preview size
-				width: 640,
-				height: 480,
+				width: width,
+				height: height,
 				
 				// device capture size
-				dest_width: 640,
-				dest_height: 480,
+				dest_width: width,
+				dest_height: height,
 				
 				// final cropped size
 				//crop_width: 480,

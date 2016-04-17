@@ -35,8 +35,10 @@ p {
   var icon_type = document.getElementById("icon_type");
   var info = document.getElementById("info");
   var tracker_server = document.getElementById("tracker_server");
+  var tracker_get_server = document.getElementById("tracker_get_server");
   var update_interval = document.getElementById("update_interval");
   var irc_server = document.getElementById("irc_server");
+  var cam_resolution = document.getElementById("cam_resolution");
 
   var timestamp = Math.floor(Date.now() / 1000);
   
@@ -70,8 +72,10 @@ p {
        icon_type.value = localStorage.getItem("icon_type");
        info.value = localStorage.getItem("info");
        tracker_server.value = localStorage.getItem("tracker_server");
+       tracker_get_server.value = localStorage.getItem("tracker_get_server");
        update_interval.value = localStorage.getItem("update_interval");
        irc_server.value = localStorage.getItem("irc_server");
+       cam_resolution.value = localStorage.getItem("cam_resolution");
        console.log("id");
        console.log(id.value);
        console.log(typeof id.value);
@@ -84,12 +88,15 @@ p {
          localStorage.setItem("lon", 100.892515 );
          localStorage.setItem("zoom", 15);
          localStorage.setItem("track_id", 206648);
-         localStorage.setItem("track_time_min", 1500); //1500 = 25 hours
+         localStorage.setItem("track_time_min", 120); //1500 = 25 hours
          localStorage.setItem("icon_type", 0);
          localStorage.setItem("info", "");
-         localStorage.setItem("tracker_server", "https://api.tricktraker.com");
-         localStorage.setItem("update_interval", "5");
+         localStorage.setItem("tracker_server", "https://www.tricktraker.com/record_track.php");
+         localStorage.setItem("tracker_get_server", "https://www.tricktraker.com/get_track.php");
+         localStorage.setItem("update_interval", "3");
          localStorage.setItem("irc_server", "wilhelm.freenode.net");
+         localStorage.setItem("cam_resolution", "low");
+         
          get_config();
        } 
     } else {
@@ -112,7 +119,9 @@ p {
     localStorage.setItem("icon_type", icon_type.value);
     localStorage.setItem("info", info.value);
     localStorage.setItem("tracker_server", tracker_server.value);
+    localStorage.setItem("tracker_get_server", tracker_get_server.value);
     localStorage.setItem("irc_server", irc_server.value);
+    localStorage.setItem("cam_resolution", cam_resolution.value);
     if (update_interval.value < 3){
       if (id.value > 300000){
         update_interval.value = 2;
@@ -223,6 +232,14 @@ window.onclick = function(event) {
 .dropdown a:hover {background-color: #f1f1f1}
 
 .show {display:block;}
+
+a {
+  font-size: calc(1vw + 1vh + 1vmin);
+}
+
+.button {
+  font-size: 22px;
+}
 </style>
 </head>
 <body>
@@ -233,9 +250,10 @@ window.onclick = function(event) {
     <div id="myDropdown" class="dropdown-content">
       <a href="http://news.tricktraker.com/">TrickTraker News</a> 
       <a href="chat.html">Real Time Chat</a>
-      <a href="index.html">Map </a>      
-      <a href="send.html">Send Trick</a>
-      <a href="./shoot/index.html">Shoot Pic</a> 
+      <a href="index.html">Map</a>      
+      <a href="send.html">Send Trick Cords</a>
+      <a href="../config.html">Config</a>
+      <a href="./shoot/index.html">Shoot Pictures</a> 
       <a href="./shoot/gallery.php">Gallery</a>    
     </div>
   </div>
@@ -272,8 +290,12 @@ window.onclick = function(event) {
 <input class="w3-input" type="text" id="info">
 <label class="w3-label">Tracker Server URL</label>
 <input class="w3-input" type="text" id="tracker_server">
+<label class="w3-label">Tracker Get Server URL</label>
+<input class="w3-input" type="text" id="tracker_get_server">
 <label class="w3-label">IRC Server</label>
 <input class="w3-input" type="text" id="irc_server">
+<label class="w3-label">Cam Resolution(default low = 640x480 high = 1280x720)</label>
+<input class="w3-input" type="text" id="cam_resolution">
 
 <input type="button" value="Submit" id="submit" >
 <input type="button" value="Set loc to position" id="recenter_map" >

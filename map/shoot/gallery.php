@@ -99,6 +99,10 @@ div.desc {
     display: table;
     clear: both;
 }
+
+ a {
+  font-size: calc(1vw + 1vh + 1vmin);
+ }
 	</style>
 
  <script>
@@ -106,6 +110,7 @@ div.desc {
   "use strict";
   var type = 0;
   var tracker_server ;
+  var tracker_get_server ;
   var info ;
     
   var id = 0;
@@ -131,6 +136,7 @@ div.desc {
        type = localStorage.getItem("icon_type");
        info = localStorage.getItem("info");
        tracker_server = localStorage.getItem("tracker_server");
+       tracker_get_server = localStorage.getItem("tracker_get_server");
        console.log("id");
        console.log(id);
        console.log(typeof id);
@@ -146,7 +152,8 @@ div.desc {
          localStorage.setItem("track_time_min", 1500); //1500 = 25 hours
          localStorage.setItem("icon_type", 0);
          localStorage.setItem("info", "");
-         localStorage.setItem("tracker_server", "https://api.tricktraker.com/");
+         localStorage.setItem("tracker_server", "https://www.tricktraker.com/track.php");
+         localStorage.setItem("tracker_get_server", "https://www.tricktraker.com/get_track.php");
          get_config();
        } 
     } else {
@@ -180,7 +187,7 @@ function showPosition(position) {
     console.log("url: " + url);	
     http.open("GET", url, true);
     http.send();
-    console.log("post url");
+    console.log("get url");
     console.log(url);
     alert(" your position seen as lat: " + position.coords.latitude + " lon: " + position.coords.longitude + " type: " + type + " id: " + id );
 }
@@ -196,9 +203,12 @@ function showPosition(position) {
   <div class="dropdown">
     <button onclick="dropDown()" class="dropbtn">Menu</button>
     <div id="myDropdown" class="dropdown-content">
+      <a href="http://news.tricktraker.com/">TrickTraker News</a> 
+      <a href="chat.html">Real Time Chat</a>
       <a href="../index.html">Map</a>
+      <a href="send.html">Send Trick Cords</a>
       <a href="../config.html">Config</a>
-      <a href="index.html">Shoot Pic</a>  
+      <a href="index.html">Shoot Pictures</a>  
     </div>
   </div>
   <h1>Trick Traker Gallery</h1>
@@ -235,7 +245,7 @@ while($row = $result->fetch_assoc()){
   //  }
   $date_form = date("F j, Y, g:i a", $row['timestamp']);
 
-  $map_link = "https://www.tricktraker.com/?json={%22lat%22:%22" . $row['lat'] . "%22,%22lon%22:%22" . $row['lon'] . "%22,%22zoom%22:%2215%22,%22type%22:%22". 0 . "%22,%22info%22:%22". $row['info'] . "%22,%22timestamp%22:%22". $row['timestamp'] . "%22}";
+  $map_link = "https://www.tricktraker.com/?json={%22lat%22:%22" . $row['lat'] . "%22,%22lon%22:%22" . $row['lon'] . "%22,%22zoom%22:%2215%22,%22type%22:%22". 0 . "%22,%22info%22:%22". $row['info'] . "%22,%22timestamp%22:%22". $row['timestamp'] . "%22,%22pic_file%22:%22" . $row['pic_file'] . "%22}";
 
   echo '<div class="responsive">';
   echo '<div class="img">';

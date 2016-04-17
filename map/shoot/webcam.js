@@ -134,7 +134,7 @@ var Webcam = {
 			
 			// ask user for access to their camera
 			var self = this;
-			this.mediaDevices.getUserMedia({
+                        this.mediaDevices.getUserMedia({
 				"audio": false,
 				"video": this.params.constraints || {
 					mandatory: {
@@ -143,6 +143,7 @@ var Webcam = {
 					}
 				}
 			})
+
 			.then( function(stream) {
 				// got access, attach stream to video
 				video.src = window.URL.createObjectURL( stream ) || stream;
