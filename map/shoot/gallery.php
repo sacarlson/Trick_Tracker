@@ -103,6 +103,13 @@ div.desc {
  a {
   font-size: calc(1vw + 1vh + 1vmin);
  }
+
+ .center {
+    margin: auto;
+    width: 60%;
+    padding: 20px;
+ }
+
 	</style>
 
  <script>
@@ -199,25 +206,39 @@ function showPosition(position) {
 </head>
 <body>
 
-<div class="w3-container w3-teal">
-  <div class="dropdown">
+ <div class="w3-row">
+  <div class="w3-teal w3-container w3-half">
+    <div class="dropdown">
     <button onclick="dropDown()" class="dropbtn">Menu</button>
     <div id="myDropdown" class="dropdown-content">
       <a href="http://news.tricktraker.com/">TrickTraker News</a> 
-      <a href="chat.html">Real Time Chat</a>
+      <a href="../chat.html">Real Time Chat</a>
       <a href="../index.html">Map</a>
-      <a href="send.html">Send Trick Cords</a>
+      <a href="../send.html">Send Trick Cords</a>
       <a href="../config.html">Config</a>
-      <a href="index.html">Shoot Pictures</a>  
+      <a href="../index.html">Shoot Pictures</a>  
     </div>
   </div>
   <h1>Trick Traker Gallery</h1>
+  </div>
+  <div class="w3-teal w3-container w3-half ">
+     <div class="w3-container w3-teal">
+       <form action="gallery2.php" method="get" class="w3-container center ">
+         <label>Search</label>
+         <input type="text" name="search" class="w3-input w3-text-black">
+         <input type="submit" class="w3-btn w3-blue" >
+       </form>
+     </div>    
+  </div>
 </div>
 
 <?php
 // Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
   
  include('../../config.php');
+
+
+
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -227,7 +248,15 @@ if ($conn->connect_error) {
 }
 
 
-  $sql = "SELECT * FROM `pics`";
+  //$sql = "SELECT * FROM `pics`";
+  //$sql =  "SELECT * FROM `pics` ORDER BY timestamp DESC LIMIT 32";
+  if (!empty( $_GET['search'])) {
+    $sql =  "SELECT * FROM `pics` WHERE id = '" . $_GET['search']. "' OR info = '". $_GET['search'] . "' OR type = '". $_GET['search'] .  "' ORDER BY timestamp DESC LIMIT 32";
+    //echo $sql;
+  } else {
+    $sql =  "SELECT * FROM `pics` ORDER BY timestamp DESC LIMIT 32";
+    //echo $sql;
+  }
 
   if(!$result = $conn->query($sql)){
     die('There was an error running the query [' . $db->error . ']');
@@ -252,7 +281,7 @@ while($row = $result->fetch_assoc()){
   echo '<a target="_blank" href="' . $map_link .'">';
   echo '<img src="uploads/'. $row['pic_file'] .'" width="300" height="200">';
   echo '</a>';
-  echo '<div class="desc"> Shared by: ' . $row['id'] . ' On:  '. $date_form ." ". $row['info'] . " lat: " . $row['lat'] . " lon: " . $row['lon']  . '</div>';
+  echo '<div class="desc"> Shared by: ' . $row['id'] . ' On:  '. $date_form ." ". $row['info'] . " lat: " . $row['lat'] . " lon: " . $row['lon'] ." type: ". $row['type'] . '</div>';
   echo ' </div>';
   echo '</div>';
  

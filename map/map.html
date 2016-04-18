@@ -354,7 +354,10 @@ a {
         if (typeof points[i]['info'] == "undefined") {
           points[i]['info'] = "";
         }
-        if (user_obj.id == 0){
+
+        console.log("user_obj.id: " + user_obj.id);
+
+        if (user_obj.id == 1){
           console.log("id = 0");               
           info = "id: " + points[i]['id'] + " " + points[i]['info'];
           console.log("bindPopup");
