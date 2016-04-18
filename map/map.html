@@ -220,9 +220,17 @@ a {
     iconAnchor:   [20, 61], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -62], // point from which the popup should open relative to the iconAnchor
   });
+
+  //icon 16
+  var cameraIcon = L.icon({
+    iconUrl: 'camera60x48.png',    
+    iconSize:     [60, 48], // size of the icon
+    iconAnchor:   [30, 48], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
+  });
 	
 
-  var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon},{icon: weedIcon}];
+  var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon},{icon: weedIcon},{icon: cameraIcon}];
 
 
   /**
@@ -314,7 +322,9 @@ a {
     console.log(user_obj);
     //if (user_obj.id == '206648') {
     if (typeof user_obj.track != 'undefined') {
+      console.log("not undefined: " + user_obj.track );
       if (user_obj.id != 1){
+        console.log("id not 1 to update_tracks");
         update_tracks(user_obj);
         return;
       }
@@ -363,9 +373,9 @@ a {
           info = "user: " + points[i]['username'] + " " + points[i]['info'];
           console.log("bindPopup");
           console.log(info + " last updated: " + timestampToString(points[i]['timestamp']));
-          // if type > 14 then we will go with default icon type 
-          if (points[i]['type'] > 14) {
-            console.log("type > 14"); 
+          // if type > 16 then we will go with default icon type 
+          if (points[i]['type'] > 16) {
+            console.log("type > 16"); 
             markers[i] = L.marker([points[i]['lat'],points[i]['lon']])
             .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
 	    .addTo(map);
@@ -448,20 +458,18 @@ a {
     m.update();
   }
 
+  
+
   function timestampToString(t) {
     if (typeof t == "undefined"){
       return " Unknown";
     }
-    var options = {
-        year: 'numeric', month: 'numeric', day: 'numeric',
-        hour: 'numeric', minute: 'numeric', second: 'numeric',
-        hour12: true,  timeZoneName: 'short'
-      }; 
-    var dt = new Intl.DateTimeFormat('en-US',options).format( t * 1000);
+    var t = new Date( t * 1000 );
+    var dt = t.toString();
     return dt;
   }
 
-  
+    
 
   function randomIntFromInterval(min,max) {
     return Math.floor(Math.random()*(max-min+1)+min);
@@ -545,15 +553,16 @@ a {
         }
         console.log("params2");
         console.log(params);
+        var pop_info = "Shared by: " + params.id + " " + params.info + " taken at: " + timestampToString(params.timestamp) + " pic_file: " + params.pic_file;
         console.log(params.info + " last updated: " + timestampToString(params.timestamp));
         if (params.icon_type !== null) {
           console.log("type not null");
           L.marker([params.lat,params.lon],icon_type[params.icon_type])
-          .bindPopup(params.info + " last updated: " + timestampToString(params.timestamp) + " pic_file: " + params.pic_file)
+          .bindPopup(pop_info)
 	  .addTo(map);
         } else {
           L.marker([params.lat,params.lon],icon_type[0])
-          .bindPopup(params.info + " last updated: " + timestampToString(params.timestamp) + " pic_file: " + params.pic_file)
+          .bindPopup(pop_info)
 	  .addTo(map);
         }        
       }
