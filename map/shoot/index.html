@@ -227,7 +227,7 @@ img {
                                 } );
 				var url = 'https://www.tricktraker.com/shoot/upload.php'
                                 var timestamp = Math.floor(Date.now() / 1000);
-                                url = url + "/?lat="+lat+"&lon="+lon+"&timestamp="+timestamp+"&info="+info+"&id="+id;
+                                url = url + "/?lat="+lat+"&lon="+lon+"&timestamp="+timestamp+"&info="+info+"&id="+id +"&type=16";
                                 console.log("url");
                                 console.log(url);
                                 Webcam.upload( data_uri, url); 

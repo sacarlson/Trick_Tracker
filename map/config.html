@@ -39,6 +39,7 @@ p {
   var update_interval = document.getElementById("update_interval");
   var irc_server = document.getElementById("irc_server");
   var cam_resolution = document.getElementById("cam_resolution");
+  var filter = document.getElementById("filter"); 
 
   var timestamp = Math.floor(Date.now() / 1000);
   
@@ -76,6 +77,7 @@ p {
        update_interval.value = localStorage.getItem("update_interval");
        irc_server.value = localStorage.getItem("irc_server");
        cam_resolution.value = localStorage.getItem("cam_resolution");
+       filter.value = localStorage.getItem("filter");
        console.log("id");
        console.log(id.value);
        console.log(typeof id.value);
@@ -96,6 +98,7 @@ p {
          localStorage.setItem("update_interval", "3");
          localStorage.setItem("irc_server", "wilhelm.freenode.net");
          localStorage.setItem("cam_resolution", "low");
+         localStorage.setItem("filter", "");
          
          get_config();
        } 
@@ -122,6 +125,7 @@ p {
     localStorage.setItem("tracker_get_server", tracker_get_server.value);
     localStorage.setItem("irc_server", irc_server.value);
     localStorage.setItem("cam_resolution", cam_resolution.value);
+    localStorage.setItem("filter", filter.value);
     if (update_interval.value < 3){
       if (id.value > 300000){
         update_interval.value = 2;
@@ -276,6 +280,9 @@ a {
 
 <label class="w3-label">Your User ID#</label>
 <input class="w3-input" type="text" id="id">
+
+<label class="w3-label">Filter types (example 16,2 to display only camera and sexy_girls) </label>
+<input class="w3-input" type="text" id="filter">
 
 <label class="w3-label">Track ID</label>
 <input class="w3-input" type="text" id="track_id">

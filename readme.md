@@ -78,3 +78,38 @@ or
 http://track.surething.biz/?id=206648&timestamp=1459757028&lat=12.9304184&lon=100.8798106&speed=0.0&bearing=0.0&altitude=0.0&batt=100.0
 
 
+Updated format track2.php Apr 19, 2016:
+https://api.tricktraker.com/track2.php/?mode=all
+
+{"all":[{"users":[{"id":"206648"lat":"12.9304777","lon":"100.8797813","info":"Scotty is a cool dude.","timestamp":"1460871380","type":"1","username":"Scotty"}],"count":"1"}{"pics":[{"id":"986583"lat":"12.9304578","lon":"100.8797595","info":"","timestamp":"1461042969","type":"16","pic_file":"webcam1461042969.jpg"}],"count":"1"}{"data":[{"id":"986583"lat":"12.9304625","lon":"100.879818","info":"","timestamp":"1461031394","type":"12"}],"count":"1"}]}
+
+https://api.tricktraker.com/track2.php/?mode=user
+
+{"users":[{"id":"951342"lat":"12.9304292","lon":"100.8797761","info":"the white acer android phone used in test","timestamp":"1461004164","type":"0","username":"acer"},{"id":"206648"lat":"12.9304777","lon":"100.8797813","info":"Scotty is a cool dude.","timestamp":"1460871380","type":"1","username":"Scotty"}],"count":"2"}
+
+https://api.tricktraker.com/track2.php/?mode=pics
+
+{"pics":[{"id":"986583"lat":"12.9304578","lon":"100.8797595","info":"","timestamp":"1461042969","type":"16","pic_file":"webcam1461042969.jpg"},{"id":"796555"lat":"12.9304687","lon":"100.8798153","info":"","timestamp":"1460880321","type":"0","pic_file":"webcam1460880321.jpg"},{"id":"480167"lat":"12.9306165","lon":"100.8805894","info":"","timestamp":"1460870225","type":"0","pic_file":"webcam1460870225.jpg"},{"id":"480167"lat":"12.9305798","lon":"100.8805725","info":"","timestamp":"1460870206","type":"0","pic_file":"webcam1460870206.jpg"},{"id":"480167"lat":"12.9305002","lon":"100.8806056","info":"","timestamp":"1460870111","type":"0","pic_file":"webcam1460870111.jpg"},{"id":"480167"lat":"12.9305862","lon":"100.880625","info":"","timestamp":"1460870103","type":"0","pic_file":"webcam1460870103.jpg"},{"id":"407304"lat":"12.9322973","lon":"100.8798923","info":"","timestamp":"1460821056","type":"0","pic_file":"webcam1460821056.jpg"},{"id":"407304"lat":"12.9340822","lon":"100.881213","info":"","timestamp":"1460813384","type":"0","pic_file":"webcam1460813384.jpg"},{"id":"407304"lat":"12.9376337","lon":"100.8834041","info":"","timestamp":"1460812718","type":"0","pic_file":"webcam1460812718.jpg"},{"id":"394352"lat":"12.932839999999999","lon":"100.88005","info":"","timestamp":"1460728194","type":"0","pic_file":"webcam1460728194.jpg"},{"id":"394352"lat":"12.9356903","lon":"100.8824043","info":"","timestamp":"1460725156","type":"0","pic_file":"webcam1460725156.jpg"},{"id":"394352"lat":"12.9376262","lon":"100.8833695","info":"","timestamp":"1460724329","type":"0","pic_file":"webcam1460724329.jpg"},{"id":"394352"lat":"12.9304584","lon":"100.8798077","info":"","timestamp":"1460716567","type":"0","pic_file":"webcam1460716567.jpg"},{"id":"394352"lat":"12.9304599","lon":"100.8798212","info":"","timestamp":"1460716551","type":"0","pic_file":"webcam1460716551.jpg"}],"count":"14"}
+
+https://api.tricktraker.com/track2.php/?mode=data&limit=5
+
+{"data":[{"id":"951342"lat":"12.9304666","lon":"100.8798028","info":"","timestamp":"1461045804","type":"0"},{"id":"951342"lat":"12.9304298","lon":"100.8797761","info":"","timestamp":"1461045684","type":"0"},{"id":"951342"lat":"12.9304289","lon":"100.8797761","info":"","timestamp":"1461045623","type":"0"},{"id":"951342"lat":"12.9304308","lon":"100.8797767","info":"","timestamp":"1461045562","type":"0"},{"id":"951342"lat":"12.9304625","lon":"100.8798081","info":"","timestamp":"1461045502","type":"0"}],"count":"5"}
+
+
+https://api.tricktraker.com/track2.php/?mode=pics&type=16
+
+{"pics":[{"id":"986583"lat":"12.9304578","lon":"100.8797595","info":"","timestamp":"1461042969","type":"16","pic_file":"webcam1461042969.jpg"}],"count":"1"}
+
+
+https://api.tricktraker.com/track2.php/?mode=pics&type=99
+  // dump all but type=0, in this case type 16 was the only other file
+{"pics":[{"id":"986583"lat":"12.9304578","lon":"100.8797595","info":"","timestamp":"1461042969","type":"16","pic_file":"webcam1461042969.jpg"}],"count":"1"}
+
+https://api.tricktraker.com/track2.php/?mode=pics&start=1460870103
+
+{"pics":[{"id":"986583"lat":"12.9304578","lon":"100.8797595","info":"","timestamp":"1461042969","type":"16","pic_file":"webcam1461042969.jpg"},{"id":"796555"lat":"12.9304687","lon":"100.8798153","info":"","timestamp":"1460880321","type":"0","pic_file":"webcam1460880321.jpg"},{"id":"480167"lat":"12.9306165","lon":"100.8805894","info":"","timestamp":"1460870225","type":"0","pic_file":"webcam1460870225.jpg"},{"id":"480167"lat":"12.9305798","lon":"100.8805725","info":"","timestamp":"1460870206","type":"0","pic_file":"webcam1460870206.jpg"},{"id":"480167"lat":"12.9305002","lon":"100.8806056","info":"","timestamp":"1460870111","type":"0","pic_file":"webcam1460870111.jpg"}],"count":"5"}
+
+https://api.tricktraker.com/track2.php/?mode=pics&start=1460870103&stop=1460870225
+
+{"pics":[{"id":"480167"lat":"12.9305798","lon":"100.8805725","info":"","timestamp":"1460870206","type":"0","pic_file":"webcam1460870206.jpg"},{"id":"480167"lat":"12.9305002","lon":"100.8806056","info":"","timestamp":"1460870111","type":"0","pic_file":"webcam1460870111.jpg"}],"count":"2"}
+

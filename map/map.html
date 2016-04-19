@@ -246,18 +246,22 @@ a {
     return obj3;
   }
 
-
-   function update_tracks(data_obj) {
-     console.log("udate_tracks");
-     if (data_obj.id == 0) {
-       console.log("data_obj.id == 0");
+   function clone(obj) {
+     if (null == obj || "object" != typeof obj) return obj;
+     var copy = obj.constructor();
+     for (var attr in obj) {
+       if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
      }
+     return copy;
+   }
+
+   function update_tracks(points) {
+     console.log("udate_tracks");    
      map.removeLayer(lines);
      mylines2 = [];
-     console.log("update_tracks");
-     console.log("data_obj");
-     console.log(data_obj);
-     var points = data_obj.track;
+     console.log("points");
+     console.log(points);
+     //var points = data_obj.track;
      var tracks = {};
      for ( var i = 0; i < points.length; i++) {
        if (typeof tracks[points[i]['id']] == "undefined") {
@@ -302,113 +306,144 @@ a {
      console.log("myline2");
      console.log(mylines2)
      lines = L.geoJson(mylines2).addTo(map);
-     console.log(lines);
    }
 
-   function clone(obj) {
-     if (null == obj || "object" != typeof obj) return obj;
-     var copy = obj.constructor();
-     for (var attr in obj) {
-       if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
-     }
-     return copy;
-   }
-
-   function update_icons(user_obj) {
-     console.log("update_icons");
-     //{"id":"0","track":[{"lat":"13.8994973","lon":"100.5426442","timestamp":"1460102406","speed":"0","bearing":"0","alt":"0","id":"986007","comment":"","type":"2"},{"lat":"13.8994973","lon":"100.5426442","timestamp":"1460101117","speed":"0","bearing":"0","alt":"0","id":"986007","comment":"","type":"2"},{"lat":"13.8994973","lon":"100.5426442","timestamp":"1460096130","speed":"0","bearing":"0","alt":"0","id":"986007","comment":"","type":"2"}],"count":"3"}
-     //var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon}];
-    console.log("user_obj");
-    console.log(user_obj);
-    //if (user_obj.id == '206648') {
-    if (typeof user_obj.track != 'undefined') {
-      console.log("not undefined: " + user_obj.track );
-      if (user_obj.id != 1){
-        console.log("id not 1 to update_tracks");
-        update_tracks(user_obj);
-        return;
-      }
-    }
-    var points ;
-    var info ;
-    if (user_obj.id == 1){
-       points = user_obj.track;
-       //markers_data
-       for (var i = 0; i < last_data_marker_count; i++ ) {
-          map.removeLayer(markers_data[i]);
-       }
-       last_data_marker_count = points.length;
-          
-    } else {
-       points = user_obj.users;
-       for (var i = 0; i < last_marker_count; i++ ) {
-          map.removeLayer(markers[i]);
-       } 
-       last_marker_count = points.length;
-       //console.log("remove lines");
-       //map.removeLayer(lines); 
-    }
-       
-
-    for ( i = 0; i < points.length; i++) {
+    function write_icons(points) {
+      // points is an array
+      console.log("points");
+      console.log(points);
+      var info = "";
+      var filter_list;
+      var i2;
+      var flag_break = true;
+      for (var i = 0; i < points.length; i++) {
+        info = "";
+        if (params.filter.length > 0){
+          filter_list = params.filter.split(",");
+          console.log("filter list");
+          console.log(filter_list);
+          for ( i2 = 0; i2 < filter_list.length; i2++) {
+            if (points[i]['type'] == filter_list[i2]){
+              console.log("match filter with: " + points[i]['type']);
+              console.log(filter_list[i2]);
+              flag_break = false;
+            }
+          }
+          console.log("flag_break");
+          console.log(flag_break);
+          if (flag_break) { break; }
+        }
+        console.log("points[i]");
+        console.log(points[i]);
         if (typeof points[i]['info'] == "undefined") {
           points[i]['info'] = "";
         }
-
-        console.log("user_obj.id: " + user_obj.id);
-
-        if (user_obj.id == 1){
-          console.log("id = 0");               
-          info = "id: " + points[i]['id'] + " " + points[i]['info'];
-          console.log("bindPopup");
-          console.log(info + " last updated: " + timestampToString(points[i]['timestamp']));
-          if (points[i]['type'] > 14) { 
-            markers_data[i] = L.marker([points[i]['lat'],points[i]['lon']])
-	    .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
-	    .addTo(map);
-          } else { 
-            markers_data[i] = L.marker([points[i]['lat'],points[i]['lon']],icon_type[points[i]['type']])
-	    .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
-	    .addTo(map);
-          }
-          markers_data[i].setOpacity(0.60);  
-        } else {
-          info = "user: " + points[i]['username'] + " " + points[i]['info'];
-          console.log("bindPopup");
-          console.log(info + " last updated: " + timestampToString(points[i]['timestamp']));
-          // if type > 16 then we will go with default icon type 
-          if (points[i]['type'] > 16) {
-            console.log("type > 16"); 
-            markers[i] = L.marker([points[i]['lat'],points[i]['lon']])
-            .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
-	    .addTo(map);
-            
-          } else { 
-            console.log("points points[i]['type']");
-            console.log(points[i]['type']);
-            console.log(points);
-            console.log(i);
-            markers[i] = L.marker([points[i]['lat'],points[i]['lon']],icon_type[points[i]['type']])
-            .bindPopup(info + " last updated: " + timestampToString(points[i]['timestamp']))
-	    .addTo(map);
-            
-          } 
-          markers[i].setOpacity(0.60);        
-        }       
+        console.log("points[i][username] " + points[i]['username']);
+        if (typeof points[i]['username'] != 'undefined'){
+           info = "user: " + points[i]['username'] ;
+        }
+        info = info + " id: " + points[i]['id'] + " " + points[i]['info'];
+        if (typeof points[i]['pic_file'] != 'undefined') {                
+          info = info + " pic_file: " + points[i]['pic_file'] ;
+          pic_url = "https://www.tricktraker.com/shoot/gallery.php?search=" + points[i]['pic_file'];
+          info = info + '<a href="' + pic_url + '">Click to View Pic</a>';
+        }
+        info = info + " last updated: " + timestampToString(points[i]['timestamp']) + " type: " + points[i]['type'] ;
+        console.log(" info ");
+        console.log(info );
+        var LamMarker;
+        if (points[i]['type'] > 16) { 
+          LamMarker  = L.marker([points[i]['lat'],points[i]['lon']])
+	  .bindPopup(info);
+          markers.push(LamMarker);
+          map.addLayer(LamMarker);
+        } else { 
+          LamMarker = L.marker([points[i]['lat'],points[i]['lon']],icon_type[points[i]['type']])
+	  .bindPopup(info);
+          markers.push(LamMarker);
+          map.addLayer(LamMarker);
+        }
+        LamMarker.setOpacity(0.50);               
       }
       console.log("markers");
       console.log(markers);
+    }
+
+   function remove_markers() {
+     for (var i = 0; i < markers.length ; i++ ) {
+          map.removeLayer(markers[i]);
+       }
+     markers = [];
    }
 
+
+   function update_icons(obj) {
+     console.log("update_icons");
+        //{"all":[{"users":[{"id":"206648"lat":"12.9304777","lon":"100.8797813","info":"Scotty is a cool dude.","timestamp":"1460871380","type":"1","username":"Scotty"}],"count":"1"}{"pics":[{"id":"986583"lat":"12.9304578","lon":"100.8797595","info":"","timestamp":"1461042969","type":"16","pic_file":"webcam1461042969.jpg"}],"count":"1"}{"data":[{"id":"986583"lat":"12.9304625","lon":"100.879818","info":"","timestamp":"1461031394","type":"12"}],"count":"1"}]}
+
+     console.log("update_icons obj");
+     console.log(obj);
+     if (typeof obj['all'] != 'undefined'){
+       remove_markers();
+       console.log("obj[all] != undefined");
+       if (typeof obj['all'][0]['users'] != 'undefined'){         
+         console.log('obj[all][0][users] != undefined');
+         if (obj['all'][0]['users'].length > 0){
+            console.log('length > 0');
+            write_icons(obj['all'][0]['users']);
+         }
+       }
+       if (typeof obj['all'][1]['pics'] != 'undefined'){
+         if (obj['all'][1]['pics'].length > 0){
+            write_icons(obj['all'][1]['pics']);
+         }
+       }
+       if (typeof obj['all'][2]['data'] != 'undefined'){
+         if (obj['all'][2]['data'].length > 0){
+            write_icons(obj['all'][2]['data']); 
+         }
+       }
+     } else {
+       if (typeof obj['users'] != 'undefined') {
+         if (obj['users'].length > 0){
+            console.log("obj.users");
+            remove_markers();
+            write_icons(obj['users']);
+         } 
+       } 
+       if (typeof obj['pics'] != 'undefined') {     
+         if (obj['pics'].length > 0){
+            console.log("obj.pics");
+            remove_markers();
+            write_icons(obj['pics']);
+         }
+       }
+       if (typeof obj['data'] != 'undefined') { 
+         if (obj['data'].length > 0){
+           console.log("obj.data");
+           if (obj['data'][0]['type'] == 0) {
+             update_tracks(obj['data']);
+           } else {
+             remove_markers();
+             write_icons(obj['data']); 
+           }
+         }
+       }
+     }
+   }
   
-  // default time 20 sec or 20000
-  if (params.update_interval > 1){         
+  
+  // default time 3 sec or 3000
+  if (params.update_interval > 1){
+    // temp disable timer  by commenting out next line       
     var myVar = setInterval(myTimer, (Math.round(params.update_interval * 1000)));
   }
 
   function myTimer() {
     
-    var url_list = [params.tracker_get_server + "/?type=99&extra=1&id=1", params.tracker_get_server + "/?last=1", params.tracker_get_server + "/?count=100&extra=1"];
+    //var url_list = [params.tracker_get_server + "/?type=99&extra=1&id=1", params.tracker_get_server + "/?last=1", params.tracker_get_server + "/?count=100&extra=1"];
+    var url_list = ["https://api.tricktraker.com/track.php/?mode=all","https://api.tricktraker.com/track.php/?mode=data"];
+    //var url_list = ["https://api.tricktraker.com/track.php/?mode=all"];
     var ts = Date.now() /1000 |0;
     // start time of 25 hours ago
     var start = ts - (60* params.track_time_min);
@@ -491,6 +526,7 @@ a {
        params.tracker_server = localStorage.getItem("tracker_server");
        params.tracker_get_server = localStorage.getItem("tracker_get_server");
        params.update_interval = localStorage.getItem("update_interval");
+       params.filter = localStorage.getItem("filter");
        console.log("params");
        console.log(params);
        console.log("typeof params.id");
@@ -513,6 +549,7 @@ a {
          localStorage.setItem("update_interval", "3");
          localStorage.setItem("irc_server", "wilhelm.freenode.net");
          localStorage.setItem("cam_resolution", "low");
+         localStorage.setItem("filter", "");
          get_config();
        } 
     } else {
@@ -571,7 +608,8 @@ a {
       }
 
 
-    url = params.tracker_get_server + "/?type=99&extra=1&id=1"
+    //url = params.tracker_get_server + "/?type=99&extra=1&id=1";
+    url = "https://api.tricktraker.com/track2.php/?mode=all";
     console.log("url");
     console.log(url);
     http.open("GET", url, true);
