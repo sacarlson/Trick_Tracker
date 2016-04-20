@@ -67,7 +67,7 @@ $sql = "INSERT INTO data (id, timestamp, lat,lon,speed,bearing,altitude,type)
 VALUES ( $id, $timestamp, $lat, $lon, $speed, $bearing,$altitude,$type)";
 
 //$sql2 = "UPDATE users SET last_lat=$lat, last_lon=$lon, type=$type, timestamp=$timestamp WHERE traccar_id=$id"; 
-$sql2 = "UPDATE users SET last_lat=$lat, last_lon=$lon, timestamp=$timestamp WHERE traccar_id=$id"; 
+$sql2 = "UPDATE users SET lat=$lat, lon=$lon, timestamp=$timestamp WHERE id=$id"; 
 
 //$sql = "DELETE FROM data";
 

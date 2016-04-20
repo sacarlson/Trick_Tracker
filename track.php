@@ -9,17 +9,17 @@
 
  include('config.php');
 
- //$_GET['id'];        // user ID to search, for special case of less than 10 it won't search for id
+ //$_GET['id'];     // user ID to search, for special case of less than 10 it won't search for id
  //$_GET['limit'];  // limit record number to return
  //$_GET['start'];  // timestamp to start or min
- //$_GET['stop'];  // timestamp to stop or max
+ //$_GET['stop'];   // timestamp to stop or max
  // $_GET['extra'];  // 1 or true adds more data returned from traccar from data with added altitude, speed, bearing
  // $_GET['type'];    // type to search, type indicates icon type, for special case of type = 99, will return all but type != 0 
- // $_GET['mode']  mode  of "user", "data" , "pics", "all" to mark table to search, in "all" mode data section returns only type !=0 and all points in user, pics
- // $_GET['lat'] reference of your lat position to measure distance from
- // $_GET['lon'] reference your long postion
- // $_GET['distance_max'] max distance to return targets in miles
- // $_GET['sort']  sort by "distance"  or "time"
+ // $_GET['mode']  mode  of "user", "data" , "pics", "all" to mark table to search, in "all" mode data table returns only type !=0 and all points in user, pics tables.  this is due to type=0 being the traccar data type that can get very big with many points, only used for tracks.
+ // $_GET['lat'] reference of your present lat position to measure distance from targets
+ // $_GET['lon'] reference your long postion, if provided a distance will be provided in return data. if radius is also provided then it will be used in filter
+ // $_GET['radius'] max distance radius to return targets (in Meters?), if not provided (empty) no filter of data is done just distance provided. 
+ // $_GET['sort']  sort by "distance"  or "time"  (not implemented)
 
  // Create connection
  $conn = new mysqli($servername, $username, $password, $dbname);
@@ -43,7 +43,7 @@
         get_list();
         echo ']}';        
         break;
-    default: // default to data
+    default: // default to just data table
         get_list();
   } 
  
@@ -76,7 +76,7 @@
     $geopointDistance = $dist * $meterConversion;
 
     return $geopointDistance;
-}
+  }
 
   function get_list() {
     global $_GET, $conn;
@@ -163,28 +163,37 @@
      // if (!empty($_GET['lat']) && (!empty($_GET['lon'])) && (!empty($_GET['distance_max'])) &&
  //(distanceGeoPoints ($_GET['lat'], $_GET['lon']), $row['lat'], $row['lon']) < $_GET['distance_max']))) {
          // skip as we are outside distance range of interest
-     // } else
-      if (!empty( $_GET['extra'])) {
-        $out = '{"lat":"' . $row['lat']. '","lon":"'. $row['lon']. '","timestamp":"'. $row['timestamp'] . '","speed":"'. $row['speed']. '","bearing":"'. $row['bearing']. '","alt":"'. $row['altitude']. '","id":"'. $row['id'] .'","info":"'. $row['info'] . '","type":"' . $row['type'].'"}';
+     // } else 
+      if (!empty( $_GET['lat']) && !empty($_GET['lon'])){
+        $distance = distanceGeoPoints ($_GET['lat'], $_GET['lon'], $row['lat'], $row['lon']);
       } else {
-        $out = '{"id":"'. $row['id'] . '","lat":"' . $row['lat']. '","lon":"'. $row['lon'].'","info":"'. $row['info'] . '","timestamp":"'. $row['timestamp'] . '","type":"'. $row['type'];
+        $distance = 0;
       }
+      if (!empty( $_GET['radius']) && ($_GET['radius'] < $distance) && (strlen($_GET['radius']) > 0)){
+         // skip distance too far a way
+         //echo "skip";
+      } else {
+        if (!empty( $_GET['extra'])) {
+          $out = '{"lat":"' . $row['lat']. '","lon":"'. $row['lon']. '","timestamp":"'. $row['timestamp'] . '","speed":"'. $row['speed']. '","bearing":"'. $row['bearing']. '","alt":"'. $row['altitude']. '","id":"'. $row['id'] .'","info":"'. $row['info'] . '","type":"' . $row['type'] . '","distance":"' . $distance;
+        } else {
+          $out = '{"id":"'. $row['id'] . '","lat":"' . $row['lat']. '","lon":"'. $row['lon'].'","info":"'. $row['info'] . '","timestamp":"'. $row['timestamp'] . '","type":"'. $row['type'] . '","distance":"' . $distance;
+        }
 
-      switch($_GET['mode']) {
-      case 'pics':
-        $out = $out . '","pic_file":"' . $row['pic_file'] . '"}'; 
-        break;
-      case 'user':
-         $out = $out . '","username":"' . $row['username'] . '"}'; 
-        break;
-      default: // default to data
-         $out = $out . '"}';
-      } 
-      echo $out;
-      if ($count < $result->num_rows) {
-        echo ',';
-      }
-      
+        switch($_GET['mode']) {
+        case 'pics':
+          $out = $out . '","pic_file":"' . $row['pic_file'] . '"}'; 
+          break;
+        case 'user':
+           $out = $out . '","username":"' . $row['username'] . '"}'; 
+          break;
+        default: // default to data
+           $out = $out . '"}';
+        } 
+        echo $out;
+        if ($count < $result->num_rows) {
+          echo ',';
+        }
+      } // end not skiped
       $count = $count + 1;
     }
 

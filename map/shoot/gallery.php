@@ -119,6 +119,9 @@ div.desc {
   var tracker_server ;
   var tracker_get_server ;
   var info ;
+  var lat;
+  var lon;
+  var radius_filter;
     
   var id = 0;
   
@@ -135,8 +138,8 @@ div.desc {
     console.log("get_config called");
     if (typeof(Storage) !== "undefined") {
        id = localStorage.getItem("id");
-       //lat = localStorage.getItem("lat");
-       //lon = localStorage.getItem("lon");
+       lat = localStorage.getItem("lat");
+       lon = localStorage.getItem("lon");
        //zoom = localStorage.getItem("zoom");
        //track_id = localStorage.getItem("track_id");
        //track_time_min = localStorage.getItem("track_time_min");
@@ -144,6 +147,7 @@ div.desc {
        info = localStorage.getItem("info");
        tracker_server = localStorage.getItem("tracker_server");
        tracker_get_server = localStorage.getItem("tracker_get_server");
+       radius_filter = localStorage.getItem("radius_filter");
        console.log("id");
        console.log(id);
        console.log(typeof id);
@@ -159,8 +163,14 @@ div.desc {
          localStorage.setItem("track_time_min", 1500); //1500 = 25 hours
          localStorage.setItem("icon_type", 0);
          localStorage.setItem("info", "");
-         localStorage.setItem("tracker_server", "https://www.tricktraker.com/track.php");
+         localStorage.setItem("tracker_server", "https://www.tricktraker.com/record_track.php");
          localStorage.setItem("tracker_get_server", "https://www.tricktraker.com/get_track.php");
+         localStorage.setItem("update_interval", "4");
+         localStorage.setItem("irc_server", "wilhelm.freenode.net");
+         localStorage.setItem("cam_resolution", "low");
+         localStorage.setItem("filter", "");
+         // radius_filter is in Meters
+         localStorage.setItem("radius_filter", "4000");
          get_config();
        } 
     } else {
@@ -196,7 +206,10 @@ function showPosition(position) {
     http.send();
     console.log("get url");
     console.log(url);
+    lat = position.coords.latitude;
+    lon = position.coords.longitude;
     alert(" your position seen as lat: " + position.coords.latitude + " lon: " + position.coords.longitude + " type: " + type + " id: " + id );
+    
 }
  
   get_config();
@@ -238,7 +251,26 @@ function showPosition(position) {
  include('../../config.php');
 
 
+  function distanceGeoPoints ($lat1, $lng1, $lat2, $lng2) {
 
+    $earthRadius = 3958.75;
+
+    $dLat = deg2rad($lat2-$lat1);
+    $dLng = deg2rad($lng2-$lng1);
+
+
+    $a = sin($dLat/2) * sin($dLat/2) +
+       cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+       sin($dLng/2) * sin($dLng/2);
+    $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+    $dist = $earthRadius * $c;
+
+    // from miles
+    $meterConversion = 1609;
+    $geopointDistance = $dist * $meterConversion;
+
+    return $geopointDistance;
+  }
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -273,18 +305,29 @@ while($row = $result->fetch_assoc()){
     //if ($count < $result->num_rows) {
    //   echo ',';
   //  }
-  $date_form = date("F j, Y, g:i a", $row['timestamp']);
+      if (!empty( $_GET['lat']) && !empty($_GET['lon'])){
+        $distance = distanceGeoPoints ($_GET['lat'], $_GET['lon'], $row['lat'], $row['lon']);
+      } else {
+        $distance = 0;
+      }
 
-  $map_link = "https://www.tricktraker.com/?json={%22lat%22:%22" . $row['lat'] . "%22,%22lon%22:%22" . $row['lon'] . "%22,%22zoom%22:%2215%22,%22icon_type%22:%22". 16 . "%22,%22info%22:%22". $row['info'] . "%22,%22timestamp%22:%22". $row['timestamp'] . "%22,%22pic_file%22:%22" . $row['pic_file'] . "%22,%22id%22:%22" . $row['id']. "%22}";
+  if (!empty( $_GET['radius']) && ($_GET['radius'] < $distance) && (strlen($_GET['radius']) > 0)){
+     // skip distance too far a way
+     //echo "skip";
+  } else {
+    $date_form = date("F j, Y, g:i a", $row['timestamp']);
 
-  echo '<div class="responsive">';
-  echo '<div class="img">';
-  echo '<a target="_blank" href="' . $map_link .'">';
-  echo '<img src="uploads/'. $row['pic_file'] .'" width="300" height="200">';
-  echo '</a>';
-  echo '<div class="desc"> Shared by: ' . $row['id'] . ' On:  '. $date_form ." ". $row['info'] . " lat: " . $row['lat'] . " lon: " . $row['lon'] ." type: ". $row['type'] . " pic_file: " . $row['pic_file'] .'</div>';
-  echo ' </div>';
-  echo '</div>';
+    $map_link = "https://www.tricktraker.com/?json={%22lat%22:%22" . $row['lat'] . "%22,%22lon%22:%22" . $row['lon'] . "%22,%22zoom%22:%2215%22,%22icon_type%22:%22". 16 . "%22,%22info%22:%22". $row['info'] . "%22,%22timestamp%22:%22". $row['timestamp'] . "%22,%22pic_file%22:%22" . $row['pic_file'] . "%22,%22id%22:%22" . $row['id']. "%22}";
+
+    echo '<div class="responsive">';
+    echo '<div class="img">';
+    echo '<a target="_blank" href="' . $map_link .'">';
+    echo '<img src="uploads/'. $row['pic_file'] .'" width="300" height="200">';
+    echo '</a>';
+    echo '<div class="desc"> Shared by: ' . $row['id'] . ' On:  '. $date_form ." ". $row['info'] . " lat: " . $row['lat'] . " lon: " . $row['lon'] ." type: ". $row['type'] . " pic_file: " . $row['pic_file'] . " distance: " . intval($distance) . " Meters from Center Map" . '</div>';
+    echo ' </div>';
+    echo '</div>';
+  }
  
 }
 

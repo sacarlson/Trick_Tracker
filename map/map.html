@@ -68,7 +68,8 @@ a {
   <li><a href="http://news.tricktraker.com/">News</a></li>
   <li><a href="config.html">Config</a></li>
   <li><a href="./shoot/index.html">Shoot Pic</a></li>
-  <li><a href="./shoot/gallery.php">Gallery</a></li>
+  <li><span id="gallery_path"></span></li>
+  
   <li><a href="chat.html">Real Time Chat</a></li>
 </ul>
   <h1>Trick Traker Map</h1>
@@ -348,7 +349,7 @@ a {
           pic_url = "https://www.tricktraker.com/shoot/gallery.php?search=" + points[i]['pic_file'];
           info = info + '<a href="' + pic_url + '">Click to View Pic</a>';
         }
-        info = info + " last updated: " + timestampToString(points[i]['timestamp']) + " type: " + points[i]['type'] ;
+        info = info + " lat: " + points[i]['lat'] + " long: " + points[i]['lon'] +" last updated: " + timestampToString(points[i]['timestamp']) + " type: " + points[i]['type'] ;
         console.log(" info ");
         console.log(info );
         var LamMarker;
@@ -451,7 +452,9 @@ a {
     //var start = ts - 21600;
     console.log("timestamp: " + ts); 
     url = url_list[url_position];
-    url = url + "&start=" + start
+    url = url + "&start=" + start;
+    url = url + "&radius=" + params.radius_filter;
+    url = url + "&lat=" + params.lat + "&lon=" + params.lon;
     console.log("url now");
     console.log(url);
     http.open("GET", url, true);
@@ -518,6 +521,7 @@ a {
        params.id = localStorage.getItem("id");
        params.lat = localStorage.getItem("lat");
        params.lon = localStorage.getItem("lon");
+       document.getElementById("gallery_path").innerHTML='<a href="./shoot/gallery.php?lat=' + params.lat + "&lon=" + params.lon + '"> Gallery </a>';
        params.zoom = localStorage.getItem("zoom");
        params.track_id = localStorage.getItem("track_id");
        params.track_time_min = localStorage.getItem("track_time_min");
@@ -527,6 +531,7 @@ a {
        params.tracker_get_server = localStorage.getItem("tracker_get_server");
        params.update_interval = localStorage.getItem("update_interval");
        params.filter = localStorage.getItem("filter");
+       params.radius_filter = localStorage.getItem("radius_filter");
        console.log("params");
        console.log(params);
        console.log("typeof params.id");
@@ -550,6 +555,8 @@ a {
          localStorage.setItem("irc_server", "wilhelm.freenode.net");
          localStorage.setItem("cam_resolution", "low");
          localStorage.setItem("filter", "");
+         // radius_filter is in Meters
+         localStorage.setItem("radius_filter", "4000");
          get_config();
        } 
     } else {
@@ -609,7 +616,7 @@ a {
 
 
     //url = params.tracker_get_server + "/?type=99&extra=1&id=1";
-    url = "https://api.tricktraker.com/track2.php/?mode=all";
+    url = "https://api.tricktraker.com/track.php/?mode=all";
     console.log("url");
     console.log(url);
     http.open("GET", url, true);
