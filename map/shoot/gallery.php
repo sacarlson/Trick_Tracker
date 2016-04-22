@@ -229,7 +229,8 @@ function showPosition(position) {
       <a href="../index.html">Map</a>
       <a href="../send.html">Send Trick Cords</a>
       <a href="../config.html">Config</a>
-      <a href="../index.html">Shoot Pictures</a>  
+      <a href="../index.html">Shoot Pictures</a> 
+      <a href="http://wiki.tricktraker.com">Wiki.tricktraker.com</a> 
     </div>
   </div>
   <h1>Trick Traker Gallery</h1>
@@ -318,13 +319,14 @@ while($row = $result->fetch_assoc()){
     $date_form = date("F j, Y, g:i a", $row['timestamp']);
 
     $map_link = "https://www.tricktraker.com/?json={%22lat%22:%22" . $row['lat'] . "%22,%22lon%22:%22" . $row['lon'] . "%22,%22zoom%22:%2215%22,%22icon_type%22:%22". 16 . "%22,%22info%22:%22". $row['info'] . "%22,%22timestamp%22:%22". $row['timestamp'] . "%22,%22pic_file%22:%22" . $row['pic_file'] . "%22,%22id%22:%22" . $row['id']. "%22}";
-
+    $wiki_link = "http://wiki.tricktraker.com/doku.php?id=tricktraker.com:gallery:" . $row['pic_file'];
     echo '<div class="responsive">';
     echo '<div class="img">';
-    echo '<a target="_blank" href="' . $map_link .'">';
+    //echo '<a target="_blank" href="' . $map_link .'">';
+    echo '<a target="_blank" href="' . $wiki_link .'">';
     echo '<img src="uploads/'. $row['pic_file'] .'" width="300" height="200">';
     echo '</a>';
-    echo '<div class="desc"> Shared by: ' . $row['id'] . ' On:  '. $date_form ." ". $row['info'] . " lat: " . $row['lat'] . " lon: " . $row['lon'] ." type: ". $row['type'] . " pic_file: " . $row['pic_file'] . " distance: " . intval($distance) . " Meters from Center Map" . '</div>';
+    echo '<div class="desc"> Shared by: ' . $row['id'] . ' On:  '. $date_form ." " . $row['info'] . " lat: " . $row['lat'] . " lon: " . $row['lon'] ." type: ". $row['type'] . " pic_file: " . $row['pic_file'] . " distance: " . intval($distance) . " Meters from Center Map " . '</div>';
     echo ' </div>';
     echo '</div>';
   }

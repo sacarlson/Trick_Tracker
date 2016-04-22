@@ -144,6 +144,14 @@
     var win = window.open(url, "_blank"); 
   }
 
+  function open_voice_chat2() {
+    //https://peercalls.com/call/3986bb98-e3e4-41b1-a179-d32fff1eaca9
+    console.log("open_voice_chat2");
+    var url = "https://talky.io/tricktraker";
+    console.log(url); 
+    var win = window.open(url, "_blank"); 
+  }
+
 
 window.onclick = function(event) {
   if (!event.target.matches('.dropbtn')) {
@@ -166,11 +174,20 @@ window.onclick = function(event) {
     open_irc_url();  
  });
 
+
+
  voice.addEventListener("click", function(event) {
     console.log("submit clicked");
     //save_configs();
     //make_map_link();
     open_voice_chat();  
+ });
+
+voice2.addEventListener("click", function(event) {
+    console.log("submit clicked");
+    //save_configs();
+    //make_map_link();
+    open_voice_chat2(); 
  });
 
  
@@ -215,6 +232,8 @@ window.onclick = function(event) {
 
 <input type="button" value="Start Real Time Text Chat" id="submit" >
 <input type="button" value="Start Real Time Voice/video Chat (expermental)" id="voice" >
+
+<input type="button" value="Start Real Time Voice/video Chat (expermental2)" id="voice2" >
 
 </form>
 <div>
