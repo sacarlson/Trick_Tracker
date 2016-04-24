@@ -4,6 +4,9 @@
   <title> Tricktraker.com Tracker Event Table</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content="parties, party, Track, real-time, Girls, Map, GPS, Photos, way points, mark, find friends, people profiles, wiki, database, search">
+
+    <meta name="description" content="A web app real-time updating Map and tracker database to find girls for hire nearby, advertise party locations and track people using your mobile phones Map, GPS and Camera features. ">
 
   <link rel="stylesheet" href="../w3.css">
   <link rel="stylesheet" href="tab.css">  
@@ -131,6 +134,9 @@ div.desc {
         descending: true
       });
 
+    var track_time_min = document.getElementById('time');
+    track_time_min.value = localStorage.getItem("track_time_min");
+
     function clear_table(id) {
       // stupid clear fix to allow table sort to work
       // for reasons uknown can't delete the first data line, can only clear it's contents to keep sort working
@@ -176,9 +182,10 @@ div.desc {
   <div class="w3-teal w3-container w3-half ">
      <div class="w3-container w3-teal">
        <form action="index.php" method="get" class="w3-container center ">
+         <input type="hidden" name="time" id="time" value="none"> 
          <label>Search</label>
          <input type="text" name="search" class="w3-input w3-text-black">
-         <input type="submit" class="w3-btn w3-blue" >
+         <input type="submit" class="w3-btn w3-blue" >         
        </form>
      </div>    
   </div>
@@ -200,6 +207,7 @@ div.desc {
   <th data-sort-method='number'>distance</th>
   <th data-sort-method='number'>total distance</th>
   <th data-sort-method='number'>total cal burn</th>
+  <th>Map Link</th>
   <th>Info</th>
 </tr>
 </thead>
@@ -242,11 +250,21 @@ div.desc {
 
   //$sql = "SELECT * FROM `pics`";
   //$sql =  "SELECT * FROM `data` ORDER BY timestamp DESC LIMIT 32";
-  if (!empty( $_GET['search'])) {
-    $sql =  "SELECT * FROM `data` WHERE id = '" . $_GET['search']. "' OR info = '". $_GET['search'] .
- "' OR type = '". $_GET['search'] . "' ORDER BY timestamp DESC LIMIT 200";
+  if (!empty( $_GET['time'])) {
+    //echo "get time " . $_GET['time'] . " ";
+    $timestamp_now = date_timestamp_get(date_create());
+    $from_time = $timestamp_now - ($_GET['time'] * 60);
+    $include_sql_and = " AND timestamp > '" . $from_time . "'";
+    $include_sql_where = " WHERE timestamp > '" . $from_time . "'";
   } else {
-    $sql =  "SELECT * FROM `data` ORDER BY timestamp DESC LIMIT 200";
+    $include_sql_and = "";
+    $include_sql_where = "";
+  }
+  if (!empty( $_GET['search'])) {
+    $sql =  "SELECT * FROM `data` WHERE (id = '" . $_GET['search']. "' OR info = '". $_GET['search'] .
+ "' OR type = '". $_GET['search'] ."')". $include_sql_and ." ORDER BY timestamp DESC LIMIT 200";
+  } else {
+    $sql =  "SELECT * FROM `data`" . $include_sql_where . " ORDER BY timestamp DESC LIMIT 200";
   }
 
   //echo $sql;
@@ -268,7 +286,9 @@ div.desc {
      $dist = 0;
      $speed = 0;
    }
-   $total_cal_burn = ($distmiles + $total_dist) * 88.9;
+   $total_cal_burn = $total_dist * 88.9;
+   $href = 'https://www.tricktraker.com/?json={%22no_icons%22:%221%22,%22lat%22:%22' . $row['lat'] . '%22,%22lon%22:%22' . $row['lon'] . '%22}';
+   $link = '<a href="' . $href .'">Map Link</a>';
    echo '<tr>';
    echo '  <td>' . $row['time'] . '</td>';
    echo '  <td>' . $row['id']. '</td>';
@@ -278,15 +298,17 @@ div.desc {
    echo '  <td>' . $row['type'] . '</td>';
    echo '  <td>' . round(($speedmph),2) . '</td>';
    echo '  <td>' . round($distmiles,5) . '</td>';
-   echo '  <td>' . round($total_dist,2) . '</td>';
+   echo '  <td>' . round($total_dist,5) . '</td>';
    echo '  <td>' . round($total_cal_burn,2) . '</td>';
-   echo '  <td>' . $row['info'] . '</td>';
+   echo '  <td>' . $link . '</td>'; 
+   //echo '  <td>' . $row['info'] . '</td>';
+   echo '  <td>' . $row['timestamp'] . " " . $row['info'] . '</td>';
    echo '</tr>';
    $last_lat = $row['lat'];
    $last_lon = $row['lon'];
    $last_time = $row['timestamp'];
    $last_id = $row['id'];
-   if ($speed < 5) {
+   if ($speedmph < 5 && $speedmph > 0.3) {
      $total_dist = $total_dist + $distmiles;
    }
  }

@@ -3,7 +3,10 @@
 <head>
     <title>Trick Traker Map</title>
     <meta charset="utf-8" />
-     
+    <meta name="keywords" content="parties, party, Track, real-time, Girls, Map, GPS, Photos, way points, mark, find friends, people profiles, wiki, database, search">
+
+    <meta name="description" content="A web app real-time updating Map and tracker database to find girls for hire nearby, advertise party locations and track people using your mobile phones Map, GPS and Camera features. ">
+
     <link rel="stylesheet" href="w3.css">
     <link rel="stylesheet" href="leaflet.css" />
         
@@ -26,7 +29,7 @@
     padding: 0;
     overflow: hidden;
     background-color: #333;
-}
+ }
 
 li {
     float: left;
@@ -65,7 +68,6 @@ a {
     <div class="box">
   <ul>
   <li><a href="send.html">Send Cords</a></li>
-  <li><a href="http://news.tricktraker.com/">News</a></li>
   <li><a href="config.html">Config</a></li>
   <li><a href="./shoot/index.html">Shoot Pic</a></li>
   <li><span id="gallery_path"></span></li>
@@ -433,9 +435,8 @@ a {
      }
    }
   
-  
   // default time 3 sec or 3000
-  if (params.update_interval > 1){
+  if (params.update_interval > 1 && params.no_icons == null ){
     // temp disable timer  by commenting out next line       
     var myVar = setInterval(myTimer, (Math.round(params.update_interval * 1000)));
   }
@@ -614,13 +615,15 @@ a {
         }        
       }
 
-
-    //url = params.tracker_get_server + "/?type=99&extra=1&id=1";
-    url = "https://api.tricktraker.com/track.php/?mode=all";
-    console.log("url");
-    console.log(url);
-    http.open("GET", url, true);
-    http.send();
+    if (params.no_icons == null){
+      console.log("first old icons added");
+      //url = params.tracker_get_server + "/?type=99&extra=1&id=1";
+      url = "https://api.tricktraker.com/track.php/?mode=all";
+      console.log("url");
+      console.log(url);
+      http.open("GET", url, true);
+      http.send();
+    }
 
         
   });

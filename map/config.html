@@ -4,6 +4,10 @@
 <head>
  <title>Trick Traker Cfg</title>
  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="keywords" content="parties, party, Track, real-time, Girls, Map, GPS, Photos, way points, mark, find friends, people profiles, wiki, database, search">
+
+ <meta name="description" content="A web app real-time updating Map and tracker database to find girls for hire nearby, advertise party locations and track people using your mobile phones Map, GPS and Camera features. ">
+
  <!<link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
  <link rel="stylesheet" href="w3.css">
 
@@ -58,7 +62,7 @@ p {
     var info_fixed = encodeURI(info.value);
     //var link_url = tracker_server.value + "map/?json={%22lat%22:%22" + lat.value + "%22,%22lon%22:%22" + lon.value + "%22,%22zoom%22:%22" + zoom.value + "%22,%22type%22:%22" + icon_type.value + "%22,%22info%22:%22" + info_fixed + "%22,%22timestamp%22:%22" + timestamp + "%22}";
 
-    var link_url = "https://www.tricktraker.com/?json={%22lat%22:%22" + lat.value + "%22,%22lon%22:%22" + lon.value + "%22,%22zoom%22:%22" + zoom.value + "%22,%22type%22:%22" + icon_type.value + "%22,%22info%22:%22" + info_fixed + "%22,%22timestamp%22:%22" + timestamp + "%22}";
+    var link_url = "https://www.tricktraker.com/?json={%22no_icons%22:%221%22,%22lat%22:%22" + lat.value + "%22,%22lon%22:%22" + lon.value + "%22,%22zoom%22:%22" + zoom.value + "%22,%22type%22:%22" + icon_type.value + "%22,%22info%22:%22" + info_fixed + "%22,%22timestamp%22:%22" + timestamp + "%22}";
 
     map_link.innerHTML = '<h4>' + link_url + '</h4>'; 
   } 
@@ -257,11 +261,9 @@ a {
   <div class="dropdown">
     <button onclick="dropDown()" class="dropbtn">Menu</button>
     <div id="myDropdown" class="dropdown-content">
-      <a href="http://news.tricktraker.com/">TrickTraker News</a> 
       <a href="chat.html">Real Time Chat</a>
       <a href="index.html">Map</a>      
       <a href="send.html">Send Trick Cords</a>
-      <a href="../config.html">Config</a>
       <a href="./shoot/index.html">Shoot Pictures</a> 
       <a href="./shoot/gallery.php">Gallery</a>
       <a href="./table/index.php">Tracker Event Table</a>

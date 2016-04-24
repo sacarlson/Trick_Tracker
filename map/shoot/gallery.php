@@ -224,12 +224,11 @@ function showPosition(position) {
     <div class="dropdown">
     <button onclick="dropDown()" class="dropbtn">Menu</button>
     <div id="myDropdown" class="dropdown-content">
-      <a href="http://news.tricktraker.com/">TrickTraker News</a> 
       <a href="../chat.html">Real Time Chat</a>
       <a href="../index.html">Map</a>
       <a href="../send.html">Send Trick Cords</a>
       <a href="../config.html">Config</a>
-      <a href="../index.html">Shoot Pictures</a> 
+      <a href="../shoot/index.html">Shoot Pictures</a> 
       <a href="http://wiki.tricktraker.com">Wiki.tricktraker.com</a> 
     </div>
   </div>

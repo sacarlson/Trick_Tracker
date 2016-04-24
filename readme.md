@@ -1,6 +1,12 @@
 #Trick Tracker
 // Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
 
+for Detailed info and to see an active website running Trick_Traker see: http://wiki.tricktraker.com
+and the running Trick Tracker web app at: https://www.tricktraker.com/
+
+This is now a real running website. we continue to publish all of what we have created here on this github account.
+Please be sure to feedback any problems you may have to github issues or on the freenode IRC #tricktraker
+
 Trick Tracker is a combo GPS tracking and display map system ment to help us share the locations of girls we happen to see on the streets.
 It's secondary roll is to allow us to send a freind your present location any place on the planet without ever having to 
 install any software on your android or other device.
@@ -11,11 +17,6 @@ html5 geolocation.  The software also is designed to work with Traccar that is a
 installed on any android phone to work. Traccar allows continues tracking of any device over time that can be displayed on
 the Trick Tracker map with tracks of past paths taken of tracked targets over a desired period of time.
 
-For more user info  check out http://scottygeekpage.blogspot.com/2016/04/digital-pimp-continue-development.html
-that contains discriptions and screen shots and user info on how to use Trick Tracker and points to the presently active
-demo of the website. The blog also contains information of the plans of future develpment.
-You might also check out http://track.surething.biz/map that is at present the default location of the demo website.
-
 Bellow here is more technical info about the tracking API format used in Trick Tracker that is derived from the Traccar api format for input.
 The output of track.php output format is also discribed here that is used in the javascript section of maps to
 provide realtime updates that are polled over time.
@@ -25,9 +26,11 @@ index.php is setup as the point that traccar uses to send updates of location th
 
 mysql db = track_data
 table = data
+table = pics
+table = users
 
 track.php is used to recover data from the mysql database that will search for a given user id over some period of time 
-or just return the last known position of the id.  it is setup as an api that will be used by a javascript program.
+or just return the last known position of the id.  it is setup as an api that will be used by a javascript program (see map app example).
 the return data is in json format. it can be accessed with curl or restclient in javascript (see later examples)
 
 examples:
