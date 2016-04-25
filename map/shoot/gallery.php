@@ -228,8 +228,8 @@ function showPosition(position) {
       <a href="../index.html">Map</a>
       <a href="../send.html">Send Trick Cords</a>
       <a href="../config.html">Config</a>
-      <a href="../shoot/index.html">Shoot Pictures</a> 
-      <a href="http://wiki.tricktraker.com">Wiki.tricktraker.com</a> 
+      <a href="index.html">Shoot Pictures</a> 
+      <a href="https://wiki.tricktraker.com">Wiki</a> 
     </div>
   </div>
   <h1>Trick Traker Gallery</h1>

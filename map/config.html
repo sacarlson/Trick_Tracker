@@ -46,6 +46,9 @@ p {
   // this filter is for type 
   var filter = document.getElementById("filter"); 
   var radius_filter = document.getElementById("radius_filter"); 
+  var send_cord_interval = document.getElementById("send_cord_interval"); 
+  var send_cord_enable = document.getElementById("send_cord_enable"); 
+
   var timestamp = Math.floor(Date.now() / 1000);
   
   
@@ -84,6 +87,19 @@ p {
        cam_resolution.value = localStorage.getItem("cam_resolution");
        filter.value = localStorage.getItem("filter");
        radius_filter.value = localStorage.getItem("radius_filter");
+       
+       send_cord_interval.value = localStorage.getItem("send_cord_interval");
+       enable_send_cord.value = localStorage.getItem("enable_send_cord");
+       if ((send_cord_interval.value == null) || ((typeof send_cord_interval.value) == "undefined")) {
+         console.log("set send_cord_interval");
+         localStorage.setItem("send_cord_interval", "60");
+         send_cord_interval.value = 60;
+       }
+       if ((enable_send_cord.value == null) || ((typeof enable_send_cord.value) == "undefined")) {
+         console.log("set enable_send_cord");
+         localStorage.setItem("enable_send_cord", "1");
+         enable_send_cord.value = "1";
+       }
        console.log("id");
        console.log(id.value);
        console.log(typeof id.value);
@@ -97,7 +113,7 @@ p {
          localStorage.setItem("zoom", 15);
          localStorage.setItem("track_id", 206648);
          localStorage.setItem("track_time_min", 120); //1500 = 25 hours
-         localStorage.setItem("icon_type", 0);
+         localStorage.setItem("icon_type", 12);
          localStorage.setItem("info", "");
          localStorage.setItem("tracker_server", "https://www.tricktraker.com/record_track.php");
          localStorage.setItem("tracker_get_server", "https://www.tricktraker.com/get_track.php");
@@ -107,6 +123,8 @@ p {
          localStorage.setItem("filter", "");
          // radius_filter is in Meters
          localStorage.setItem("radius_filter", "4000");
+         localStorage.setItem("send_cord_interval", "60");
+         localStorage.setItem("enable_send_cord", "1");
          
          get_config();
        } 
@@ -140,7 +158,9 @@ p {
         update_interval.value = 2;
       }
     }        
-    localStorage.setItem("update_interval", update_interval.value);
+    localStorage.setItem("send_cord_interval", send_cord_interval.value);
+    localStorage.setItem("enable_send_cord", enable_send_cord.value);
+
   }
 
   function getLocation() {
@@ -262,14 +282,14 @@ a {
     <button onclick="dropDown()" class="dropbtn">Menu</button>
     <div id="myDropdown" class="dropdown-content">
       <a href="chat.html">Real Time Chat</a>
-      <a href="index.html">Map</a>      
+      <a href="map.html">Map</a>      
       <a href="send.html">Send Trick Cords</a>
       <a href="./shoot/index.html">Shoot Pictures</a> 
       <a href="./shoot/gallery.php">Gallery</a>
       <a href="./table/index.php">Tracker Event Table</a>
       <a href="./table/pic_table.php">Picture Event Table</a>
-      <a href="http://wiki.tricktraker.com">Wiki</a>
-    
+      <a href="./table/walker.html">Walk Mileage Monitor</a>
+      <a href="http://wiki.tricktraker.com">Wiki</a>   
     </div>
   </div>
   <h1>Trick Traker Config</h1>
@@ -317,6 +337,10 @@ a {
 <input class="w3-input" type="text" id="irc_server">
 <label class="w3-label">Camera Resolution (default low = 640x480, high = 1280x720)</label>
 <input class="w3-input" type="text" id="cam_resolution">
+<label class="w3-label">Enable Send Coords</label>
+<input class="w3-input" type="text" id="enable_send_cord">
+<label class="w3-label">Send Coords Interval (seconds)</label>
+<input class="w3-input" type="text" id="send_cord_interval">
 
 <input type="button" value="Submit Changes" id="submit" >
 <input type="button" value="Set Map Center to GPS position" id="recenter_map" >

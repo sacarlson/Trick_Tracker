@@ -161,14 +161,13 @@ div.desc {
   <div class="w3-teal w3-container w3-half">
     <div class="dropdown">
     <button onclick="dropDown()" class="dropbtn">Menu</button>
-    <div id="myDropdown" class="dropdown-content" style="z-index:99999;>
-      <a href="http://news.tricktraker.com/">TrickTraker News</a> 
+    <div id="myDropdown" class="dropdown-content" >      
       <a href="../chat.html">Real Time Chat</a>
       <a href="../index.html">Map</a>
       <a href="../send.html">Send Trick Cords</a>
       <a href="../config.html">Config</a>
       <a href="../shoot/index.html">Shoot Pictures</a> 
-      <a href="http://wiki.tricktraker.com">Wiki.tricktraker.com</a> 
+      <a href="https://wiki.tricktraker.com">Wiki</a> 
     </div>
   </div>
   <h1>TrickTraker Picture Event History Table (sortable)</h1>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title> Tricktraker.com Tracker Event Table</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content="parties, party, Track, real-time, Girls, Map, GPS, Photos, way points, mark, find friends, people profiles, wiki, database, search">
+
+    <meta name="description" content="A web app real-time updating Map and tracker database to find girls for hire nearby, advertise party locations and track people using your mobile phones Map, GPS and Camera features. ">
+
+  <link rel="stylesheet" href="../w3.css">
+  
+<style type="text/css">
+		
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #3e8e41;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #f1f1f1}
+
+.show {display:block;}
+
+
+.box { 
+  margin: auto;
+  width: 100%;
+  height: auto;
+  margin: 30px;
+}
+
+div.img {
+    border: 1px solid #ccc;
+}
+
+div.img:hover {
+    border: 1px solid #777;
+}
+
+div.img img {
+    width: 100%;
+    height: auto;
+}
+
+div.desc {
+    padding: 15px;
+    text-align: center;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.responsive {
+    padding: 0 6px;
+    float: left;
+    width: 24.99999%;
+}
+
+@media only screen and (max-width: 700px){
+    .responsive {
+        width: 49.99999%;
+        margin: 6px 0;
+    }
+}
+
+@media only screen and (max-width: 500px){
+    .responsive {
+        width: 100%;
+    }
+}
+
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+ a {
+  font-size: calc(1vw + 1vh + 1vmin);
+ }
+
+ .center {
+    margin: auto;
+    width: 60%;
+    padding: 20px;
+ }
+
+	</style>
+
+  
+  <script>
+    "use strict";
+   
+    // Initialize everything when the window finishes loading
+    window.addEventListener("load", function(event) {
+    console.log("page loaded");
+    var params = {};
+    get_config();
+
+    // temp override interval
+    //params.send_cord_interval = 10;
+
+    var track_time_min = document.getElementById('time');
+    var search1 = document.getElementById('search');
+    
+    var lat = 0;
+    var lon = 0;
+    var last_lat = 0;
+    var last_lon = 0;
+    var total_distance = 0;
+    var total_cal = 0;
+    var timestamp = 0;
+    var last_timestamp = 0;
+    var last_sent_cords_timestamp = 0;
+    var total_time_min = 0;
+    var total_time_min_start = 0;
+    var type = 0;
+
+    var lat_d = document.getElementById('lat');
+    var lon_d = document.getElementById('lon');
+    var total_time_d = document.getElementById('total_time');
+    var total_miles_d = document.getElementById('total_miles');
+    var total_calories_d = document.getElementById('total_calories');
+    var speed_d = document.getElementById('speed');
+    var total_time_start_d = document.getElementById('total_time_start');
+
+  
+    var http = new XMLHttpRequest();
+
+    track_time_min.value = params.track_time_min;
+    search1.value = params.id;
+
+    getLocation();
+
+    if (params.update_interval > 1 && params.no_icons == null ){
+      // temp disable timer  by commenting out next line       
+      //var myVar = setInterval(myTimer, (Math.round(params.update_interval * 1000 * 2)));
+    }
+
+    function send_cords() {
+      //var timestamp = Math.floor(Date.now() / 1000);
+      //GET /?id=206648&timestamp=1459757028&lat=12.9304184&lon=100.8798106&speed=0.0&bearing=0.0&altitude=0.0&batt=100.0
+      if (params.enable_send_cord == 1){
+        var url = params.tracker_server + "?id=" + params.id + "&timestamp=" + timestamp + "&lat=" + lat + "&lon=" + lon + "&type=" + 0;
+        console.log("send_cords");
+        console.log("url: " + url);	
+        http.open("GET", url, true);
+        http.send();
+        console.log("get url");
+        console.log(url);
+      } else {
+        console.log("send_cords disabled");
+      }
+    }
+
+  function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+  }
+
+  function get_config() {
+    console.log("get_config");
+    if (typeof(Storage) !== "undefined") {
+       console.log("ok");
+       params.id = localStorage.getItem("id");
+       params.lat = localStorage.getItem("lat");
+       params.lon = localStorage.getItem("lon");
+       params.zoom = localStorage.getItem("zoom");
+       params.track_id = localStorage.getItem("track_id");
+       params.track_time_min = localStorage.getItem("track_time_min");
+       params.icon_type = localStorage.getItem("icon_type");
+       params.info = localStorage.getItem("info");
+       params.tracker_server = localStorage.getItem("tracker_server");
+       params.tracker_get_server = localStorage.getItem("tracker_get_server");
+       params.update_interval = localStorage.getItem("update_interval");
+       params.filter = localStorage.getItem("filter");
+       params.radius_filter = localStorage.getItem("radius_filter");
+       //params.send_cord_interval = localStorage.getItem("send_cord_interval");
+       console.log("typeof send");
+       console.log(typeof params.send_cord_interval);
+       if ((params.send_cord_interval == null) || ((typeof params.send_cord_interval) == "undefined")) {
+         console.log("set send_cord_interval");
+         localStorage.setItem("send_cord_interval", "60");
+         params.send_cord_interval = 60;
+       }
+       if ((params.enable_send_cord == null) || ((typeof params.send_cord_interval) == "undefined")) {
+         console.log("set send_cord_interval");
+         localStorage.setItem("enable_send_cord", "1");
+         params.enable_send_cord = "1";
+       }
+       //console.log("params");
+       //console.log(params);
+       //console.log("typeof params.id");
+       //console.log(typeof params.id);
+       //console.log(params.id);
+       //console.log(params.id);
+       if ( params.id == null || params.id.length == 0) {
+         console.log("id was undefined will create one");
+         params.id = randomIntFromInterval(300000,999000);
+         localStorage.setItem("id", params.id);
+         localStorage.setItem("lat", 12.93419);
+         localStorage.setItem("lon", 100.892515 );
+         localStorage.setItem("zoom", 15);
+         localStorage.setItem("track_id", 206648);
+         localStorage.setItem("track_time_min", 120);
+         localStorage.setItem("icon_type", 12);
+         localStorage.setItem("info", "");
+         localStorage.setItem("tracker_server", "https://www.tricktraker.com/track.php");
+         localStorage.setItem("tracker_get_server", "https://www.tricktraker.com/get_track.php");
+         localStorage.setItem("update_interval", "3");
+         localStorage.setItem("irc_server", "wilhelm.freenode.net");
+         localStorage.setItem("cam_resolution", "low");
+         localStorage.setItem("filter", "");
+         // radius_filter is in Meters
+         localStorage.setItem("radius_filter", "4000");
+         // send_cord_interval is in seconds
+         localStorage.setItem("send_cord_interval", "60");
+         get_config();
+       } 
+    } else {
+       params.id = randomIntFromInterval(300000,999000);
+       alert("Sorry, your browser does not support Web Storage, time to upgrade.. your ID now: " + id);       
+    }
+  }
+
+    function get_timestamp() {
+      // this returns seconds epoch but not as interger as real number 
+      var timestamp2 = (Date.now()) / 1000;
+      // if you need return in integer just uncomment bellow
+      timestamp2 = Math.round(timestamp2);
+      return timestamp2;
+    }
+
+    function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+      var R = 6371; // Radius of the earth in km
+      var dLat = deg2rad(lat2-lat1);  // deg2rad below
+      var dLon = deg2rad(lon2-lon1); 
+      var a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2)
+      ; 
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      var d = R * c; // Distance in km
+      return d;
+    }
+
+    function deg2rad(deg) {
+      return deg * (Math.PI/180)
+    }
+ 
+    function myTimer() {
+      console.log("loop running");
+      //reload_page();
+      //location.reload(); 
+      //formSubmit();
+    }
+
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(showPosition);
+      } else { 
+         alert("Geolocation is not supported by this browser.");
+      }
+    }
+    
+    function showPosition(position) {
+      console.log("lat: " + position.coords.latitude + " Lon: " + position.coords.longitude);
+      lat = position.coords.latitude;
+      lon = position.coords.longitude
+      console.log("got GPS position info: " + lat + " " + lon);
+      timestamp = get_timestamp();
+      var distance = 0;
+      var speed = 0;
+      console.log("timestamp");
+      console.log(timestamp);
+      if (last_lat !=0) {
+        distance = getDistanceFromLatLonInKm(last_lat,last_lon,lat,lon);
+        // speed in km/sec
+        speed = distance / (timestamp - last_timestamp);
+        total_time_min_start = total_time_min_start + ((timestamp - last_timestamp)/60);
+      }
+      var speedmph = speed * 2236.94;
+      var dist_miles = distance * 0.621371;
+      
+      last_lat = lat;
+      last_lon = lon;
+      last_timestamp = timestamp;
+      if (speedmph < 4.0 && speedmph > 2.0) {
+        total_distance = total_distance + dist_miles;
+        total_time_min = total_time_min + ((timestamp - last_timestamp)/60);
+      }
+     
+      //https://www.verywell.com/walking-calories-burned-by-miles-3887154
+      // burn rate per mile at walk speed 2.5 - 3.5 mph with 180lb person (me)
+      total_cal = total_distance * 96;
+      console.log("distance: " + distance);
+      console.log("speed: " + speed);
+      console.log("total_distance: " + total_distance);
+      lat_d.innerHTML = "<h1> Lat: " + lat.toFixed(6) + "</h1><br>";
+      lon_d.innerHTML = "<h1> Lon: " + lon.toFixed(6) + "</h1><br>";
+      speed_d.innerHTML = "<h1> Speed (mph): " + speedmph.toFixed(2) + "</h1><br>";
+      total_time_d.innerHTML = "<h1> Total Walk (min): " + total_time_min.toFixed(2) + "</h1><br>";
+      total_time_start_d.innerHTML = "<h1> Total Time From Start (min): " + total_time_min_start.toFixed(2) + "</h1><br>";
+      total_miles_d.innerHTML = "<h1> Total Dist (miles): " + total_distance.toFixed(2) + "</h1><br>";
+      total_calories_d.innerHTML = "<h1> Total Cal: " + total_cal.toFixed(2) + "</h1><br>";
+      console.log("last_cords");
+      console.log(last_sent_cords_timestamp);
+      console.log(timestamp - last_sent_cords_timestamp);
+      console.log(params.send_cord_interval);
+      if (((timestamp - last_sent_cords_timestamp ) > params.send_cord_interval) || (last_sent_cords_timestamp == 0)) {
+        send_cords();
+        last_sent_cords_timestamp = timestamp;
+      }   
+    }        
+
+  
+  function formSubmit() {
+     document.getElementById("form1").submit();
+  } 
+
+  reset.addEventListener("click", function(event) {
+    console.log("reset clicked");
+    total_distance = 0;
+    total_cal = 0;
+    //var timestamp = 0;
+    //var last_timestamp = 0;
+    //var last_sent_cords_timestamp = 0;
+    total_time_min = 0;
+    total_time_min_start = 0;
+    //reset_default_();
+  });
+
+
+    });
+
+    function dropDown() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+
+  </script>
+   
+</head>
+<body>
+
+<div class="w3-row" >  
+  <div class="w3-col s12 w3-teal ">
+    <div class="dropdown">
+    <button onclick="dropDown()" class="dropbtn">Menu</button>
+    <div id="myDropdown" class="dropdown-content" >      
+      <a href="../chat.html">Real Time Chat</a>
+      <a href="../index.html">Map</a>
+      <a href="../send.html">Send Trick Cords</a>
+      <a href="../config.html">Config</a>
+      <a href="../shoot/index.html">Shoot Pictures</a> 
+      <a href="https://wiki.tricktraker.com">Wiki</a> 
+    </div>
+  </div>
+  <h1>Trick Traker Walk Mileage Monitor</h1>
+</div>
+<form action="walker.php" method="get" id="form1">
+   <input type="hidden" name="time" id="time" value="none"> 
+   <input type="hidden" name="search" id="search">                 
+</form>  
+
+<div class="w3-row" >
+ <div class="w3-col s12 w3-teal  w3-center"> 
+ <span id="total_time_start">0</span>
+ <span id="total_miles">0</span>
+ <span id="total_calories">0</span>
+ <span id="speed">0</span>
+ <span id="total_time">0</span>
+ <span id="lat">0</span>
+ <span id="lon">0</span> 
+ 
+ <input type="button" value="Reset All" id="reset" ><br>
+</div>
+
+</body>
+</html>
