@@ -259,7 +259,8 @@ a {
    }
 
    function update_tracks(points) {
-     console.log("udate_tracks");    
+     console.log("udate_tracks");
+     remove_markers();    
      map.removeLayer(lines);
      mylines2 = [];
      console.log("points");
@@ -299,7 +300,10 @@ a {
      for (var key in chosen_tracks) {          
        track = clone(chosen_tracks[key]);
        line['coordinates'] = [];
-       var last_i = 0;       
+       var last_i = 0;
+       info = " id: " + chosen_tracks[key][last_i]['id'] + " lat: " +chosen_tracks[key][last_i]['lat']  + " lon: " +chosen_tracks[key][last_i]['lon'] +" last updated: " + timestampToString(chosen_tracks[key][last_i]['timestamp']) + " type: " + chosen_tracks[key][last_i]['type'];
+  
+       add_marker(chosen_tracks[key][last_i]['lat'],chosen_tracks[key][last_i]['lon'],12,info);     
        for (var i = 0; i < chosen_tracks[key].length; ++i) {
          a = [];
          a.push(chosen_tracks[key][i]['lon']);
@@ -308,8 +312,6 @@ a {
          last_i = i;
        }
        mylines2.push(clone(line));
-       info = info + " id: " + chosen_tracks[key][last_i]['id'] + " lat: " +chosen_tracks[key][last_i]['lat']  + " lon: " +chosen_tracks[key][last_i]['lon'] ;
-       add_marker(chosen_tracks[key][last_i]['lat'],chosen_tracks[key][last_i]['lon'],12,info);
      }
      console.log("myline2");
      console.log(mylines2)
@@ -462,8 +464,7 @@ a {
     var myVar = setInterval(myTimer, (Math.round(params.update_interval * 1000)));
   }
 
-  function myTimer() {
-    
+  function myTimer() {    
     //var url_list = [params.tracker_get_server + "/?type=99&extra=1&id=1", params.tracker_get_server + "/?last=1", params.tracker_get_server + "/?count=100&extra=1"];
     var url_list = ["https://api.tricktraker.com/track.php/?mode=all","https://api.tricktraker.com/track.php/?mode=data"];
     //var url_list = ["https://api.tricktraker.com/track.php/?mode=all"];

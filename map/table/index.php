@@ -130,12 +130,17 @@ div.desc {
     // Initialize everything when the window finishes loading
     window.addEventListener("load", function(event) {
 
+    var params = {};
     var table_sort_trans = new Tablesort(document.getElementById('table'), {
         descending: true
       });
 
     var track_time_min = document.getElementById('time');
+    var max_speed = document.getElementById('max_speed_record');
+    var min_speed = document.getElementById('min_speed_record');
     track_time_min.value = localStorage.getItem("track_time_min");
+    min_speed.value = localStorage.getItem("min_speed_record");
+    max_speed.value = localStorage.getItem("max_speed_record");
 
     function clear_table(id) {
       // stupid clear fix to allow table sort to work
@@ -182,7 +187,9 @@ div.desc {
   <div class="w3-teal w3-container w3-half ">
      <div class="w3-container w3-teal">
        <form action="index.php" method="get" class="w3-container center ">
-         <input type="hidden" name="time" id="time" value="none"> 
+         <input type="hidden" name="time" id="time" value="none">
+         <input type="hidden" name="max_speed" id="max_speed_record" value="5"> 
+         <input type="hidden" name="min_speed" id="min_speed_record" value="2">  
          <label>Search</label>
          <input type="text" name="search" class="w3-input w3-text-black">
          <input type="submit" class="w3-btn w3-blue" >         
@@ -275,6 +282,16 @@ div.desc {
  $last_lat = 0;
  $last_lon = 0;
  $total_dist = 0;
+ if (!empty( $_GET['max_speed'])) {
+   $max_speed = $_GET['max_speed'];
+ } else {
+   $max_speed = 6;
+ }
+ if (!empty( $_GET['min_speed'])) {
+   $min_speed = $_GET['min_speed'];
+ } else {
+   $min_speed = 1;
+ }
  while($row = $result->fetch_assoc()){
    if ($last_lat > 0  && $last_id == $row['id']) {
      $dist = distanceGeoPoints ($last_lat, $last_lon, $row['lat'], $row['lon']);
@@ -308,7 +325,7 @@ div.desc {
    $last_lon = $row['lon'];
    $last_time = $row['timestamp'];
    $last_id = $row['id'];
-   if ($speedmph < 5 && $speedmph > 0.3) {
+   if ($speedmph < $max_speed && $speedmph > $min_speed) {
      $total_dist = $total_dist + $distmiles;
    }
  }

@@ -90,15 +90,27 @@ p {
        
        send_cord_interval.value = localStorage.getItem("send_cord_interval");
        enable_send_cord.value = localStorage.getItem("enable_send_cord");
-       if ((send_cord_interval.value == null) || ((typeof send_cord_interval.value) == "undefined")) {
+       min_speed_record.value = localStorage.getItem("min_speed_record");
+       max_speed_record.value = localStorage.getItem("max_speed_record");
+       if ((send_cord_interval.value == null) || (send_cord_interval.value.length == 0)) {
          console.log("set send_cord_interval");
          localStorage.setItem("send_cord_interval", "60");
          send_cord_interval.value = 60;
        }
-       if ((enable_send_cord.value == null) || ((typeof enable_send_cord.value) == "undefined")) {
+       if ((enable_send_cord.value == null) || ( enable_send_cord.value.length == 0)) {
          console.log("set enable_send_cord");
          localStorage.setItem("enable_send_cord", "1");
          enable_send_cord.value = "1";
+       }
+       if ((min_speed_record.value == null) || ( min_speed_record.value.length == 0)) {
+         console.log("set min_speed_record");
+         localStorage.setItem("min_speed_record", "1");
+         min_speed_record.value = "1";
+       }
+       if ((max_speed_record.value == null) || ( max_speed_record.value.length == 0)) {
+         console.log("set max_speed_record");
+         localStorage.setItem("max_speed_record", "6");
+         max_speed_record.value = "6";
        }
        console.log("id");
        console.log(id.value);
@@ -160,7 +172,8 @@ p {
     }        
     localStorage.setItem("send_cord_interval", send_cord_interval.value);
     localStorage.setItem("enable_send_cord", enable_send_cord.value);
-
+    localStorage.setItem("max_speed_record", max_speed_record.value);
+    localStorage.setItem("min_speed_record", min_speed_record.value);
   }
 
   function getLocation() {
@@ -341,6 +354,10 @@ a {
 <input class="w3-input" type="text" id="enable_send_cord">
 <label class="w3-label">Send Coords Interval (seconds)</label>
 <input class="w3-input" type="text" id="send_cord_interval">
+<label class="w3-label">Min Speed Record (mph)</label>
+<input class="w3-input" type="text" id="min_speed_record">
+<label class="w3-label">Max Speed Record (mph)</label>
+<input class="w3-input" type="text" id="max_speed_record">
 
 <input type="button" value="Submit Changes" id="submit" >
 <input type="button" value="Set Map Center to GPS position" id="recenter_map" >

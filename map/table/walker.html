@@ -154,8 +154,11 @@ div.desc {
     var total_calories_d = document.getElementById('total_calories');
     var speed_d = document.getElementById('speed');
     var total_time_start_d = document.getElementById('total_time_start');
+    var id_d = document.getElementById('id');
 
-  
+    id_d.value = params.id;
+    id_d.innerHTML = "<h1> ID: " + params.id + "</h1><br>";  
+
     var http = new XMLHttpRequest();
 
     track_time_min.value = params.track_time_min;
@@ -208,22 +211,28 @@ div.desc {
        //params.send_cord_interval = localStorage.getItem("send_cord_interval");
        console.log("typeof send");
        console.log(typeof params.send_cord_interval);
-       if ((params.send_cord_interval == null) || ((typeof params.send_cord_interval) == "undefined")) {
+       if ((params.send_cord_interval == null) || (params.send_cord_interval.length == 0)) {
          console.log("set send_cord_interval");
          localStorage.setItem("send_cord_interval", "60");
          params.send_cord_interval = 60;
        }
-       if ((params.enable_send_cord == null) || ((typeof params.send_cord_interval) == "undefined")) {
+       if ((params.enable_send_cord == null) || (params.enable_send_cord.length == 0)) {
          console.log("set send_cord_interval");
          localStorage.setItem("enable_send_cord", "1");
          params.enable_send_cord = "1";
        }
+       if ((params.min_speed_record == null) || (params.min_speed_record.length == 0)) {
+         console.log("set min_speed_record");
+         localStorage.setItem("min_speed_record", "1");
+         params.min_speed_record = "1";
+       }
+       if ((params.max_speed_record == null) || ( params.max_speed_record.length == 0)) {
+         console.log("set max_speed_record");
+         localStorage.setItem("max_speed_record", "6");
+         params.max_speed_record = "6";
+       }
        //console.log("params");
        //console.log(params);
-       //console.log("typeof params.id");
-       //console.log(typeof params.id);
-       //console.log(params.id);
-       //console.log(params.id);
        if ( params.id == null || params.id.length == 0) {
          console.log("id was undefined will create one");
          params.id = randomIntFromInterval(300000,999000);
@@ -317,7 +326,7 @@ div.desc {
       last_lat = lat;
       last_lon = lon;
       last_timestamp = timestamp;
-      if (speedmph < 4.0 && speedmph > 2.0) {
+      if (speedmph < params.max_speed_record && speedmph > params.min_speed_record) {
         total_distance = total_distance + dist_miles;
         total_time_min = total_time_min + ((timestamp - last_timestamp)/60);
       }
@@ -381,7 +390,7 @@ div.desc {
     <button onclick="dropDown()" class="dropbtn">Menu</button>
     <div id="myDropdown" class="dropdown-content" >      
       <a href="../chat.html">Real Time Chat</a>
-      <a href="../index.html">Map</a>
+      <a href="../map.html">Map</a>
       <a href="../send.html">Send Trick Cords</a>
       <a href="../config.html">Config</a>
       <a href="../shoot/index.html">Shoot Pictures</a> 
@@ -403,7 +412,8 @@ div.desc {
  <span id="speed">0</span>
  <span id="total_time">0</span>
  <span id="lat">0</span>
- <span id="lon">0</span> 
+ <span id="lon">0</span>
+ <span id="id">0</span>  
  
  <input type="button" value="Reset All" id="reset" ><br>
 </div>
