@@ -4,7 +4,7 @@
   //header('Access-Control-Allow-Origin: *'); 
   //header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT');
 
-  include('../../config.php');
+  include('../config.php');
  
  $id = $_GET['id'];
  $timestamp = $_GET['timestamp'];

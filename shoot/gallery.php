@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Trick Traker Gallery</title>
+	<title>FunTracker.site Gallery</title>
         <link rel="stylesheet" href="../w3.css">
 	<style type="text/css">
 		
@@ -163,8 +163,8 @@ div.desc {
          localStorage.setItem("track_time_min", 1500); //1500 = 25 hours
          localStorage.setItem("icon_type", 0);
          localStorage.setItem("info", "");
-         localStorage.setItem("tracker_server", "https://www.tricktraker.com/record_track.php");
-         localStorage.setItem("tracker_get_server", "https://www.tricktraker.com/get_track.php");
+         localStorage.setItem("tracker_server", "https://www.funtracker.site/record_track.php");
+         localStorage.setItem("tracker_get_server", "https://www.funtracker.site/get_track.php");
          localStorage.setItem("update_interval", "4");
          localStorage.setItem("irc_server", "wilhelm.freenode.net");
          localStorage.setItem("cam_resolution", "low");
@@ -225,14 +225,14 @@ function showPosition(position) {
     <button onclick="dropDown()" class="dropbtn">Menu</button>
     <div id="myDropdown" class="dropdown-content">
       <a href="../chat.html">Real Time Chat</a>
-      <a href="../index.html">Map</a>
-      <a href="../send.html">Send Trick Cords</a>
+      <a href="../map.html">Map</a>
+      <a href="../send.html">Send Cords</a>
       <a href="../config.html">Config</a>
       <a href="index.html">Shoot Pictures</a> 
-      <a href="https://wiki.tricktraker.com">Wiki</a> 
+      <a href="../wiki/doku.php">Wiki</a> 
     </div>
   </div>
-  <h1>Trick Traker Gallery</h1>
+  <h1>FunTracker.Site Gallery</h1>
   </div>
   <div class="w3-teal w3-container w3-half ">
      <div class="w3-container w3-teal">
@@ -248,7 +248,7 @@ function showPosition(position) {
 <?php
 // Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
   
- include('../../config.php');
+ include('../config.php');
 
 
   function distanceGeoPoints ($lat1, $lng1, $lat2, $lng2) {
@@ -317,8 +317,8 @@ while($row = $result->fetch_assoc()){
   } else {
     $date_form = date("F j, Y, g:i a", $row['timestamp']);
 
-    $map_link = "https://www.tricktraker.com/?json={%22lat%22:%22" . $row['lat'] . "%22,%22lon%22:%22" . $row['lon'] . "%22,%22zoom%22:%2215%22,%22icon_type%22:%22". 16 . "%22,%22info%22:%22". $row['info'] . "%22,%22timestamp%22:%22". $row['timestamp'] . "%22,%22pic_file%22:%22" . $row['pic_file'] . "%22,%22id%22:%22" . $row['id']. "%22}";
-    $wiki_link = "http://wiki.tricktraker.com/doku.php?id=tricktraker.com:gallery:" . $row['pic_file'];
+    $map_link = "../map.html?json={%22lat%22:%22" . $row['lat'] . "%22,%22lon%22:%22" . $row['lon'] . "%22,%22zoom%22:%2215%22,%22icon_type%22:%22". 16 . "%22,%22info%22:%22". $row['info'] . "%22,%22timestamp%22:%22". $row['timestamp'] . "%22,%22pic_file%22:%22" . $row['pic_file'] . "%22,%22id%22:%22" . $row['id']. "%22}";
+    $wiki_link = "../wiki/doku.php?id=tricktraker.com:gallery:" . $row['pic_file'];
     echo '<div class="responsive">';
     echo '<div class="img">';
     //echo '<a target="_blank" href="' . $map_link .'">';

@@ -178,8 +178,8 @@ div.desc {
       <a href="../send.html">Send Trick Cords</a>
       <a href="../config.html">Config</a>
       <a href="../shoot/index.html">Shoot Pictures</a> 
-      <a href="https://wiki.tricktraker.com">Wiki</a>
-      <a href="https://www.tricktraker.com/table/walker.html">Mileage Monitor</a>
+      <a href="../wiki/doku.php">Wiki</a>
+      <a href="./walker.html">Mileage Monitor</a>
     </div>
   </div>
   <h1>Trick Traker Event History Table (sortable)</h1>
@@ -223,7 +223,7 @@ div.desc {
 <?php
 // Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
 
-  include('../../config.php');
+  include('../config.php');
 
 
   function distanceGeoPoints ($lat1, $lng1, $lat2, $lng2) {
@@ -304,7 +304,7 @@ div.desc {
      $speed = 0;
    }
    $total_cal_burn = $total_dist * 88.9;
-   $href = 'https://www.tricktraker.com/map.html?json={%22no_icons%22:%221%22,%22lat%22:%22' . $row['lat'] . '%22,%22lon%22:%22' . $row['lon'] . '%22}';
+   $href = '../map.html?json={%22no_icons%22:%221%22,%22lat%22:%22' . $row['lat'] . '%22,%22lon%22:%22' . $row['lon'] . '%22}';
    $link = '<a href="' . $href .'">Map Link</a>';
    echo '<tr>';
    echo '  <td>' . $row['time'] . '</td>';

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Trick Traker Map</title>
+    <title>FunTracker.Site Map</title>
     <meta charset="utf-8" />
     <meta name="keywords" content="parties, party, Track, real-time, Girls, Map, GPS, Photos, way points, mark, find friends, people profiles, wiki, database, search">
 
@@ -71,10 +71,10 @@ a {
   <li><a href="config.html">Config</a></li>
   <li><a href="./shoot/index.html">Shoot Pic</a></li>
   <li><span id="gallery_path"></span></li>
-  <li><a href="https://wiki.tricktraker.com">Wiki</a></li>
+  <li><a href="./wiki/doku.php">Wiki</a></li>
   <li><a href="chat.html">Real Time Chat</a></li>
 </ul>
-  <h1>Trick Traker Map</h1>
+  <h1>FunTracker.Site Map</h1>
 </div>
     <div id="map" style="width: 100%; height: 1200px"></div>
 
@@ -116,7 +116,7 @@ a {
     
 
    var scottyIcon = L.icon({
-    iconUrl: 'scotty_map_icon75x75.png',    
+    iconUrl: 'images/scotty_map_icon75x75.png',    
     iconSize:     [75, 75], // size of the icon
     iconAnchor:   [37, 75], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -77], // point from which the popup should open relative to the iconAnchor
@@ -124,77 +124,77 @@ a {
  
 
   var cop_runingIcon = L.icon({
-    iconUrl: 'running_cop_50x61.png',
+    iconUrl: 'images/running_cop_50x61.png',
     iconSize:     [50, 61], // size of the icon
     iconAnchor:   [25, 61], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -76] // point from which the popup should open relative to the iconAnchor
   });
 
   var copIcon = L.icon({
-    iconUrl: 'police_standing_25x94.png',
+    iconUrl: 'images/police_standing_25x94.png',
     iconSize:     [25, 94], // size of the icon
     iconAnchor:   [17, 61], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -96] // point from which the popup should open relative to the iconAnchor
   });
 
   var johnIcon = L.icon({
-    iconUrl: 'man_with_money_49x61.png',
+    iconUrl: 'images/man_with_money_49x61.png',
     iconSize:     [49, 61], // size of the icon
     iconAnchor:   [25, 61], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -64] // point from which the popup should open relative to the iconAnchor
   });
 
   var fat_girlIcon = L.icon({
-    iconUrl: 'fat_girl_47x60.png',
+    iconUrl: 'images/fat_girl_47x60.png',
     iconSize:     [47, 60], // size of the icon
     iconAnchor:   [25, 60], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -65] // point from which the popup should open relative to the iconAnchor
   });
 
   var police_truckIcon = L.icon({
-    iconUrl: 'police_truck_60x23.png',
+    iconUrl: 'images/police_truck_60x23.png',
     iconSize:     [60, 23], // size of the icon
     iconAnchor:   [30, 23], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -25] // point from which the popup should open relative to the iconAnchor
   });
 
   var girlIcon = L.icon({
-    iconUrl: 'nice_girl_21x62.png',
+    iconUrl: 'images/nice_girl_21x62.png',
     iconSize:     [21, 62], // size of the icon
     iconAnchor:   [10, 62], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -65] // point from which the popup should open relative to the iconAnchor
   });
 
   var sexyIcon = L.icon({
-    iconUrl: 'sexy_girl_20x60.png',
+    iconUrl: 'images/sexy_girl_20x60.png',
     iconSize:     [20, 60], // size of the icon
     iconAnchor:   [10, 60], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -65] // point from which the popup should open relative to the iconAnchor
   });
 
   var ihereIcon = L.icon({
-    iconUrl: 'Im_here45x60.png',    
+    iconUrl: 'images/Im_here45x60.png',    
     iconSize:     [45, 60], // size of the icon
     iconAnchor:   [22, 60], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -65], // point from which the popup should open relative to the iconAnchor
   });
 
   var skiny_girlIcon = L.icon({
-    iconUrl: 'skiny_no_tits_18x60.png',    
+    iconUrl: 'images/skiny_no_tits_18x60.png',    
     iconSize:     [18, 60], // size of the icon
     iconAnchor:   [9, 60], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -65], // point from which the popup should open relative to the iconAnchor
   });
 
   var lady_boyIcon = L.icon({
-    iconUrl: 'lady_boy_39x61.png',    
+    iconUrl: 'images/lady_boy_39x61.png',    
     iconSize:     [39, 61], // size of the icon
     iconAnchor:   [19, 61], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -65], // point from which the popup should open relative to the iconAnchor
   });
 
   var short_girlIcon = L.icon({
-    iconUrl: 'short_girl_18x40.png',    
+    iconUrl: 'images/short_girl_18x40.png',    
     iconSize:     [18, 40], // size of the icon
     iconAnchor:   [9, 40], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -45], // point from which the popup should open relative to the iconAnchor
@@ -202,7 +202,7 @@ a {
 
   // icon 13
   var partyIcon = L.icon({
-    iconUrl: 'beer_party60x48.png',    
+    iconUrl: 'images/beer_party60x48.png',    
     iconSize:     [60, 48], // size of the icon
     iconAnchor:   [30, 24], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
@@ -210,7 +210,7 @@ a {
 
   // icon 14
   var eatingIcon = L.icon({
-    iconUrl: 'eat_food47x60.png',    
+    iconUrl: 'images/eat_food47x60.png',    
     iconSize:     [47, 60], // size of the icon
     iconAnchor:   [23, 24], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
@@ -218,7 +218,7 @@ a {
 
   //icon 15
   var weedIcon = L.icon({
-    iconUrl: 'weed_icon41x61.png',    
+    iconUrl: 'images/weed_icon41x61.png',    
     iconSize:     [41, 61], // size of the icon
     iconAnchor:   [20, 61], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -62], // point from which the popup should open relative to the iconAnchor
@@ -226,7 +226,7 @@ a {
 
   //icon 16
   var cameraIcon = L.icon({
-    iconUrl: 'camera30x24.png',    
+    iconUrl: 'images/camera30x24.png',    
     iconSize:     [30, 24], // size of the icon
     iconAnchor:   [15, 25], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -25], // point from which the popup should open relative to the iconAnchor
@@ -355,7 +355,7 @@ a {
         info = info + " id: " + points[i]['id'] + " " + points[i]['info'];
         if (typeof points[i]['pic_file'] != 'undefined') {                
           info = info + " pic_file: " + points[i]['pic_file'] ;
-          pic_url = "https://www.tricktraker.com/shoot/gallery.php?search=" + points[i]['pic_file'];
+          pic_url = "../shoot/gallery.php?search=" + points[i]['pic_file'];
           info = info + '<a href="' + pic_url + '">Click to View Pic</a>';
         }
         info = info + " lat: " + points[i]['lat'] + " long: " + points[i]['lon'] +" last updated: " + timestampToString(points[i]['timestamp']) + " type: " + points[i]['type'] ;
@@ -466,8 +466,7 @@ a {
 
   function myTimer() {    
     //var url_list = [params.tracker_get_server + "/?type=99&extra=1&id=1", params.tracker_get_server + "/?last=1", params.tracker_get_server + "/?count=100&extra=1"];
-    var url_list = ["https://api.tricktraker.com/track.php/?mode=all","https://api.tricktraker.com/track.php/?mode=data"];
-    //var url_list = ["https://api.tricktraker.com/track.php/?mode=all"];
+    var url_list = ["./get_track.php/?mode=all","./get_track.php/?mode=data"];
     var ts = Date.now() /1000 |0;
     // start time of 25 hours ago
     var start = ts - (60* params.track_time_min);
@@ -572,8 +571,8 @@ a {
          localStorage.setItem("track_time_min", 120);
          localStorage.setItem("icon_type", 12);
          localStorage.setItem("info", "");
-         localStorage.setItem("tracker_server", "https://www.tricktraker.com/track.php");
-         localStorage.setItem("tracker_get_server", "https://www.tricktraker.com/get_track.php");
+         localStorage.setItem("tracker_server", "https://www.funtracker.site/record_track.php");
+         localStorage.setItem("tracker_get_server", "https://www.funtracker.site/get_track.php");
          localStorage.setItem("update_interval", "3");
          localStorage.setItem("irc_server", "wilhelm.freenode.net");
          localStorage.setItem("cam_resolution", "low");
@@ -640,7 +639,7 @@ a {
     if (params.no_icons == null){
       console.log("first old icons added");
       //url = params.tracker_get_server + "/?type=99&extra=1&id=1";
-      url = "https://api.tricktraker.com/track.php/?mode=all";
+      url = "./get_track.php/?mode=all";
       console.log("url");
       console.log(url);
       http.open("GET", url, true);

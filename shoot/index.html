@@ -7,7 +7,7 @@
 
         <meta name="description" content="A web app real-time updating Map and tracker database to find girls for hire nearby, advertise party locations and track people using your mobile phones Map, GPS and Camera features. ">
 
-	<title>Trick Traker Camera</title>
+	<title>FunTracker.Site Camera</title>
         <link rel="stylesheet" href="../w3.css">
 	<style type="text/css">
 		body { font-family: Helvetica, sans-serif; }
@@ -58,7 +58,7 @@ img {
 </head>
 <body>
 	
-	<h1>TrickTraker Cam </h1>
+	<h1>FunTracker.Site Camera </h1>
 		
 	<div id="my_photo_booth">
 		<div class="center" > <div id="my_camera" ></div> </div>
@@ -112,7 +112,7 @@ img {
 			</div>
 			<div id="post_take_buttons" style="display:none">
 				<!-- These buttons are shown after a snapshot is taken -->
-                          <h1>Take another picture or send it to Tricktraker.com</h1>
+                          <h1>Take another picture or send it to Funtracker.site</h1>
 			  <div class="floating-box h_yellow"> <img src="turn_back_button200x202_red.png" onClick="cancel_preview()"> </div>
                           <div class="floating-box h_yellow"> <img src="email_button200x200.png" onClick="save_photo()"></div>                               
 		        </div>
@@ -207,10 +207,6 @@ img {
 			// actually snap photo (from preview freeze) and display it
 			Webcam.snap( function(data_uri) {
                                 console.log("webcam.snap");
-				// display results in page
-				//document.getElementById('results').innerHTML = 
-				//	'<h3>Here is the image we sent to tricktraker.com:</h3>' + 
-				//	'<img src=' + '"' + data_uri + '"' + '><br> ' ;
 
                                 Webcam.on( 'uploadProgress', function(progress) {
                                   // Upload in progress
@@ -229,7 +225,8 @@ img {
                                   console.log(text);
                                     alert("Upload image complete");
                                 } );
-				var url = 'https://www.tricktraker.com/shoot/upload.php'
+                                // at some point we have to soft code this url address to where?
+				var url = './upload.php'
                                 var timestamp = Math.floor(Date.now() / 1000);
                                 url = url + "/?lat="+lat+"&lon="+lon+"&timestamp="+timestamp+"&info="+info+"&id="+id +"&type=16";
                                 console.log("url");

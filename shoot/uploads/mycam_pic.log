@@ -1,0 +1,43 @@
+April 15, 2016, 5:36 pm : 394352 : webcam1460716551.jpg : 12.9304599 : 100.8798212 :  : 0 :  record success
+April 15, 2016, 5:36 pm : 394352 : webcam1460716567.jpg : 12.9304584 : 100.8798077 :  : 0 :  record success
+April 15, 2016, 7:45 pm : 394352 : webcam1460724329.jpg : 12.9376262 : 100.8833695 :  : 0 :  record success
+April 15, 2016, 7:59 pm : 394352 : webcam1460725156.jpg : 12.9356903 : 100.8824043 :  : 0 :  record success
+April 15, 2016, 8:50 pm : 394352 : webcam1460728194.jpg : 12.932839999999999 : 100.88005 :  : 0 :  record success
+April 15, 2016, 8:52 pm : 0 : webcam.jpg :  :  :  : 0 : INSERT INTO pics (id, timestamp, lat,lon,pic_file,info,type) VALUES ( 0, , , ,'webcam.jpg','',0)
+April 16, 2016, 8:18 pm : 407304 : webcam1460812718.jpg : 12.9376337 : 100.8834041 :  : 0 :  record success
+April 16, 2016, 8:30 pm : 407304 : webcam1460813384.jpg : 12.9340822 : 100.881213 :  : 0 :  record success
+April 16, 2016, 10:37 pm : 407304 : webcam1460821056.jpg : 12.9322973 : 100.8798923 :  : 0 :  record success
+April 17, 2016, 12:15 pm : 480167 : webcam1460870103.jpg : 12.9305862 : 100.880625 :  : 0 :  record success
+April 17, 2016, 12:15 pm : 480167 : webcam1460870111.jpg : 12.9305002 : 100.8806056 :  : 0 :  record success
+April 17, 2016, 12:17 pm : 480167 : webcam1460870206.jpg : 12.9305798 : 100.8805725 :  : 0 :  record success
+April 17, 2016, 12:17 pm : 480167 : webcam1460870225.jpg : 12.9306165 : 100.8805894 :  : 0 :  record success
+April 17, 2016, 3:05 pm : 796555 : webcam1460880321.jpg : 12.9304687 : 100.8798153 :  : 0 :  record success
+April 19, 2016, 12:16 pm : 986583 : webcam1461042969.jpg : 12.9304578 : 100.8797595 :  : 16 :  record success
+April 20, 2016, 6:12 pm : 565332 : webcam1461150698.jpg : 12.9319417 : 100.8795594 :  : 16 :  record success
+April 20, 2016, 6:48 pm : 565332 : webcam1461152785.jpg : 12.9395795 : 100.8838869 :  : 16 :  record success
+April 20, 2016, 6:49 pm : 565332 : webcam1461152923.jpg : 12.9395307 : 100.8839867 :  : 16 :  record success
+April 20, 2016, 6:53 pm : 787502e : webcam1461153161.jpg : 12.937811 : 100.883477 :  : 16 : INSERT INTO pics (id, timestamp, lat,lon,pic_file,info,type) VALUES ( 787502e, 1461153161, 12.937811, 100.883477,'webcam1461153161.jpg','',16)
+April 20, 2016, 7:00 pm : 787502e : webcam1461153557.jpg : 12.9356173 : 100.8824117 :  : 16 : INSERT INTO pics (id, timestamp, lat,lon,pic_file,info,type) VALUES ( 787502e, 1461153557, 12.9356173, 100.8824117,'webcam1461153557.jpg','',16)
+April 20, 2016, 7:12 pm : 787502e : webcam1461154299.jpg : 12.9308942 : 100.8788038 :  : 16 : INSERT INTO pics (id, timestamp, lat,lon,pic_file,info,type) VALUES ( 787502e, 1461154299, 12.9308942, 100.8788038,'webcam1461154299.jpg','',16)
+April 21, 2016, 10:41 am : 787502e : webcam1461210045.jpg : 12.9304492 : 100.8797906 :  : 16 : INSERT INTO pics (id, timestamp, lat,lon,pic_file,info,type) VALUES ( 787502e, 1461210045, 12.9304492, 100.8797906,'webcam1461210045.jpg','',16)
+April 21, 2016, 11:20 am : 787502e : webcam1461212385.jpg : 12.9304726 : 100.879828 :  : 16 : INSERT INTO pics (id, timestamp, lat,lon,pic_file,info,type) VALUES ( 787502e, 1461212385, 12.9304726, 100.879828,'webcam1461212385.jpg','',16)
+April 21, 2016, 11:24 am : 509969 : webcam1461212620.jpg : 12.9304726 : 100.8798123 :  : 16 :  record success
+April 21, 2016, 12:14 pm : 509969 : webcam1461215608.jpg : 12.9298818 : 100.8794268 :  : 16 :  record success
+April 21, 2016, 12:16 pm : 509969 : webcam1461215767.jpg : 12.9295841 : 100.8801797 :  : 16 :  record success
+April 21, 2016, 6:33 pm : 509969 : webcam1461238350.jpg : 12.9321911 : 100.8798268 :  : 16 :  record success
+April 21, 2016, 7:03 pm : 565332 : webcam1461240175.jpg : 12.9322822 : 100.8798907 :  : 16 :  record success
+April 22, 2016, 6:28 pm : 509969 : webcam1461324488.jpg : 12.9319414 : 100.879561 :  : 16 :  record success
+April 22, 2016, 7:14 pm : 509969 : webcam1461327240.jpg : 12.9471023 : 100.8845567 :  : 16 :  record success
+April 22, 2016, 7:15 pm : 509969 : webcam1461327268.jpg : 12.9475836 : 100.8846302 :  : 16 :  record success
+April 22, 2016, 7:54 pm : 509969 : webcam1461329490.jpg : 12.9308721 : 100.878813 :  : 16 :  record success
+April 22, 2016, 7:56 pm : 509969 : webcam1461329761.jpg : 12.9292805 : 100.8770884 :  : 16 :  record success
+April 22, 2016, 9:16 pm : 509969 : webcam1461334562.jpg : 12.9292165 : 100.8769433 :  : 16 :  record success
+April 23, 2016, 6:16 pm : 509969 : webcam1461410158.jpg : 12.9358661 : 100.8824583 :  : 16 :  record success
+April 23, 2016, 6:19 pm : 509969 : webcam1461410315.jpg : 12.9376975 : 100.8834364 :  : 16 :  record success
+April 23, 2016, 6:28 pm : 509969 : webcam1461410851.jpg : 12.9421413 : 100.884704 :  : 16 :  record success
+April 23, 2016, 6:29 pm : 509969 : webcam1461410949.jpg : 12.9429841 : 100.8847871 :  : 16 :  record success
+April 23, 2016, 7:38 pm : 509969 : webcam1461415089.jpg : 12.9293589 : 100.8771685 :  : 16 :  record success
+April 23, 2016, 9:58 pm : 509969 : webcam1461423481.jpg : 12.9295994 : 100.8774029 :  : 16 :  record success
+April 23, 2016, 10:02 pm : 509969 : webcam1461423715.jpg : 12.9308904 : 100.8788476 :  : 16 :  record success
+April 24, 2016, 6:54 pm : 509969 : webcam1461498831.jpg : 12.9320472 : 100.8796859 :  : 16 :  record success
+April 25, 2016, 9:29 pm : 354287 : webcam1461594539.jpg : 12.9324021 : 100.8799891 :  : 16 :  record success

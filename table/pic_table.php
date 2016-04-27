@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title> Tricktraker.com Tracker Event Table</title>
+  <title> FunTracker.Site Tracker Event Table</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -131,22 +131,6 @@ div.desc {
         descending: true
       });
 
-    function clear_table(id) {
-      // stupid clear fix to allow table sort to work
-      // for reasons uknown can't delete the first data line, can only clear it's contents to keep sort working
-      console.log("clear_table");
-      var col_count = document.getElementById(id).rows[0].cells.length;        
-      var myTable = document.getElementById(id);
-      var rowCount = myTable.rows.length;
-      for (var x=rowCount-2; x>0; x--) {
-        myTable.deleteRow(x);
-      }
-      var first_row = document.getElementById(id).rows[1].cells;
-      for (var x=col_count-1; x>=0; x--) {
-        first_row[x].innerHTML = "";
-      }   
-    }
-
     });
 
     function dropDown() {
@@ -163,11 +147,11 @@ div.desc {
     <button onclick="dropDown()" class="dropbtn">Menu</button>
     <div id="myDropdown" class="dropdown-content" >      
       <a href="../chat.html">Real Time Chat</a>
-      <a href="../index.html">Map</a>
+      <a href="../map.html">Map</a>
       <a href="../send.html">Send Trick Cords</a>
       <a href="../config.html">Config</a>
       <a href="../shoot/index.html">Shoot Pictures</a> 
-      <a href="https://wiki.tricktraker.com">Wiki</a> 
+      <a href="../wiki/doku.php">Wiki</a> 
     </div>
   </div>
   <h1>TrickTraker Picture Event History Table (sortable)</h1>
@@ -196,7 +180,8 @@ div.desc {
   <th data-sort-method='number'>Long</th>
   <th>Type</th>
   <th>Pic_file</th>
-  <th>Link</th>
+  <th>Gallery Link</th>
+  <th>Map Link</th>
   <th>Info</th>
 </tr>
 </thead>
@@ -205,7 +190,7 @@ div.desc {
 <?php
 // Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
 
-  include('../../config.php');
+  include('../config.php');
 
 
   function distanceGeoPoints ($lat1, $lng1, $lat2, $lng2) {
@@ -214,7 +199,6 @@ div.desc {
 
     $dLat = deg2rad($lat2-$lat1);
     $dLng = deg2rad($lng2-$lng1);
-
 
     $a = sin($dLat/2) * sin($dLat/2) +
        cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
@@ -266,8 +250,10 @@ div.desc {
      $speed = 0;
    }
    $total_cal_burn = ($distmiles + $total_dist) * 88.9;
-   $href = 'https://www.tricktraker.com/shoot/gallery.php?search=' . $row['pic_file'];
-   $link = '<a href="' . $href .'">Galler Link</a>';
+   $href = '../shoot/gallery.php?search=' . $row['pic_file'];
+   $gallery_link = '<a href="' . $href .'">Galler Link</a>';
+   $href = '../map.html?json={%22no_icons%22:%221%22,%22lat%22:%22' . $row['lat'] . '%22,%22lon%22:%22' . $row['lon'] . '%22}';
+   $map_link = '<a href="' . $href .'">Map Link</a>';
    $timedate = date('m/d/Y H:i:s', $row['timestamp']);
    echo '<tr>';
    echo '  <td>' . $timedate . '</td>';
@@ -277,14 +263,15 @@ div.desc {
    echo '  <td>' . round($row['lon'],7) . '</td>';
    echo '  <td>' . $row['type'] . '</td>';
    echo '  <td>' . $row['pic_file'] . '</td>';
-   echo '  <td>' . $link . '</td>';
+   echo '  <td>' . $gallery_link . '</td>';
+   echo '  <td>' . $map_link . '</td>';
    echo '  <td>' . $row['info'] . '</td>';
    echo '</tr>';
    $last_lat = $row['lat'];
    $last_lon = $row['lon'];
    $last_time = $row['timestamp'];
    $last_id = $row['id'];
-   if ($speed < 5) {
+   if ($speed < 6) {
      $total_dist = $total_dist + $distmiles;
    }
  }
