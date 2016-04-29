@@ -165,6 +165,7 @@ p {
     localStorage.setItem("cam_resolution", cam_resolution.value);
     localStorage.setItem("filter", filter.value);
     localStorage.setItem("radius_filter", radius_filter.value);
+    localStorage.setItem("update_interval", update_interval.value);
     if (update_interval.value < 3){
       if (id.value > 300000){
         update_interval.value = 2;
@@ -297,6 +298,7 @@ a {
       <a href="chat.html">Real Time Chat</a>
       <a href="map.html">Map</a>      
       <a href="send.html">Send Cords</a>
+      <a href="change_icon.html">Change Icon</a>
       <a href="./shoot/index.html">Shoot Pictures</a> 
       <a href="./shoot/gallery.php">Gallery</a>
       <a href="./table/index.php">Tracker Event Table</a>

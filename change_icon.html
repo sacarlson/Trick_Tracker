@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
+<html>
+<head>
+ <title>FunTracker Change User Icon</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="w3.css">
+ <script>
+  "use strict";
+  var type = 0;
+  var tracker_server ;
+  var info ;
+    
+  var id = 0;
+  
+  var http = new XMLHttpRequest();
+
+// starts from index 0
+//var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon},{icon: weedIcon}];
+  function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+  }
+
+  function getId() {
+    if (typeof(Storage) !== "undefined") {
+       id = localStorage.getItem("id");
+       info = encodeURI(localStorage.getItem("info"));
+       tracker_server = localStorage.getItem("tracker_server");
+       console.log("tracker_server");
+       console.log(tracker_server);
+       if (id == null || id.length == 0) {
+         console.log("id was undefined will create one");
+         id = randomIntFromInterval(300000,999000);
+         localStorage.setItem("id", id);
+       } 
+    } else {
+       id = randomIntFromInterval(300000,999000);
+       alert("Sorry, your browser does not support Web Storage.. your ID now: " + id);       
+    }
+  }
+
+  
+function getLocation() {
+    if (navigator.geolocation) {
+        //navigator.geolocation.watchPosition(showPosition);
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+       alert("Geolocation is not supported by this browser.");
+    }
+}
+    
+function showPosition(position) {
+    console.log("showposition");
+    console.log( position.coords.latitude ); 
+    console.log( position.coords.longitude );
+    type = type + 1000;
+    console.log( type);
+    var timestamp = Math.floor(Date.now() / 1000);
+    
+//GET /?id=206648&timestamp=1459757028&lat=12.9304184&lon=100.8798106&speed=0.0&bearing=0.0&altitude=0.0&batt=100.0
+    var url = tracker_server + "?id=" + id + "&timestamp=" + timestamp + "&lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&type=" + type;
+    
+    console.log("url: " + url);	
+    http.open("GET", url, true);
+    http.send();
+    console.log("get url");
+    console.log(url);
+    alert(" position sent lat: " + position.coords.latitude + " lon: " + position.coords.longitude + " type: " + type + " id: " + id );
+}
+
+  function i_here() {
+    type = 12;
+    console.log("clicked i_here");
+    getLocation();
+  }
+
+  // type 0 is also i_here but conflicts with other parts so i_here is also type 12
+
+  // type 1 is scotty icon so don't use here
+
+  function sexy() {
+    type = 2;
+    console.log("clicked sexy");
+    getLocation();
+  }
+
+   function girl() {
+    type = 3;
+    console.log("clicked girl");
+    getLocation();
+  }
+
+  // type 4 is short_girl but not supported yet
+
+  function skiny_girl() {
+    type = 5;
+    console.log("clicked skiny_girl");
+    getLocation();
+  }
+
+  function fat_girl() {
+    type = 6;
+    console.log("clicked fat_girl");
+    getLocation();
+  }
+
+  function lady_boy() {
+    type = 7;
+    console.log("clicked lady_boy");
+    getLocation();
+  }
+
+  function police_standing() {
+    type = 8;
+    console.log("clicked police_standing");
+    getLocation();
+  }
+
+  function cop_running() {
+    type = 9;
+    console.log("clicked cop_running");
+    getLocation();
+  }
+
+  function police_truck() {
+    type = 10;
+    console.log("clicked police_truck");
+    getLocation();
+  }
+   
+  function money_man() {
+    type = 11;
+    console.log("clicked money_man");
+    getLocation();
+  }
+
+  function beer_party() {
+    type = 13;
+    console.log("clicked beer_party");
+    getLocation();
+  }
+
+  function eating_here() {
+    type = 14;
+    console.log("clicked eating_here");
+    getLocation();
+  }
+
+  function weed_party() {
+    type = 15;
+    console.log("clicked weed_party");
+    getLocation();
+  }
+
+  // type 16 saved for  camera icon
+
+  function bicycle() {
+    type = 17;
+    console.log("clicked biker");
+    getLocation();
+    //<img src="images/biker50x44.png" >
+  }
+
+  function hiker() {
+    type = 18;
+    console.log("clicked hiker");
+    getLocation();
+    //<img src="images/hiker33x52.png" >
+  }
+
+  function rollerblade() {
+    type = 19;
+    console.log("clicked rollerblade");
+    getLocation();
+    //<img src="images/rollerblade36x50.png" >
+  }
+
+  function skateboard() {
+    type = 20;
+    console.log("clicked skateboard");
+    getLocation();
+    //<img src="images/skateboard40x50.png" >
+  }
+
+  function motorbike() {
+    type = 21;
+    console.log("clicked motorbike");
+    getLocation();
+    //<img src="images/motor_bike50x50.png" >
+  }
+
+  function harlymotorbike() {
+    type = 22;
+    console.log("clicked harly");
+    getLocation();
+    //<img src="images/harly_motorbike52x32.png" >
+  }
+
+  function kitesurf() {
+    type = 23;
+    console.log("clicked hiker");
+    getLocation();
+    //<img src="images/kitesurf50x52.png" >
+  }
+
+  function windsurf() {
+    type = 24;
+    console.log("clicked windsurf");
+    getLocation();
+    //<img src="images/windsurf50x50.png" >
+  }
+
+  function motor_boat() {
+    type = 25;
+    console.log("clicked motor_boat");
+    getLocation();
+    //<img src="images/luxury-yacht-boat50x22.png" >
+  }
+
+  function sail_boat() {
+    type = 26;
+    console.log("clicked sail_boat");
+    getLocation();
+    //<img src="images/sailor-boat50x50.png" >
+  }
+
+  function hangglide() {
+    type = 27;
+    console.log("clicked hangglide");
+    getLocation();
+    //<img src="images/hang_glider50x45.png" >
+  }
+
+  function car() {
+    type = 28;
+    console.log("clicked car");
+    getLocation();
+    //<img src="images/car50x23.png" >
+  }
+
+  function pickup_truck() {
+    type = 29;
+    console.log("clicked car");
+    getLocation();
+    //<img src="images/pickup_truck52x20.png" >
+  }
+      
+
+  function big_truck() {
+    type = 30;
+    console.log("clicked big_truck");
+    getLocation();
+    //<img src="images/transportation-truck50x22.png" >
+  }
+ 
+  function train() {
+    type = 31;
+    console.log("clicked train");
+    getLocation();
+    //<img src="images/train33x50.png" >
+  }
+
+  function remote_control() {
+    type = 32;
+    console.log("clicked train");
+    getLocation();
+    //<img src="images/remotecon41x50.png" >
+  }
+
+
+//var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon},{icon: weedIcon},{icon: cameraIcon}];
+   
+ getId(); 
+ //id = "206648"
+ console.log ("id: " + id);
+
+ function dropDown() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  console.log("window onclick detected");
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+   console.log("script loaded");                       
+  </script>
+<style>
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #3e8e41;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #f1f1f1}
+
+.show {display:block;}
+
+ a {
+  font-size: calc(1vw + 1vh + 1vmin);
+ }
+</style>
+</head>
+<body>
+
+<div class="w3-container w3-teal">
+  <div class="dropdown">
+    <button onclick="dropDown()" class="dropbtn">Menu</button>
+    <div id="myDropdown" class="dropdown-content">
+      <a href="chat.html">Real Time Chat</a>
+      <a href="map.html">Map</a>
+      <a href="config.html">Config</a>
+      <a href="./shoot/index.html">Shoot Pic</a>
+      <a href="./shoot/gallery.php">Gallery</a>   
+    </div>
+  </div>
+  <h1>FunTracker.Site Change User Icon</h1>
+</div>
+
+<div class="w3-row-padding w3-margin-top">
+
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="i_here" onclick="i_here();" >
+<img src="images/Im_here45x60.png" >
+<p>I'm Here! Type: 12</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="beer_party" onclick="beer_party();">
+<img src="images/beer_party60x48.png" >
+<p>Beer Party Type: 13</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="eating_here" onclick="eating_here();">
+<img src="images/eat_food47x60.png" >
+<p>Eating Here Type: 14</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="weed_party" onclick="weed_party();">
+<img src="images/weed_icon41x61.png" >
+<p>Weed Party Type: 15</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="bicycle" onclick="bicycle();">
+<img src="images/biker50x44.png" >
+<p>Bicycle Ride Type: 17</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="hiker" onclick="hiker();">
+<img src="images/hiker33x52.png" >
+<p>Hike or Walk Type: 18</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="rollerblade" onclick="rollerblade();">
+<img src="images/rollerblade36x50.png" >
+<p>RollerBlade Type: 19</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="skateboard" onclick="skateboard();">
+<img src="images/skateboard40x50.png" >
+<p>Skate Board Type: 20</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="motorbike" onclick="motorbike();">
+<img src="images/motor_bike50x50.png" >
+<p>Motor Bike Ride Type: 21</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="harlymotorbike" onclick="harlymotorbike();">
+<img src="images/harly_motorbike52x32.png" >
+<p>Harly Motor Bike Ride Type: 22</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="kitesurf" onclick="kitesurf();">
+<img src="images/kitesurf50x52.png" >
+<p>Kite Surf Type: 23</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="windsurf" onclick="windsurf();">
+<img src="images/windsurf50x50.png" >
+<p>Wind Surf Type: 24</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="motor_boat" onclick="motor_boat();">
+<img src="images/luxury-yacht-boat50x22.png" >
+<p>Motor Boat Type: 25</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="sail_boat" onclick="sail_boat();">
+<img src="images/sailor-boat50x50.png" >
+<p>Sail Boat Type: 26</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="hangglide" onclick="hangglide();">
+<img src="images/hang_glider50x45.png" >
+<p>Hang Glide Type: 27</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="car" onclick="car();">
+<img src="images/car50x23.png" >
+<p>By Car Type: 28</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="pickup_truck" onclick="pickup_truck();">
+<img src="images/pickup_truck52x20.png" >
+<p>Pickup Truck Type: 29</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="big_truck" onclick="big_truck();">
+<img src="images/transportation-truck50x22.png" >
+<p>Big Truck Type: 30</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="train" onclick="train();">
+<img src="images/train33x50.png" >
+<p>By Train Type: 31</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="remote_control" onclick="remote_control();">
+<img src="images/remotecon41x50.png" >
+<p>Playing Remote Toys Type: 32</p>
+</div>
+</div>
+</div>
+
+
+</body>
+</html>

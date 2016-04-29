@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title> Tricktraker.com Tracker Event Table</title>
+  <title> Funtracker.site Tracker Event Table</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="keywords" content="parties, party, Track, real-time, Girls, Map, GPS, Photos, way points, mark, find friends, people profiles, wiki, database, search">
@@ -174,15 +174,15 @@ div.desc {
     <button onclick="dropDown()" class="dropbtn">Menu</button>
     <div id="myDropdown" class="dropdown-content" >      
       <a href="../chat.html">Real Time Chat</a>
-      <a href="../index.html">Map</a>
-      <a href="../send.html">Send Trick Cords</a>
+      <a href="../map.html">Map</a>
+      <a href="../send.html">Send Cords</a>
       <a href="../config.html">Config</a>
       <a href="../shoot/index.html">Shoot Pictures</a> 
       <a href="../wiki/doku.php">Wiki</a>
       <a href="./walker.html">Mileage Monitor</a>
     </div>
   </div>
-  <h1>Trick Traker Event History Table (sortable)</h1>
+  <h1>FunTracker Traker Event History Table (sortable)</h1>
   </div>
   <div class="w3-teal w3-container w3-half ">
      <div class="w3-container w3-teal">
@@ -300,8 +300,8 @@ div.desc {
      $speedmph = $speed * 2.236936292;
      $distmiles = $dist * 0.000621371;
    } else {
-     $dist = 0;
-     $speed = 0;
+     $distmiles = 0;
+     $speedmph = 0;
    }
    $total_cal_burn = $total_dist * 88.9;
    $href = '../map.html?json={%22no_icons%22:%221%22,%22lat%22:%22' . $row['lat'] . '%22,%22lon%22:%22' . $row['lon'] . '%22}';

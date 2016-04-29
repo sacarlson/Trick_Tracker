@@ -126,3 +126,17 @@ https://api.tricktraker.com/track.php/?mode=user&lat=12.9304697&lon=100.8798447
 https://api.tricktraker.com/track.php/?mode=user&lat=12.9304697&lon=100.8798447&radius=500
 
 {"users":[{"id":"206648","lat":"12.9304597","lon":"100.8798149","info":"Scotty is a cool dude.","timestamp":"1461128866","type":"1","distance":"3.4149112922656","username":"Scotty"},skip{"id":"951342","lat":"12.9304292","lon":"100.8797761","info":"the white acer android phone used in test","timestamp":"1461004164","type":"0","distance":"8.6902532798667","username":"acer"}],"count":"3"}
+
+
+
+new changes in tricktraker modified traccar format input for type value example:
+
+api2.tricktraker.com?id=206648&timestamp=1459757028&lat=12.9304184&lon=100.8798106&speed=0.0&bearing=0.0&altitude=0.0&batt=100.0&type=1012
+
+for type over 1000 example 1012 we will subract 1000 and put 12 into user table for type. data table we record type as 0 in this case
+for type less than 1000 user table type is unchanged and data table becomes the value of type input.
+
+for use type indicates a stationary icon or a mobile icon.  we consider over 1000 icons to be mobile icons and less than 1000 being stationary icon marker points.
+
+if type is not present in data then it is assumed to be or defaults to type value of 0.
+

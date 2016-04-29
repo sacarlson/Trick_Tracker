@@ -146,7 +146,7 @@
       die('There was an error running the query [' . $db->error . ']');
     }
 
-    $count = 1;
+    $count = 0;
 
     switch($_GET['mode']) {
       case 'pics':
@@ -158,7 +158,7 @@
       default: // default to data
         echo '{"data":[';
     } 
-
+    $first = 1;
     while($row = $result->fetch_assoc()){
      // if (!empty($_GET['lat']) && (!empty($_GET['lon'])) && (!empty($_GET['distance_max'])) &&
  //(distanceGeoPoints ($_GET['lat'], $_GET['lon']), $row['lat'], $row['lon']) < $_GET['distance_max']))) {
@@ -189,15 +189,17 @@
         default: // default to data
            $out = $out . '"}';
         } 
-        echo $out;
-        if ($count < $result->num_rows) {
+        if ($first == 1) {
+          $first = 0;
+        } else {
           echo ',';
         }
+        echo $out;
+        $count = $count + 1;              
       } // end not skiped
-      $count = $count + 1;
     }
 
-    echo '],"count":"'. $result->num_rows .'"}';
+    echo '],"count":"'. $count .'"}';
 
     $result->free();
 

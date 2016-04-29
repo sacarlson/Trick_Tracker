@@ -153,8 +153,10 @@ div.desc {
     var total_miles_d = document.getElementById('total_miles');
     var total_calories_d = document.getElementById('total_calories');
     var speed_d = document.getElementById('speed');
+    var avg_speed_d = document.getElementById('avg_speed');
     var total_time_start_d = document.getElementById('total_time_start');
     var id_d = document.getElementById('id');
+    var timestamp_d = document.getElementById('timestamp');
 
     id_d.value = params.id;
     id_d.innerHTML = "<h1> ID: " + params.id + "</h1><br>";  
@@ -208,6 +210,10 @@ div.desc {
        params.update_interval = localStorage.getItem("update_interval");
        params.filter = localStorage.getItem("filter");
        params.radius_filter = localStorage.getItem("radius_filter");
+       params.send_cord_interval = localStorage.getItem("send_cord_interval");
+       params.enable_send_cord = localStorage.getItem("enable_send_cord");
+       params.min_speed_record = localStorage.getItem("min_speed_record");
+       params.max_speed_record = localStorage.getItem("max_speed_record");
        //params.send_cord_interval = localStorage.getItem("send_cord_interval");
        console.log("typeof send");
        console.log(typeof params.send_cord_interval);
@@ -312,6 +318,7 @@ div.desc {
       timestamp = get_timestamp();
       var distance = 0;
       var speed = 0;
+      var avg_speed = 0;
       console.log("timestamp");
       console.log(timestamp);
       if (last_lat !=0) {
@@ -329,6 +336,7 @@ div.desc {
       if (speedmph < params.max_speed_record && speedmph > params.min_speed_record) {
         total_distance = total_distance + dist_miles;
         total_time_min = total_time_min + ((timestamp - last_timestamp)/60);
+        avg_speed = total_distance /(total_time_min/60);       
       }
      
       //https://www.verywell.com/walking-calories-burned-by-miles-3887154
@@ -337,13 +345,15 @@ div.desc {
       console.log("distance: " + distance);
       console.log("speed: " + speed);
       console.log("total_distance: " + total_distance);
-      lat_d.innerHTML = "<h1> Lat: " + lat.toFixed(6) + "</h1><br>";
-      lon_d.innerHTML = "<h1> Lon: " + lon.toFixed(6) + "</h1><br>";
-      speed_d.innerHTML = "<h1> Speed (mph): " + speedmph.toFixed(2) + "</h1><br>";
+      lat_d.innerHTML = "<h1> Lat: " + lat.toFixed(6) + "</h1>";
+      lon_d.innerHTML = "<h1> Lon: " + lon.toFixed(6) + "</h1>";
+      speed_d.innerHTML = "<h1> Speed (mph): " + speedmph.toFixed(2) + "</h1>";
       total_time_d.innerHTML = "<h1> Total Walk (min): " + total_time_min.toFixed(2) + "</h1><br>";
-      total_time_start_d.innerHTML = "<h1> Total Time From Start (min): " + total_time_min_start.toFixed(2) + "</h1><br>";
-      total_miles_d.innerHTML = "<h1> Total Dist (miles): " + total_distance.toFixed(2) + "</h1><br>";
-      total_calories_d.innerHTML = "<h1> Total Cal: " + total_cal.toFixed(2) + "</h1><br>";
+      total_time_start_d.innerHTML = "<h1> Total Time From Start (min): " + total_time_min_start.toFixed(2) + "</h1>";
+      total_miles_d.innerHTML = "<h1> Total Walk Dist (miles): " + total_distance.toFixed(2) + "</h1>";
+      total_calories_d.innerHTML = "<h1> Total Cal: " + total_cal.toFixed(2) + "</h1>";
+      avg_speed_d.innerHTML = "<h1> Avg Speed: " + avg_speed.toFixed(2) + "</h1>";
+      timestamp_d.innerHTML = "<h1> Timestamp: " + timestamp + "</h1>";
       console.log("last_cords");
       console.log(last_sent_cords_timestamp);
       console.log(timestamp - last_sent_cords_timestamp);
@@ -391,10 +401,10 @@ div.desc {
     <div id="myDropdown" class="dropdown-content" >      
       <a href="../chat.html">Real Time Chat</a>
       <a href="../map.html">Map</a>
-      <a href="../send.html">Send Trick Cords</a>
+      <a href="../send.html">Send Cords</a>
       <a href="../config.html">Config</a>
       <a href="../shoot/index.html">Shoot Pictures</a> 
-      <a href="https://wiki.tricktraker.com">Wiki</a> 
+      <a href="../wiki/doku.php">Wiki</a> 
     </div>
   </div>
   <h1>Trick Traker Walk Mileage Monitor</h1>
@@ -410,9 +420,11 @@ div.desc {
  <span id="total_miles">0</span>
  <span id="total_calories">0</span>
  <span id="speed">0</span>
+ <span id="avg_speed">0</span>
  <span id="total_time">0</span>
  <span id="lat">0</span>
  <span id="lon">0</span>
+ <span id="timestamp">0</span>
  <span id="id">0</span>  
  
  <input type="button" value="Reset All" id="reset" ><br>
