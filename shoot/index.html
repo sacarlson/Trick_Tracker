@@ -7,7 +7,7 @@
 
         <meta name="description" content="A web app real-time updating Map and tracker database to find girls for hire nearby, advertise party locations and track people using your mobile phones Map, GPS and Camera features. ">
 
-	<title>FunTracker.Site Camera</title>
+	<title> Camera</title>
         <link rel="stylesheet" href="../w3.css">
 	<style type="text/css">
 		body { font-family: Helvetica, sans-serif; }
@@ -27,7 +27,8 @@ h1 { text-align: center;}
 
 .center60 {
     margin: auto;
-    width: 60%;
+    width: 10%;
+    height: 480
 }
 
 .right {
@@ -38,8 +39,8 @@ h1 { text-align: center;}
 
 .floating-box {
     display: inline-block;
-    width: 210px;
-    height: 210px;
+    width: 100px;
+    height: 100px;
     margin: 30px; 
 }
 
@@ -58,20 +59,40 @@ img {
 </head>
 <body>
 	
-	<h1>FunTracker.Site Camera </h1>
-		
+	<h1><span id="site_hostname"></span> Camera </h1>
+<div class="w3-row">
+    <div class="w3-col " style="width:12%; ">
+      <div id="pre_take_buttons">
+				<!-- This button is shown before the user takes a snapshot -->
+                        <h3>Click Button to take Picture </h3>
+                        <img src="button60x60.png" onclick="preview_snapshot()" >
+                         
+			</div>
+			<div id="post_take_buttons" style="display:none">
+				<!-- These buttons are shown after a snapshot is taken -->
+                          <h3>Take another picture or mail it</h3>
+			  <img src="turn_back_button200x202_red.png" onClick="cancel_preview()">
+                          <img src="email_button200x200.png" onClick="save_photo()">                               
+		        </div>
+
+    </div>
+    <div class="w3-rest w3-green " id="my_camera" ></div>
+</div>	
 	<div id="my_photo_booth">
-		<div class="center" > <div id="my_camera" ></div> </div>
+		
 		
 		<!-- First, include the Webcam.js JavaScript Library -->
 		<script type="text/javascript" src="webcam.js"></script>
 		
 		<!-- Configure a few settings and attach camera -->
 		<script language="JavaScript">
-
+          window.addEventListener("load", function(event) { 
                         var cam_resolution = localStorage.getItem("cam_resolution");
                         var width = 640;
                         var height = 480;
+
+                        document.getElementById("site_hostname").innerHTML= get_site_hostname();
+
                         if (cam_resolution == "high"){
                           console.log("cam high res mode 1280x720");
                           width = 1280;
@@ -99,24 +120,24 @@ img {
 				//flip_horiz: true
 			});
 			Webcam.attach( '#my_camera' );
+
+                    function get_site_hostname() {
+                      var a = document.createElement('a');
+                      a.href = window.location.href;
+                      console.log("site hostname");
+                      console.log(a['hostname']);
+                      return a['hostname'];
+                    } 
+              });
                         
 		</script>
 		
 		<!-- A button for taking snaps -->
-		<form>
-			<div id="pre_take_buttons">
-				<!-- This button is shown before the user takes a snapshot -->
-                        <h1>Click Button to take Picture </h1>
-                        <div class="center60 h_yellow"> <img src="button200x60.png" onclick="preview_snapshot()" > </div>
+	
+			
                          
-			</div>
-			<div id="post_take_buttons" style="display:none">
-				<!-- These buttons are shown after a snapshot is taken -->
-                          <h1>Take another picture or send it to Funtracker.site</h1>
-			  <div class="floating-box h_yellow"> <img src="turn_back_button200x202_red.png" onClick="cancel_preview()"> </div>
-                          <div class="floating-box h_yellow"> <img src="email_button200x200.png" onClick="save_photo()"></div>                               
-		        </div>
-		</form>
+			 
+	
 	</div>
 	
 	<div id="results" style="display:none";>

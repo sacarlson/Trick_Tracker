@@ -2,7 +2,7 @@
 <!-- Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
 <html>
 <head>
- <title>FunTracker.Site Chat</title>
+ <title>Real-Time Chat</title>
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <meta name="keywords" content="parties, party, Track, real-time, Girls, Map, GPS, Photos, way points, mark, find friends, people profiles, wiki, database, search">
 
@@ -66,7 +66,7 @@
 
  <script>
   "use strict";
-  window.addEventListener("load", function(event) { 
+ window.addEventListener("load", function(event) { 
   console.log("start loading page");
 
   //var lat = document.getElementById("lat");
@@ -83,9 +83,18 @@
   var irc_server = document.getElementById("irc_server");
 
   var timestamp = Math.floor(Date.now() / 1000);
-  
+
+  document.getElementById("site_hostname").innerHTML= get_site_hostname();
   
   get_config();
+
+  function get_site_hostname() {
+    var a = document.createElement('a');
+    a.href = window.location.href;
+    console.log("site hostname");
+    console.log(a['hostname']);
+    return a['hostname'];
+  } 
 
    function get_config() {
     if (typeof(Storage) !== "undefined") {
@@ -219,7 +228,7 @@ voice2.addEventListener("click", function(event) {
       <a href="./shoot/gallery.php">Gallery</a>    
     </div>
   </div>
-  <h1>FunTracker.Site Real Time Chat</h1>
+  <h1><span id="site_hostname"></span> Real Time Chat</h1>
 </div>
 
 

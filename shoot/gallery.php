@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>FunTracker.site Gallery</title>
+	<title> Gallery</title>
         <link rel="stylesheet" href="../w3.css">
 	<style type="text/css">
 		
@@ -115,6 +115,7 @@ div.desc {
  <script>
 
   "use strict";
+window.addEventListener("load", function(event) { 
   var type = 0;
   var tracker_server ;
   var tracker_get_server ;
@@ -124,9 +125,20 @@ div.desc {
   var radius_filter;
     
   var id = 0;
-  
+
+  document.getElementById("site_hostname").innerHTML= get_site_hostname();
+
   var http = new XMLHttpRequest();
 
+  function get_site_hostname() {
+    var a = document.createElement('a');
+    a.href = window.location.href;
+    console.log("site hostname");
+    console.log(a['hostname']);
+    return a['hostname'];
+  } 
+
+});
 
   function dropDown() {
     document.getElementById("myDropdown").classList.toggle("show");
@@ -232,7 +244,7 @@ function showPosition(position) {
       <a href="../wiki/doku.php">Wiki</a> 
     </div>
   </div>
-  <h1>FunTracker.Site Gallery</h1>
+  <h1><span id="site_hostname"></span> Gallery</h1>
   </div>
   <div class="w3-teal w3-container w3-half ">
      <div class="w3-container w3-teal">

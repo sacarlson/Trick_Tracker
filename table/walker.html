@@ -173,6 +173,16 @@ div.desc {
       //var myVar = setInterval(myTimer, (Math.round(params.update_interval * 1000 * 2)));
     }
 
+    document.getElementById("site_hostname").innerHTML= get_site_hostname();
+
+    function get_site_hostname() {
+      var a = document.createElement('a');
+      a.href = window.location.href;
+      console.log("site hostname");
+      console.log(a['hostname']);
+      return a['hostname'];
+    } 
+
     function send_cords() {
       //var timestamp = Math.floor(Date.now() / 1000);
       //GET /?id=206648&timestamp=1459757028&lat=12.9304184&lon=100.8798106&speed=0.0&bearing=0.0&altitude=0.0&batt=100.0
@@ -407,7 +417,8 @@ div.desc {
       <a href="../wiki/doku.php">Wiki</a> 
     </div>
   </div>
-  <h1>Trick Traker Walk Mileage Monitor</h1>
+  <h2> <span id="site_hostname"></span> </h2>
+  <h3> Walk Mileage Monitor </h3>
 </div>
 <form action="walker.php" method="get" id="form1">
    <input type="hidden" name="time" id="time" value="none"> 

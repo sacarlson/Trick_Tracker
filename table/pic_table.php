@@ -131,6 +131,16 @@ div.desc {
         descending: true
       });
 
+  document.getElementById("site_hostname").innerHTML= get_site_hostname();
+
+  function get_site_hostname() {
+    var a = document.createElement('a');
+    a.href = window.location.href;
+    console.log("site hostname");
+    console.log(a['hostname']);
+    return a['hostname'];
+  } 
+
     });
 
     function dropDown() {
@@ -154,7 +164,7 @@ div.desc {
       <a href="../wiki/doku.php">Wiki</a> 
     </div>
   </div>
-  <h1>FunTracker.site Picture Event History Table (sortable)</h1>
+  <h1><span id="site_hostname"></span> Picture Event History Table (sortable)</h1>
   </div>
   <div class="w3-teal w3-container w3-half ">
      <div class="w3-container w3-teal">

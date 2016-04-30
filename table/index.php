@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title> Funtracker.site Tracker Event Table</title>
+  <title> Tracker Event Table</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="keywords" content="parties, party, Track, real-time, Girls, Map, GPS, Photos, way points, mark, find friends, people profiles, wiki, database, search">
@@ -142,6 +142,17 @@ div.desc {
     min_speed.value = localStorage.getItem("min_speed_record");
     max_speed.value = localStorage.getItem("max_speed_record");
 
+    document.getElementById("site_hostname").innerHTML= get_site_hostname();
+
+    function get_site_hostname() {
+      var a = document.createElement('a');
+      a.href = window.location.href;
+      console.log("site hostname");
+      console.log(a['hostname']);
+      return a['hostname'];
+    } 
+
+
     function clear_table(id) {
       // stupid clear fix to allow table sort to work
       // for reasons uknown can't delete the first data line, can only clear it's contents to keep sort working
@@ -182,7 +193,7 @@ div.desc {
       <a href="./walker.html">Mileage Monitor</a>
     </div>
   </div>
-  <h1>FunTracker Traker Event History Table (sortable)</h1>
+  <h1><span id="site_hostname"></span> Event History Table (sortable)</h1>
   </div>
   <div class="w3-teal w3-container w3-half ">
      <div class="w3-container w3-teal">

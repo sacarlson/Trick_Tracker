@@ -2,7 +2,7 @@
 <!-- Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
 <html>
 <head>
- <title>FunTracker.site Cfg</title>
+ <title> Config Settings </title>
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <meta name="keywords" content="parties, party, Track, GPS, real-time, Map, Photos, way points, mark locations, configure">
 
@@ -51,9 +51,18 @@ p {
 
   var timestamp = Math.floor(Date.now() / 1000);
   
+  document.getElementById("site_hostname").innerHTML= get_site_hostname();
   
   get_config();
   make_map_link();
+
+  function get_site_hostname() {
+    var a = document.createElement('a');
+    a.href = window.location.href;
+    console.log("site hostname");
+    console.log(a['hostname']);
+    return a['hostname'];
+  } 
 
   function reset_default_(){
     // reset to all default configs
@@ -307,7 +316,7 @@ a {
       <a href="./wiki/doku.php">Wiki</a>   
     </div>
   </div>
-  <h1>FunTracker.Site Config</h1>
+  <h1><span id="site_hostname"></span> Config</h1>
 </div>
 
 

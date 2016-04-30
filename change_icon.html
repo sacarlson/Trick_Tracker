@@ -7,16 +7,28 @@
  <link rel="stylesheet" href="w3.css">
  <script>
   "use strict";
+ window.addEventListener("load", function(event) { 
   var type = 0;
   var tracker_server ;
   var info ;
     
   var id = 0;
+
+  document.getElementById("site_hostname").innerHTML= get_site_hostname();
   
   var http = new XMLHttpRequest();
 
 // starts from index 0
 //var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon},{icon: weedIcon}];
+
+  function get_site_hostname() {
+    var a = document.createElement('a');
+    a.href = window.location.href;
+    console.log("site hostname");
+    console.log(a['hostname']);
+    return a['hostname'];
+  } 
+
   function randomIntFromInterval(min,max) {
     return Math.floor(Math.random()*(max-min+1)+min);
   }
@@ -267,12 +279,72 @@ function showPosition(position) {
     //<img src="images/remotecon41x50.png" >
   }
 
+  function music() {
+    type = 33;
+    console.log("clicked music");
+    getLocation();
+    //<img src="images/music_band50x50.png" >
+  }
+
+  function chess() {
+    type = 34;
+    console.log("clicked chess");
+    getLocation();
+    //<img src="images/chess50x50.png" >
+  }
+
+  function pingpong() {
+    type = 35;
+    console.log("clicked pingpong");
+    getLocation();
+    //<img src="images/pingpong50x50.png" >
+  }
+
+  function billiards() {
+    type = 36;
+    console.log("clicked billiards");
+    getLocation();
+    //<img src="images/pool_billiards50x50.png" >
+  }
+
+  function badminton() {
+    type = 37;
+    console.log("clicked badminton");
+    getLocation();
+    //<img src="images/badminton50x50.png" >
+  }
+
+  function tennis() {
+    type = 38;
+    console.log("clicked tennis");
+    getLocation();
+    //<img src="images/tennis_50x50.png" >
+  }
+
+  function socker() {
+    type = 39;
+    console.log("clicked socker");
+    getLocation();
+    //<img src="images/socker_50x50.png" >
+  }
+
+  function basketball() {
+    type = 40;
+    console.log("clicked basketball");
+    getLocation();
+    //<img src="images/basketball_50x50.png" >
+  }
+
+  
+
 
 //var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon},{icon: weedIcon},{icon: cameraIcon}];
    
  getId(); 
  //id = "206648"
  console.log ("id: " + id);
+
+});
 
  function dropDown() {
     document.getElementById("myDropdown").classList.toggle("show");
@@ -352,7 +424,7 @@ window.onclick = function(event) {
       <a href="./shoot/gallery.php">Gallery</a>   
     </div>
   </div>
-  <h1>FunTracker.Site Change User Icon</h1>
+  <h1><span id="site_hostname"></span> Change User Icon</h1>
 </div>
 
 <div class="w3-row-padding w3-margin-top">
@@ -537,6 +609,79 @@ window.onclick = function(event) {
 </div>
 </div>
 </div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="music" onclick="music();">
+<img src="images/music_band50x50.png" >
+<p>Playing Music Type: 33</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="chess" onclick="chess();">
+<img src="images/chess50x50.png" >
+<p>Playing Chess Type: 34</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="pingpong" onclick="pingpong();">
+<img src="images/pingpong50x50.png" >
+<p>Playing Pingpong Type: 35</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="billiards" onclick="billiards();">
+<img src="images/pool_billiards50x50.png" >
+<p>Playing Pool or Billiards Type: 36</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="badminton" onclick="badminton();">
+<img src="images/badminton50x50.png" >
+<p>Playing Badminton Type: 37</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="tennis" onclick="tennis();">
+<img src="images/tennis_50x50.png" >
+<p>Playing Tennis Type: 38</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="socker" onclick="socker();">
+<img src="images/socker_50x50.png" >
+<p>Playing Socker Type: 39</p>
+</div>
+</div>
+</div>
+
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="basketball" onclick="basketball();">
+<img src="images/basketball_50x50.png" >
+<p>Playing Basketball Type: 40</p>
+</div>
+</div>
+</div>
+
 
 
 </body>

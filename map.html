@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>FunTracker.Site Map</title>
+    <title>Real-Time Map</title>
     <meta charset="utf-8" />
-    <meta name="keywords" content="parties, party, Track, real-time, Girls, Map, GPS, Photos, way points, mark, find friends, people profiles, wiki, database, search">
+    <meta name="keywords" content="real-time, Map, Track, parties, party, Events, GPS, Photos, way points, mark, find friends ">
 
     <meta name="description" content="A web app real-time updating Map and tracker database to find girls for hire nearby, advertise party locations and track people using your mobile phones Map, GPS and Camera features. ">
 
@@ -75,7 +75,7 @@ a {
   <li><a href="./wiki/doku.php">Wiki</a></li>
   <li><a href="chat.html">Real Time Chat</a></li>
 </ul>
-  <h1>FunTracker.Site Map</h1>
+  <h1><span id="site_hostname"></span> Map</h1>
 </div>
     <div id="map" style="width: 100%; height: 1200px"></div>
 
@@ -90,6 +90,7 @@ a {
     }
 
   window.addEventListener("load", function(event) {
+    console.log("window loaded");
     var url ;
 
     var http = new XMLHttpRequest();
@@ -115,8 +116,16 @@ a {
     console.log("params");
     console.log(params);
     
+   var http = new XMLHttpRequest();
+   var last_sent_cords_timestamp = 0;
 
-   var scottyIcon = L.icon({
+   //var site_hostname = get_site_hostname();
+   document.getElementById("site_hostname").innerHTML= get_site_hostname();
+   getLocation();
+
+  
+
+  var scottyIcon = L.icon({
     iconUrl: 'images/scotty_map_icon75x75.png',    
     iconSize:     [75, 75], // size of the icon
     iconAnchor:   [37, 75], // point of the icon which will correspond to marker's location
@@ -360,9 +369,119 @@ a {
     iconAnchor:   [20, 50], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
   });
-	
 
-  var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon},{icon: weedIcon},{icon: cameraIcon},{icon: bicycleIcon},{icon: hikeIcon},{icon: rollerbladeIcon},{icon: skateboardIcon},{icon: motorbikeIcon},{icon: harlybikeIcon},{icon: kitesurfIcon},{icon: windsurfIcon},{icon: motorboatIcon},{icon: sailboatIcon},{icon: hangglideIcon},{icon: carIcon},{icon: pickupIcon},{icon: bigtruckIcon},{icon: trainIcon},{icon: remoteIcon}];
+   //33
+  var musicIcon = L.icon({
+    iconUrl: 'images/music_band50x50.png',    
+    iconSize:     [50, 50], // size of the icon
+    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
+  });
+	
+   //34
+  var chessIcon = L.icon({
+    iconUrl: 'images/chess50x50.png',    
+    iconSize:     [50, 50], // size of the icon
+    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
+  });
+
+   //35
+  var pingpongIcon = L.icon({
+    iconUrl: 'images/pingpong50x50.png',    
+    iconSize:     [50, 50], // size of the icon
+    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
+  });
+
+   //36
+  var billiardsIcon = L.icon({
+    iconUrl: 'images/pool_billiards50x50.png',    
+    iconSize:     [50, 50], // size of the icon
+    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
+  });
+
+   //37
+  var badmintonIcon = L.icon({
+    iconUrl: 'images/badminton50x50.png',    
+    iconSize:     [50, 50], // size of the icon
+    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
+  });
+
+   //38
+  var tennisIcon = L.icon({
+    iconUrl: 'images/tennis_50x50.png',    
+    iconSize:     [50, 50], // size of the icon
+    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
+  });
+
+   //39
+  var sockerIcon = L.icon({
+    iconUrl: 'images/socker_50x50.png',    
+    iconSize:     [50, 50], // size of the icon
+    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
+  });
+
+   //40
+  var basketballIcon = L.icon({
+    iconUrl: 'images/basketball_50x50.png',    
+    iconSize:     [50, 50], // size of the icon
+    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
+  });
+
+  var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon},{icon: weedIcon},{icon: cameraIcon},{icon: bicycleIcon},{icon: hikeIcon},{icon: rollerbladeIcon},{icon: skateboardIcon},{icon: motorbikeIcon},{icon: harlybikeIcon},{icon: kitesurfIcon},{icon: windsurfIcon},{icon: motorboatIcon},{icon: sailboatIcon},{icon: hangglideIcon},{icon: carIcon},{icon: pickupIcon},{icon: bigtruckIcon},{icon: trainIcon},{icon: remoteIcon},{icon: musicIcon},{icon: chessIcon},{icon: pingpongIcon},{icon: billiardsIcon},{icon: badmintonIcon},{icon: tennisIcon},{icon: sockerIcon},{icon: basketballIcon}];
+
+  function get_site_hostname() {
+    var a = document.createElement('a');
+    a.href = window.location.href;
+   //['href','protocol','host','hostname','port','pathname','search','hash'].forEach(function(k) {
+   //  console.log(k+':', a[k]);
+   //});
+   console.log("site hostname");
+   console.log(a['hostname']);
+   return a['hostname'];
+  } 
+
+  function send_cords(lat, lon, type) {
+      var timestamp = Math.floor(Date.now() / 1000);
+      //GET /?id=206648&timestamp=1459757028&lat=12.9304184&lon=100.8798106&speed=0.0&bearing=0.0&altitude=0.0&batt=100.0
+      if (params.enable_send_cord == 1){
+        var url = params.tracker_server + "?id=" + params.id + "&timestamp=" + timestamp + "&lat=" + lat + "&lon=" + lon + "&type=" + type;
+        console.log("send_cords");
+        console.log("url: " + url);	
+        http.open("GET", url, true);
+        http.send();
+      } else {
+        console.log("send_cords disabled");
+      }
+    }
+
+  function getLocation() {
+    if (params.enable_send_cord != 1) {
+      console.log("getLocation disabled");
+      return;
+    }
+    if (navigator.geolocation) {
+        //navigator.geolocation.watchPosition(showPosition);
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+       alert("Geolocation is not supported by this browser.");
+    }
+  }
+
+  function showPosition(position) {
+    console.log("showPosition");
+    console.log( position.coords.latitude ); 
+    console.log( position.coords.longitude );
+    send_cords(position.coords.latitude, position.coords.longitude, 0);
+    //alert(" position sent lat: " + position.coords.latitude + " lon: " + position.coords.longitude + " type: " + type + " id: " + id );
+  }
+
 
 
   /**
@@ -491,7 +610,7 @@ a {
         console.log(" info ");
         console.log(info );
         var LamMarker;
-        if (points[i]['type'] > 32) { 
+        if (points[i]['type'] > 40) { 
           LamMarker  = L.marker([points[i]['lat'],points[i]['lon']])
 	  .bindPopup(info);
           markers.push(LamMarker);
@@ -510,7 +629,7 @@ a {
 
    function add_marker(lat,lon,type,info) {
      var LamMarker;
-     if (type > 32 || type < 1) { 
+     if (type > 40 || type < 1) { 
        LamMarker  = L.marker([lat,lon],icon_type[12])
        .bindPopup(info);
        markers.push(LamMarker);
@@ -620,6 +739,13 @@ a {
     if (url_position > url_list.length-1) {
       url_position = 0;
     }
+
+    if ((((ts - last_sent_cords_timestamp ) > params.send_cord_interval) || (last_sent_cords_timestamp == 0)) && params.enable_send_cord == 1) {
+      console.log("getting location");
+      //send_cords();
+      getLocation();
+      last_sent_cords_timestamp = ts;
+    }  
   }
 
    http.onreadystatechange = function() {//Call a function when the state changes.
@@ -683,6 +809,10 @@ a {
        params.update_interval = localStorage.getItem("update_interval");
        params.filter = localStorage.getItem("filter");
        params.radius_filter = localStorage.getItem("radius_filter");
+       params.send_cord_interval = localStorage.getItem("send_cord_interval");
+       params.enable_send_cord = localStorage.getItem("enable_send_cord");
+       params.min_speed_record = localStorage.getItem("min_speed_record");
+       params.max_speed_record = localStorage.getItem("max_speed_record");
        console.log("params");
        console.log(params);
        console.log("typeof params.id");
@@ -706,6 +836,10 @@ a {
          localStorage.setItem("irc_server", "wilhelm.freenode.net");
          localStorage.setItem("cam_resolution", "low");
          localStorage.setItem("filter", "");
+         localStorage.setItem("send_cord_interval", "60");
+         localStorage.setItem("enable_send_cord", "1");
+         localStorage.setItem("min_speed_record", "1");
+         localStorage.setItem("max_speed_record", "6");
          // radius_filter is in Meters
          localStorage.setItem("radius_filter", "4000");
          get_config();
