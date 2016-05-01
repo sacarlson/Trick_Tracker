@@ -3,6 +3,9 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="keywords" content=" real-time, Map, GPS, Photos, way points, mark">
+        <meta name="description" content="Picture Gallery sorted by time of all the images captured by members using the FunTracker.site Camera. Click images to get more info about shot.">
+
 	<title> Gallery</title>
         <link rel="stylesheet" href="../w3.css">
 	<style type="text/css">
@@ -333,8 +336,8 @@ while($row = $result->fetch_assoc()){
     $wiki_link = "../wiki/doku.php?id=tricktraker.com:gallery:" . $row['pic_file'];
     echo '<div class="responsive">';
     echo '<div class="img">';
-    //echo '<a target="_blank" href="' . $map_link .'">';
-    echo '<a target="_blank" href="' . $wiki_link .'">';
+    echo '<a target="_blank" href="' . $map_link .'">';
+    //echo '<a target="_blank" href="' . $wiki_link .'">';
     echo '<img src="uploads/'. $row['pic_file'] .'" width="300" height="200">';
     echo '</a>';
     echo '<div class="desc"> Shared by: ' . $row['id'] . ' On:  '. $date_form ." " . $row['info'] . " lat: " . $row['lat'] . " lon: " . $row['lon'] ." type: ". $row['type'] . " pic_file: " . $row['pic_file'] . " distance: " . intval($distance) . " Meters from Center Map " . '</div>';

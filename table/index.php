@@ -4,9 +4,8 @@
   <title> Tracker Event Table</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="keywords" content="parties, party, Track, real-time, Girls, Map, GPS, Photos, way points, mark, find friends, people profiles, wiki, database, search">
-
-    <meta name="description" content="A web app real-time updating Map and tracker database to find girls for hire nearby, advertise party locations and track people using your mobile phones Map, GPS and Camera features. ">
+  <meta name="keywords" content="search, sort ,database, GPS, track, way points, table format">
+  <meta name="description" content="See every GPS tracked event way point in the FunTracker.site database in searchable, sortable table format. ">
 
   <link rel="stylesheet" href="../w3.css">
   <link rel="stylesheet" href="tab.css">  
