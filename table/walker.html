@@ -157,7 +157,6 @@ div.desc {
     var id_d = document.getElementById('id');
     var timestamp_d = document.getElementById('timestamp');
 
-    id_d.value = params.id;
     id_d.innerHTML = "<h1> ID: " + params.id + "</h1><br>";  
 
     var http = new XMLHttpRequest();
@@ -338,15 +337,15 @@ div.desc {
       }
       var speedmph = speed * 2236.94;
       var dist_miles = distance * 0.621371;
-      
+      if (speedmph < params.max_speed_record && speedmph > params.min_speed_record) {
+        total_distance = total_distance + dist_miles;
+        total_time_min = total_time_min + ((timestamp - last_timestamp)/60);
+        avg_speed = total_distance /(total_time_min/60);       
+      }
       last_lat = lat;
       last_lon = lon;
       last_timestamp = timestamp;
-      if (speedmph < params.max_speed_record && speedmph > params.min_speed_record) {
-        total_distance = total_distance + dist_miles;
-        total_time_min = total_time_min + ((timestamp - last_timestamp)*60);
-        avg_speed = total_distance /(total_time_min/60);       
-      }
+      
      
       //https://www.verywell.com/walking-calories-burned-by-miles-3887154
       // burn rate per mile at walk speed 2.5 - 3.5 mph with 180lb person (me)

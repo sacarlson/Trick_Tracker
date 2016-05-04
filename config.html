@@ -72,8 +72,8 @@ p {
   function make_map_link() {
     var info_fixed = encodeURI(info.value);
     //var link_url = tracker_server.value + "map/?json={%22lat%22:%22" + lat.value + "%22,%22lon%22:%22" + lon.value + "%22,%22zoom%22:%22" + zoom.value + "%22,%22type%22:%22" + icon_type.value + "%22,%22info%22:%22" + info_fixed + "%22,%22timestamp%22:%22" + timestamp + "%22}";
-
-    var link_url = "https://www.funtracker.site/map.html?json={%22no_icons%22:%221%22,%22lat%22:%22" + lat.value + "%22,%22lon%22:%22" + lon.value + "%22,%22zoom%22:%22" + zoom.value + "%22,%22type%22:%22" + icon_type.value + "%22,%22info%22:%22" + info_fixed + "%22,%22timestamp%22:%22" + timestamp + "%22}";
+    var sitehome = get_site_hostname();
+    var link_url = "https://" + sitehome + "/map.html?json={%22no_icons%22:%221%22,%22lat%22:%22" + lat.value + "%22,%22lon%22:%22" + lon.value + "%22,%22zoom%22:%22" + zoom.value + "%22,%22type%22:%22" + icon_type.value + "%22,%22info%22:%22" + info_fixed + "%22,%22timestamp%22:%22" + timestamp + "%22}";
 
     map_link.innerHTML = '<h4>' + link_url + '</h4>'; 
   } 
@@ -312,10 +312,11 @@ a {
       <a href="./table/index.php">Tracker Event Table</a>
       <a href="./table/pic_table.php">Picture Event Table</a>
       <a href="./table/walker.html">Walk Mileage Monitor</a>
+      <a href="up_custom.php">Customize Icon</a>
       <a href="./wiki/doku.php">Wiki</a>   
     </div>
   </div>
-  <h1><span id="site_hostname"></span> Config</h1>
+  <h1><span id="site_hostname"></span> Configure Customize</h1>
 </div>
 
 

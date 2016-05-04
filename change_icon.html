@@ -16,8 +16,12 @@
   var info ;
     
   var id = 0;
+  getId(); 
+  //id = "206648"
+  console.log ("id: " + id);
 
   document.getElementById("site_hostname").innerHTML= get_site_hostname();
+  document.getElementById("custom_path").innerHTML= '<img src="uploads/' + id + '_icon.png" >';
   
   var http = new XMLHttpRequest();
 
@@ -338,14 +342,20 @@ function showPosition(position) {
     //<img src="images/basketball_50x50.png" >
   }
 
+  function user_custom() {
+    type = 41;
+    console.log("clicked user_custom");
+    getLocation();
+    //'<img src="uploads/' + id + '_icon.png" >'
+  }
+
+
   
 
 
 //var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon},{icon: weedIcon},{icon: cameraIcon}];
    
- getId(); 
- //id = "206648"
- console.log ("id: " + id);
+
 
 });
 
@@ -432,6 +442,15 @@ window.onclick = function(event) {
 
 <div class="w3-row-padding w3-margin-top">
 
+<div class="w3-third">
+<div class="w3-card-2" align="middle">
+<div class="w3-btn w3-white w3-ripple" style="margin:5;padding:5;" name="user_custom" onclick="user_custom();" >
+<!<img src="images/Im_here45x60.png" >
+<span id="custom_path"></span>
+<p>User Custom Type: 41</p>
+</div>
+</div>
+</div>
 
 <div class="w3-third">
 <div class="w3-card-2" align="middle">
