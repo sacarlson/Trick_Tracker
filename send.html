@@ -11,18 +11,12 @@
  <script>
   "use strict";
  window.addEventListener("load", function(event) { 
-  var type = 0;
-  var tracker_server ;
-  var info ;
-    
-  var id = 0;
+  
   
   document.getElementById("site_hostname").innerHTML= get_site_hostname();
   
-  var http = new XMLHttpRequest();
+ 
 
-// starts from index 0
-//var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon},{icon: weedIcon}];
 
   function get_site_hostname() {
     var a = document.createElement('a');
@@ -31,6 +25,15 @@
     console.log(a['hostname']);
     return a['hostname'];
   } 
+
+ });
+
+  var type = 0;
+  var tracker_server ;
+  var info ;
+    
+  var id = 0;
+  var http = new XMLHttpRequest();
 
   function randomIntFromInterval(min,max) {
     return Math.floor(Math.random()*(max-min+1)+min);
@@ -339,7 +342,7 @@ function showPosition(position) {
  //id = "206648"
  console.log ("id: " + id);
 
-});
+//});
 
  function dropDown() {
     document.getElementById("myDropdown").classList.toggle("show");
