@@ -191,8 +191,7 @@ div.desc {
   <th data-sort-method='number'>Lat</th>
   <th data-sort-method='number'>Long</th>
   <th>Type</th>
-  <th>Pic_file</th>
-  <th>Gallery Link</th>
+  <th>Pic Preview</th>
   <th>Map Link</th>
   <th>Info</th>
 </tr>
@@ -267,6 +266,7 @@ div.desc {
    $href = '../map.html?json={%22no_icons%22:%221%22,%22lat%22:%22' . $row['lat'] . '%22,%22lon%22:%22' . $row['lon'] . '%22}';
    $map_link = '<a href="' . $href .'">Map Link</a>';
    $timedate = date('m/d/Y H:i:s', $row['timestamp']);
+   $pic_preview_html = '<a href="../shoot/uploads/'. $row['pic_file'] . '"><img src="../shoot/uploads/' . $row['pic_file'] . '" style="width:80px;height:50px;" >';
    echo '<tr>';
    echo '  <td>' . $timedate . '</td>';
    echo '  <td>' . $row['id']. '</td>';
@@ -274,8 +274,8 @@ div.desc {
    echo '  <td>' . round($row['lat'],7) . '</td>';
    echo '  <td>' . round($row['lon'],7) . '</td>';
    echo '  <td>' . $row['type'] . '</td>';
-   echo '  <td>' . $row['pic_file'] . '</td>';
-   echo '  <td>' . $gallery_link . '</td>';
+   //echo '  <td>' . $row['pic_file'] . '</td>';
+   echo '  <td>' . $pic_preview_html . '</td>';
    echo '  <td>' . $map_link . '</td>';
    echo '  <td>' . $row['info'] . '</td>';
    echo '</tr>';

@@ -332,7 +332,7 @@ while($row = $result->fetch_assoc()){
   } else {
     $date_form = date("F j, Y, g:i a", $row['timestamp']);
 
-    $map_link = "../map.html?json={%22lat%22:%22" . $row['lat'] . "%22,%22lon%22:%22" . $row['lon'] . "%22,%22zoom%22:%2215%22,%22icon_type%22:%22". 16 . "%22,%22info%22:%22". $row['info'] . "%22,%22timestamp%22:%22". $row['timestamp'] . "%22,%22pic_file%22:%22" . $row['pic_file'] . "%22,%22id%22:%22" . $row['id']. "%22}";
+    $map_link = "../map.html?json={%22no_icons%22:%221%22,%22lat%22:%22" . $row['lat'] . "%22,%22lon%22:%22" . $row['lon'] . "%22,%22zoom%22:%2215%22,%22icon_type%22:%22". 16 . "%22,%22info%22:%22". $row['info'] . "%22,%22timestamp%22:%22". $row['timestamp'] . "%22,%22pic_file%22:%22" . $row['pic_file'] . "%22,%22id%22:%22" . $row['id']. "%22}";
     $wiki_link = "../wiki/doku.php?id=tricktraker.com:gallery:" . $row['pic_file'];
     echo '<div class="responsive">';
     echo '<div class="img">';

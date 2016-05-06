@@ -142,6 +142,7 @@ div.desc {
     var timestamp = 0;
     var last_timestamp = 0;
     var last_sent_cords_timestamp = 0;
+    var last_avg_speed = 0;
     var total_time_min = 0;
     var total_time_min_start = 0;
     var type = 0;
@@ -341,10 +342,13 @@ div.desc {
         total_distance = total_distance + dist_miles;
         total_time_min = total_time_min + ((timestamp - last_timestamp)/60);
         avg_speed = total_distance /(total_time_min/60);       
+      } else {
+        avg_speed = last_avg_speed;
       }
       last_lat = lat;
       last_lon = lon;
       last_timestamp = timestamp;
+      last_avg_speed = avg_speed;
       
      
       //https://www.verywell.com/walking-calories-burned-by-miles-3887154

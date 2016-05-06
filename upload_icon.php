@@ -197,8 +197,8 @@ if ($_FILES["fileToUpload"]["size"] > 200000) {
 }
 // Allow certain file formats
 if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-&& $imageFileType != "gif" ) {
-    echo "<h2>Sorry, only JPG, JPEG, PNG & GIF files are allowed.</h2>";
+&& $imageFileType != "gif" && $imageFileType != "JPG" && $imageFileType != "PNG" && $imageFileType != "GIF") {
+    echo "<h2>Sorry, only jpg, JPG, jpeg, png ,PNG & gif,GIF files are allowed.</h2>";
     $uploadOk = 0;
 }
 // Check if $uploadOk is set to 0 by an error

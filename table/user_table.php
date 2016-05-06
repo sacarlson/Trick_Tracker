@@ -222,6 +222,7 @@ div.desc {
   <th data-sort-method='number'>Long</th>
   <th data-sort-method='number'>Type</th>
   <th>Map Link</th>
+  <th>Icon Image</th>
   <th data-sort-method='number'>TimeStamp</th>
   <th>Info</th>
 </tr>
@@ -268,9 +269,15 @@ div.desc {
  
  while($row = $result->fetch_assoc()){
    
-   $href = '../map.html?json={%22no_icons%22:%221%22,%22lat%22:%22' . $row['lat'] . '%22,%22lon%22:%22' . $row['lon'] . '%22}';
+   $href = '../map.html?json={%22no_icons%22:%221%22,%22lat%22:%22' . $row['lat'] . '%22,%22lon%22:%22' . $row['lon'] . '%22,%22icon_type%22:%22' . $row['type'] . '%22,%22username%22:%22' . $row['username'] . '%22,%22timestamp%22:%22'. $row['timestamp'] . '%22,%22id%22:%22' . $row['id'] .'%22}';
    $link = '<a href="' . $href .'">Map Link</a>';
    $timedate = date('m/d/Y H:i:s', $row['timestamp']);
+   if ($row['type'] == 41) {
+     $image_html = '<img src="../uploads/' . $row['id'] . '_icon.png" >';
+   } else {
+     $image_html = '<img src="../images/Im_here45x60.png" >';
+   }
+
    echo '<tr>';
    echo '  <td>' . $timedate . '</td>';
    echo '  <td>' . $row['id']. '</td>';
@@ -279,6 +286,7 @@ div.desc {
    echo '  <td>' . round($row['lon'],7) . '</td>';
    echo '  <td>' . $row['type'] . '</td>';   
    echo '  <td>' . $link . '</td>'; 
+   echo '  <td>' . $image_html . '</td>'; 
    echo '  <td>' . $row['timestamp'] . '</td>';
    echo '  <td>' . $row['info'] . '</td>';
    echo '</tr>';      

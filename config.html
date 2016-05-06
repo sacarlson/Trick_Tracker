@@ -47,6 +47,7 @@ p {
   var radius_filter = document.getElementById("radius_filter"); 
   var send_cord_interval = document.getElementById("send_cord_interval"); 
   var send_cord_enable = document.getElementById("send_cord_enable"); 
+  var icon_scale = document.getElementById("icon_scale"); 
 
   var timestamp = Math.floor(Date.now() / 1000);
   
@@ -100,6 +101,12 @@ p {
        enable_send_cord.value = localStorage.getItem("enable_send_cord");
        min_speed_record.value = localStorage.getItem("min_speed_record");
        max_speed_record.value = localStorage.getItem("max_speed_record");
+       icon_scale.value = localStorage.getItem("icon_scale");
+       if ((icon_scale.value == null) || ( icon_scale.value.length == 0)) {
+         console.log("set default icon_scale");
+         localStorage.setItem("icon_scale", "1");
+         icon_scale.value = "1";
+       }
        if ((send_cord_interval.value == null) || (send_cord_interval.value.length == 0)) {
          console.log("set send_cord_interval");
          localStorage.setItem("send_cord_interval", "60");
@@ -183,6 +190,7 @@ p {
     localStorage.setItem("enable_send_cord", enable_send_cord.value);
     localStorage.setItem("max_speed_record", max_speed_record.value);
     localStorage.setItem("min_speed_record", min_speed_record.value);
+    localStorage.setItem("icon_scale",icon_scale.value);
   }
 
   function getLocation() {
@@ -309,6 +317,7 @@ a {
       <a href="change_icon.html">Change Icon</a>
       <a href="./shoot/index.html">Shoot Pictures</a> 
       <a href="./shoot/gallery.php">Gallery</a>
+      <a href="./table/user_table.php">Members List</a>
       <a href="./table/index.php">Tracker Event Table</a>
       <a href="./table/pic_table.php">Picture Event Table</a>
       <a href="./table/walker.html">Walk Mileage Monitor</a>
@@ -369,6 +378,8 @@ a {
 <input class="w3-input" type="text" id="min_speed_record">
 <label class="w3-label">Max Speed Record (mph)</label>
 <input class="w3-input" type="text" id="max_speed_record">
+<label class="w3-label">Icon Scale value (set size on map) default 1</label>
+<input class="w3-input" type="text" id="icon_scale">
 
 <input type="button" value="Submit Changes" id="submit" >
 <input type="button" value="Set Map Center to GPS position" id="recenter_map" >

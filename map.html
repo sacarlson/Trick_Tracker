@@ -60,25 +60,28 @@ a {
   font-size: calc(1.5vw + 1.5vh + 1.5vmin);
  }
 
-
-
 	</style>
+
 </head>
 <body>
-    <div class="box">
-  <ul>
-  <li><a href="send.html">Send Cords</a></li>
-  <li><a href="change_icon.html">Change Icon</a></li>
-  <li><a href="config.html">Config</a></li>
-  <li><a href="./shoot/index.html">Shoot Pic</a></li>
-  <li><span id="gallery_path"></span></li>
-  <li><a href="./wiki/doku.php">Wiki</a></li>
-  <li><a href="chat.html">Real Time Chat</a></li>
-</ul>
-  <h1><span id="site_hostname"></span> Map</h1>
-</div>
-    <div id="map" style="width: 100%; height: 1200px"></div>
-
+  <div class="w3-row">
+    <div class="w3-teal w3-rest">
+      <ul>
+        <li><a href="send.html">Send Coords</a></li>
+        <li><a href="change_icon.html">Change Icon</a></li>
+        <li><a href="config.html">Config</a></li>
+        <li><a href="./shoot/index.html">Shoot Pic</a></li>
+        <li><span id="gallery_path"></span></li>
+        <li><a href="./wiki/doku.php">Wiki</a></li>
+      </ul>
+      <h1><span id="site_hostname"></span> Map</h1>
+    </div>
+  </div>
+  <div class="w3-row">
+    <div class="w3-teal w3-rest">
+      <div id="map" style="width: 100%; height: 1250px"></div>
+    </div>
+  </div>
   
         <script src="leaflet.js"></script>
 	<script src="Control.FullScreen.js"></script>   
@@ -123,326 +126,6 @@ a {
    document.getElementById("site_hostname").innerHTML= get_site_hostname();
    getLocation();
 
-  
-
-  var scottyIcon = L.icon({
-    iconUrl: 'images/scotty_map_icon75x75.png',    
-    iconSize:     [75, 75], // size of the icon
-    iconAnchor:   [37, 75], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -77], // point from which the popup should open relative to the iconAnchor
-  });
- 
-
-  var cop_runingIcon = L.icon({
-    iconUrl: 'images/running_cop_50x61.png',
-    iconSize:     [50, 61], // size of the icon
-    iconAnchor:   [25, 61], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -76] // point from which the popup should open relative to the iconAnchor
-  });
-
-  var copIcon = L.icon({
-    iconUrl: 'images/police_standing_25x94.png',
-    iconSize:     [25, 94], // size of the icon
-    iconAnchor:   [17, 61], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -96] // point from which the popup should open relative to the iconAnchor
-  });
-
-  var johnIcon = L.icon({
-    iconUrl: 'images/man_with_money_49x61.png',
-    iconSize:     [49, 61], // size of the icon
-    iconAnchor:   [25, 61], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -64] // point from which the popup should open relative to the iconAnchor
-  });
-
-  var fat_girlIcon = L.icon({
-    iconUrl: 'images/fat_girl_47x60.png',
-    iconSize:     [47, 60], // size of the icon
-    iconAnchor:   [25, 60], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -65] // point from which the popup should open relative to the iconAnchor
-  });
-
-  var police_truckIcon = L.icon({
-    iconUrl: 'images/police_truck_60x23.png',
-    iconSize:     [60, 23], // size of the icon
-    iconAnchor:   [30, 23], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -25] // point from which the popup should open relative to the iconAnchor
-  });
-
-  var girlIcon = L.icon({
-    iconUrl: 'images/nice_girl_21x62.png',
-    iconSize:     [21, 62], // size of the icon
-    iconAnchor:   [10, 62], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -65] // point from which the popup should open relative to the iconAnchor
-  });
-
-  var sexyIcon = L.icon({
-    iconUrl: 'images/sexy_girl_20x60.png',
-    iconSize:     [20, 60], // size of the icon
-    iconAnchor:   [10, 60], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -65] // point from which the popup should open relative to the iconAnchor
-  });
-
-  var ihereIcon = L.icon({
-    iconUrl: 'images/Im_here45x60.png',    
-    iconSize:     [45, 60], // size of the icon
-    iconAnchor:   [22, 60], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -65], // point from which the popup should open relative to the iconAnchor
-  });
-
-  var skiny_girlIcon = L.icon({
-    iconUrl: 'images/skiny_no_tits_18x60.png',    
-    iconSize:     [18, 60], // size of the icon
-    iconAnchor:   [9, 60], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -65], // point from which the popup should open relative to the iconAnchor
-  });
-
-  var lady_boyIcon = L.icon({
-    iconUrl: 'images/lady_boy_39x61.png',    
-    iconSize:     [39, 61], // size of the icon
-    iconAnchor:   [19, 61], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -65], // point from which the popup should open relative to the iconAnchor
-  });
-
-  var short_girlIcon = L.icon({
-    iconUrl: 'images/short_girl_18x40.png',    
-    iconSize:     [18, 40], // size of the icon
-    iconAnchor:   [9, 40], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -45], // point from which the popup should open relative to the iconAnchor
-  });
-
-  // icon 13
-  var partyIcon = L.icon({
-    iconUrl: 'images/beer_party60x48.png',    
-    iconSize:     [60, 48], // size of the icon
-    iconAnchor:   [30, 24], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-  // icon 14
-  var eatingIcon = L.icon({
-    iconUrl: 'images/eat_food47x60.png',    
-    iconSize:     [47, 60], // size of the icon
-    iconAnchor:   [23, 24], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //icon 15
-  var weedIcon = L.icon({
-    iconUrl: 'images/weed_icon41x61.png',    
-    iconSize:     [41, 61], // size of the icon
-    iconAnchor:   [20, 61], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -62], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //icon 16
-  var cameraIcon = L.icon({
-    iconUrl: 'images/camera30x24.png',    
-    iconSize:     [30, 24], // size of the icon
-    iconAnchor:   [15, 25], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -25], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //17
-  var bicycleIcon = L.icon({
-    iconUrl: 'images/biker50x44.png',    
-    iconSize:     [50, 44], // size of the icon
-    iconAnchor:   [25, 44], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -44], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //18
-  var hikeIcon = L.icon({
-    iconUrl: 'images/hiker33x52.png',    
-    iconSize:     [33, 52], // size of the icon
-    iconAnchor:   [16, 52], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -52], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //19
-  var rollerbladeIcon = L.icon({
-    iconUrl: 'images/rollerblade36x50.png',    
-    iconSize:     [36, 50], // size of the icon
-    iconAnchor:   [18, 50], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //20
-  var skateboardIcon = L.icon({
-    iconUrl: 'images/skateboard40x50.png',    
-    iconSize:     [36, 50], // size of the icon
-    iconAnchor:   [18, 50], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //21
-  var motorbikeIcon = L.icon({
-    iconUrl: 'images/motor_bike50x50.png',    
-    iconSize:     [50, 50], // size of the icon
-    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //22
-  var harlybikeIcon = L.icon({
-    iconUrl: 'images/harly_motorbike52x32.png',    
-    iconSize:     [52, 32], // size of the icon
-    iconAnchor:   [25, 32], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -32], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //23
-  var kitesurfIcon = L.icon({
-    iconUrl: 'images/kitesurf50x52.png',    
-    iconSize:     [50, 52], // size of the icon
-    iconAnchor:   [25, 52], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -52], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //24
-  var windsurfIcon = L.icon({
-    iconUrl: 'images/windsurf50x50.png',    
-    iconSize:     [50, 50], // size of the icon
-    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //25
-  var motorboatIcon = L.icon({
-    iconUrl: 'images/luxury-yacht-boat50x22.png',    
-    iconSize:     [50, 22], // size of the icon
-    iconAnchor:   [25, 22], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -22], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //26
-  var sailboatIcon = L.icon({
-    iconUrl: 'images/sailor-boat50x50.png',    
-    iconSize:     [50, 50], // size of the icon
-    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //27
-  var hangglideIcon = L.icon({
-    iconUrl: 'images/hang_glider50x45.png',    
-    iconSize:     [50, 45], // size of the icon
-    iconAnchor:   [25, 45], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -45], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //28
-  var carIcon = L.icon({
-    iconUrl: 'images/car50x23.png',    
-    iconSize:     [50, 23], // size of the icon
-    iconAnchor:   [25, 23], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -23], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //29
-  var pickupIcon = L.icon({
-    iconUrl: 'images/pickup_truck52x20.png',    
-    iconSize:     [52, 20], // size of the icon
-    iconAnchor:   [25, 20], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -20], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //30
-  var bigtruckIcon = L.icon({
-    iconUrl: 'images/transportation-truck50x22.png',    
-    iconSize:     [50, 22], // size of the icon
-    iconAnchor:   [25, 22], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -22], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //31
-  var trainIcon = L.icon({
-    iconUrl: 'images/train33x50.png',    
-    iconSize:     [33, 50], // size of the icon
-    iconAnchor:   [16, 50], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //32
-  var remoteIcon = L.icon({
-    iconUrl: 'images/remotecon41x50.png',    
-    iconSize:     [41, 50], // size of the icon
-    iconAnchor:   [20, 50], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-   //33
-  var musicIcon = L.icon({
-    iconUrl: 'images/music_band50x50.png',    
-    iconSize:     [50, 50], // size of the icon
-    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-	
-   //34
-  var chessIcon = L.icon({
-    iconUrl: 'images/chess50x50.png',    
-    iconSize:     [50, 50], // size of the icon
-    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-   //35
-  var pingpongIcon = L.icon({
-    iconUrl: 'images/pingpong50x50.png',    
-    iconSize:     [50, 50], // size of the icon
-    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-   //36
-  var billiardsIcon = L.icon({
-    iconUrl: 'images/pool_billiards50x50.png',    
-    iconSize:     [50, 50], // size of the icon
-    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-   //37
-  var badmintonIcon = L.icon({
-    iconUrl: 'images/badminton50x50.png',    
-    iconSize:     [50, 50], // size of the icon
-    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-   //38
-  var tennisIcon = L.icon({
-    iconUrl: 'images/tennis_50x50.png',    
-    iconSize:     [50, 50], // size of the icon
-    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-   //39
-  var sockerIcon = L.icon({
-    iconUrl: 'images/socker_50x50.png',    
-    iconSize:     [50, 50], // size of the icon
-    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-   //40
-  var basketballIcon = L.icon({
-    iconUrl: 'images/basketball_50x50.png',    
-    iconSize:     [50, 50], // size of the icon
-    iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -50], // point from which the popup should open relative to the iconAnchor
-  });
-
-  //41
-  var userIcon = L.icon({
-    iconUrl: 'uploads/' + params.id + '_icon.png',    
-    iconSize:     [57, 68], // size of the icon
-    iconAnchor:   [28, 68], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -69], // point from which the popup should open relative to the iconAnchor
-  });
-
-  var icon_type = [{icon: ihereIcon},{icon: scottyIcon},{icon: sexyIcon},{icon: girlIcon}, {icon: short_girlIcon},{icon: skiny_girlIcon},{icon: fat_girlIcon},{icon: lady_boyIcon}, {icon: copIcon},{icon: cop_runingIcon}, {icon: police_truckIcon},{icon: johnIcon},{icon: ihereIcon},{icon: partyIcon},{icon: eatingIcon},{icon: weedIcon},{icon: cameraIcon},{icon: bicycleIcon},{icon: hikeIcon},{icon: rollerbladeIcon},{icon: skateboardIcon},{icon: motorbikeIcon},{icon: harlybikeIcon},{icon: kitesurfIcon},{icon: windsurfIcon},{icon: motorboatIcon},{icon: sailboatIcon},{icon: hangglideIcon},{icon: carIcon},{icon: pickupIcon},{icon: bigtruckIcon},{icon: trainIcon},{icon: remoteIcon},{icon: musicIcon},{icon: chessIcon},{icon: pingpongIcon},{icon: billiardsIcon},{icon: badmintonIcon},{icon: tennisIcon},{icon: sockerIcon},{icon: basketballIcon},{icon: userIcon}];
 
   function get_site_hostname() {
     var a = document.createElement('a');
@@ -574,7 +257,7 @@ a {
      lines = L.geoJson(mylines2).addTo(map);
    }
 
-    function write_icons(points) {
+    function write_icons(points,color) {
       // points is an array
       console.log("points");
       console.log(points);
@@ -627,18 +310,19 @@ a {
         } else {
           if (points[i]['type'] == 41) {
             console.log("type == 41");
+            console.log("params.icon_scale");
             var iconURL = 'uploads/' + points[i]['id'] + '_icon.png';
             console.log(iconURL);
             var custom_icon = L.icon({
               iconUrl: iconURL,    
-              iconSize:     [57, 68], // size of the icon
-              iconAnchor:   [28, 68], // point of the icon which will correspond to marker's location
-              popupAnchor:  [0, -69], // point from which the popup should open relative to the iconAnchor
+              iconSize:     [Math.round(57 * params.icon_scale), Math.round(68 * params.icon_scale)], 
+              iconAnchor:   [Math.round(28 * params.icon_scale), Math.round(68 * params.icon_scale)], 
+              popupAnchor:  [0, Math.round(-69 * params.icon_scale)], 
             });
             LamMarker = L.marker([points[i]['lat'],points[i]['lon']],{icon: custom_icon})
 	    .bindPopup(info);
           } else { 
-            LamMarker = L.marker([points[i]['lat'],points[i]['lon']],icon_type[points[i]['type']])
+            LamMarker = L.marker([points[i]['lat'],points[i]['lon']],{icon:make_icon(points[i]['type'],color)})
 	    .bindPopup(info);
           }
           markers.push(LamMarker);
@@ -654,16 +338,50 @@ a {
       console.log(markers);
     }
 
+   function make_icon(type,color) {
+     console.log("make_icon");
+     var icon_dir = 'images_red';
+     if (color == 'green'){
+       icon_dir = 'images_green';
+     }
+     //params.icon_scale
+     // Math.round( floatvalue )
+     var activeIcon = L.icon({
+       iconUrl: icon_dir + '/icon_' + type + '.png',    
+       iconSize:     [Math.round(57 * params.icon_scale), Math.round(68 * params.icon_scale)], // size of the icon
+       iconAnchor:   [Math.round(28 * params.icon_scale), Math.round(68 * params.icon_scale)], // point of the icon which will correspond to marker's location
+       popupAnchor:  [0, Math.round(-69 * params.icon_scale)], // point from which the popup should open relative to the iconAnchor
+     });
+     return activeIcon;
+   }
+
+   function make_icon2(type,color) {
+     var icon_dir = 'images_red';
+     if (color == 'green'){
+       icon_dir = 'images_green';
+     }
+     //params.icon_scale
+     // Math.round( floatvalue )
+     var activeIcon = L.icon({
+       iconUrl: icon_dir + '/icon_' + type + '.png',    
+       iconSize:     [57, 68], // size of the icon
+       iconAnchor:   [28, 68], // point of the icon which will correspond to marker's location
+       popupAnchor:  [0, -69], // point from which the popup should open relative to the iconAnchor
+     });
+     return activeIcon;
+   }
+
    function add_marker(lat,lon,type,info) {
      info = "<h2>" + info + "</h2>";
      var LamMarker;
+     
      if (type > 41 || type < 1) { 
-       LamMarker  = L.marker([lat,lon],icon_type[12])
+       LamMarker  = L.marker([lat,lon],{icon:make_icon(12,'red')})
        .bindPopup(info);
        markers.push(LamMarker);
        map.addLayer(LamMarker);
      } else { 
-        LamMarker = L.marker([lat,lon],icon_type[type])
+        LamMarker = L.marker([lat,lon],{icon:make_icon(type,'red')})
 	.bindPopup(info);
         markers.push(LamMarker);
         map.addLayer(LamMarker);
@@ -692,17 +410,17 @@ a {
          console.log('obj[all][0][users] != undefined');
          if (obj['all'][0]['users'].length > 0){
             console.log('length > 0');
-            write_icons(obj['all'][0]['users']);
+            write_icons(obj['all'][0]['users'],"red");
          }
        }
        if (typeof obj['all'][1]['pics'] != 'undefined'){
          if (obj['all'][1]['pics'].length > 0){
-            write_icons(obj['all'][1]['pics']);
+            write_icons(obj['all'][1]['pics'],"green");
          }
        }
        if (typeof obj['all'][2]['data'] != 'undefined'){
          if (obj['all'][2]['data'].length > 0){
-            write_icons(obj['all'][2]['data']); 
+            write_icons(obj['all'][2]['data'],"green"); 
          }
        }
      } else {
@@ -710,14 +428,14 @@ a {
          if (obj['users'].length > 0){
             console.log("obj.users");
             remove_markers();
-            write_icons(obj['users']);
+            write_icons(obj['users'],"red");
          } 
        } 
        if (typeof obj['pics'] != 'undefined') {     
          if (obj['pics'].length > 0){
             console.log("obj.pics");
             remove_markers();
-            write_icons(obj['pics']);
+            write_icons(obj['pics'],"green");
          }
        }
        if (typeof obj['data'] != 'undefined') { 
@@ -727,7 +445,7 @@ a {
              update_tracks(obj['data']);
            } else {
              remove_markers();
-             write_icons(obj['data']); 
+             write_icons(obj['data'],"green"); 
            }
          }
        }
@@ -841,6 +559,12 @@ a {
        params.enable_send_cord = localStorage.getItem("enable_send_cord");
        params.min_speed_record = localStorage.getItem("min_speed_record");
        params.max_speed_record = localStorage.getItem("max_speed_record");
+       params.icon_scale = localStorage.getItem("icon_scale");
+       if ((params.icon_scale == null) || ( params.icon_scale.length == 0)) {
+         console.log("set default icon_scale");
+         localStorage.setItem("icon_scale", "1");
+         params.icon_scale = "1";
+       }
        console.log("params");
        console.log(params);
        console.log("typeof params.id");
@@ -913,16 +637,23 @@ a {
         }
         console.log("params2");
         console.log(params);
-        var pop_info = "Shared by: " + params.id + " " + params.info + " taken at: " + timestampToString(params.timestamp) + " pic_file: " + params.pic_file;
+        var pop_info = "";
+        if (params.icon_type == 16){
+          pop_info = "Shared by: " + params.id + " " + params.info + " taken at: " + timestampToString(params.timestamp) + " pic_file: " + params.pic_file;
+        } else {
+          pop_info = "ID: " + params.id + " User Name: " + params.username + " " + params.info + " updated at: " + timestampToString(params.timestamp);
+        }
+           
         console.log(params.info + " last updated: " + timestampToString(params.timestamp));
         pop_info = "<h2>" + pop_info + "</h2>";
         if (params.icon_type !== null) {
           console.log("type not null");
-          L.marker([params.lat,params.lon],icon_type[params.icon_type])
+          make_icon(params.icon_type,'green')
+          L.marker([params.lat,params.lon],{icon:make_icon(params.icon_type,'green')})
           .bindPopup(pop_info)
 	  .addTo(map);
         } else {
-          L.marker([params.lat,params.lon],icon_type[0])
+          L.marker([params.lat,params.lon],{icon:make_icon(12,'green')})
           .bindPopup(pop_info)
 	  .addTo(map);
         }        
