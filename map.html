@@ -292,16 +292,21 @@ a {
         console.log("alarm_radius == 0, disabled");
         return;
       }
-      if (params.alarm_radius > 0){
-         ref_lat = params.lat;
-         ref_lon = params.lon;
+      console.log(params.alarm_ref_lat);
+      console.log(params.alarm_ref_lon);
+      var ref_lat = 0;
+      var ref_lon = 0;
+      // if params.laarm_ref_lat > 0 then judge distance from alarm_ref_lat,lon else judge distance from last known positon of held device
+      if (params.alarm_ref_lat != 0){
+         ref_lat = params.alarm_ref_lat;
+         ref_lon = params.alarm_ref_lon;
       } else {
          ref_lat = last_lat;
          ref_lon = last_lon;
       }
       var dist_meters = getDistanceFromLatLonInKm(lat,lon,ref_lat,ref_lon) * 1000;
       console.log("dist: " + dist_meters);
-      // mode 1  trigger dist > alarm_radius from map center
+      // mode 1  trigger dist > alarm_radius ref lat,lon
       console.log("alarm_radius");
       console.log(params.alarm_radius);
       if (params.alarm_radius > 0){
@@ -317,7 +322,7 @@ a {
         if (Math.abs(params.alarm_radius) > dist_meters) {
            console.log("sound alarm mode 2");
            alarm.play();
-           alert("Proximity Alarm Mode 2 trigered, track_id distance from YOU < " + params.alarm_radius +" Meters");          
+           alert("Proximity Alarm Mode 2 trigered, track_id distance from Ref lat,lon < " + params.alarm_radius +" Meters");          
         }
       }
     }   
@@ -630,9 +635,22 @@ a {
        params.max_speed_record = localStorage.getItem("max_speed_record");
        params.icon_scale = localStorage.getItem("icon_scale");
        params.alarm_radius = localStorage.getItem("alarm_radius");
+       params.alarm_ref_lat = localStorage.getItem("alarm_ref_lat");
+       params.alarm_ref_lon = localStorage.getItem("alarm_ref_lon");
+       if ((params.alarm_ref_lat == null) || ( params.alarm_ref_lat.length == 0)) {
+         console.log("set default alarm_ref_lat");
+         // 0 sets ref lat,lon to device location
+         localStorage.setItem("alarm_ref_lat", "0");
+         params.alarm_ref_lat = "0";
+       }
+       if ((params.alarm_ref_lon == null) || ( params.alarm_ref_lon.length == 0)) {
+         console.log("set default alarm_ref_lon");
+         localStorage.setItem("alarm_ref_lon", "0");
+         params.alarm_ref_lon = "0";
+       }
        if ((params.alarm_radius == null) || ( params.alarm_radius.length == 0)) {
          console.log("set default alarm_radius");
-         // 0 disabled
+         // 0 disables alarm
          localStorage.setItem("alarm_radius", "0");
          params.alarm_radius = "0";
        }
@@ -666,8 +684,8 @@ a {
          localStorage.setItem("filter", "");
          localStorage.setItem("send_cord_interval", "60");
          localStorage.setItem("enable_send_cord", "1");
-         localStorage.setItem("min_speed_record", "1");
-         localStorage.setItem("max_speed_record", "6");
+         localStorage.setItem("min_speed_record", "0.2");
+         localStorage.setItem("max_speed_record", "9");
          // radius_filter is in Meters
          localStorage.setItem("radius_filter", "4000");
          get_config();

@@ -49,6 +49,8 @@ p {
   var send_cord_enable = document.getElementById("send_cord_enable"); 
   var icon_scale = document.getElementById("icon_scale"); 
   var alarm_radius = document.getElementById("alarm_radius");
+  var alarm_ref_lat = document.getElementById("alarm_ref_lat");
+  var alarm_ref_lon = document.getElementById("alarm_ref_lon");
 
   var timestamp = Math.floor(Date.now() / 1000);
   
@@ -104,6 +106,18 @@ p {
        max_speed_record.value = localStorage.getItem("max_speed_record");
        icon_scale.value = localStorage.getItem("icon_scale");
        alarm_radius.value = localStorage.getItem("alarm_radius");
+       alarm_ref_lat.value = localStorage.getItem("alarm_ref_lat");
+       alarm_ref_lon.value = localStorage.getItem("alarm_ref_lon");
+       if ((alarm_ref_lat.value == null) || ( alarm_ref_lat.value.length == 0)) {
+         console.log("set default alarm_ref_lat");
+         localStorage.setItem("alarm_ref_lat", "0");
+         alarm_ref_lat.value = "0";
+       }
+       if ((alarm_ref_lon.value == null) || ( alarm_ref_lon.value.length == 0)) {
+         console.log("set default alarm_ref_lon");
+         localStorage.setItem("alarm_ref_lon", "0");
+         alarm_ref_lon.value = "0";
+       }
        if ((alarm_radius.value == null) || ( alarm_radius.value.length == 0)) {
          console.log("set default alarm_radius");
          // radius is in meters, 0 = disable alarm, negitive number is min distance from you before alarm triger
@@ -202,6 +216,8 @@ p {
     localStorage.setItem("min_speed_record", min_speed_record.value);
     localStorage.setItem("icon_scale",icon_scale.value);
     localStorage.setItem("alarm_radius", alarm_radius.value);
+    localStorage.setItem("alarm_ref_lat", alarm_ref_lat.value);
+    localStorage.setItem("alarm_ref_lon", alarm_ref_lon.value);
   }
 
   function getLocation() {
@@ -391,8 +407,12 @@ a {
 <input class="w3-input" type="text" id="max_speed_record">
 <label class="w3-label">Icon Scale value (set size on map) default 1</label>
 <input class="w3-input" type="text" id="icon_scale">
-<label class="w3-label">Alarm Radius (meters) default 0 (positive trig dist > map center</label>
+<label class="w3-label">Alarm Radius (meters) default 0 (positive outside radius trigger)</label>
 <input class="w3-input" type="text" id="alarm_radius">
+<label class="w3-label">Alarm Reference Lat default 0 (0 sets ref point to device)</label>
+<input class="w3-input" type="text" id="alarm_ref_lat">
+<label class="w3-label">Alarm Reference long default 0 </label>
+<input class="w3-input" type="text" id="alarm_ref_lon">
 
 <input type="button" value="Submit Changes" id="submit" >
 <input type="button" value="Set Map Center to GPS position" id="recenter_map" >
