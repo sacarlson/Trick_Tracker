@@ -129,10 +129,10 @@ div.desc {
     // Initialize everything when the window finishes loading
     window.addEventListener("load", function(event) {
 
-    var params = {};
-    var table_sort_trans = new Tablesort(document.getElementById('table'), {
+      var table_sort_trans = new Tablesort(document.getElementById('table'), {
         descending: true
-      });
+
+    });
 
     var track_time_min = document.getElementById('time');
     var max_speed = document.getElementById('max_speed_record');
@@ -142,6 +142,8 @@ div.desc {
     max_speed.value = localStorage.getItem("max_speed_record");
 
     document.getElementById("site_hostname").innerHTML= get_site_hostname();
+
+    
 
     function get_site_hostname() {
       var a = document.createElement('a');
@@ -173,6 +175,20 @@ div.desc {
     function dropDown() {
       document.getElementById("myDropdown").classList.toggle("show");
     }
+
+    function confirm_delete(index){
+      //location.href=' . "'delete.php?id=" . $index_num 
+      console.log("index");
+      console.log(index);
+      var search = document.getElementById("search");
+      var r = confirm("Delete Confirm?");
+      if (r == true) {
+         console.log("You pressed OK! deleted value: " + index);
+         location.href='./index2.php?delete=' + index + "&search=" + search.value;
+      } else {
+         console.log("You pressed Cancel!");
+      } 
+    }
   </script>
    
 </head>
@@ -196,12 +212,12 @@ div.desc {
   </div>
   <div class="w3-teal w3-container w3-half ">
      <div class="w3-container w3-teal">
-       <form action="index.php" method="get" class="w3-container center ">
+       <form action="index2.php" method="get" class="w3-container center ">
          <input type="hidden" name="time" id="time" value="none">
          <input type="hidden" name="max_speed" id="max_speed_record" value="5"> 
          <input type="hidden" name="min_speed" id="min_speed_record" value="2">  
          <label>Search</label>
-         <input type="text" name="search" class="w3-input w3-text-black">
+         <input type="text" name="search" class="w3-input w3-text-black" id="search" value="<?php echo  htmlentities($_GET['search']) ?>">
          <input type="submit" class="w3-btn w3-blue" >         
        </form>
      </div>    
@@ -220,6 +236,7 @@ div.desc {
   <th data-sort-method='number'>Lat</th>
   <th data-sort-method='number'>Long</th>
   <th>Type</th>
+  <th>Delete</th>
   <th data-sort-method='number'>Speed</th>
   <th data-sort-method='number'>distance</th>
   <th data-sort-method='number'>total distance</th>
@@ -257,6 +274,7 @@ div.desc {
     return $geopointDistance;
   }
 
+  
   // Create connection
   $conn = new mysqli($servername, $username, $password, $dbname);
   // Check connection
@@ -264,6 +282,14 @@ div.desc {
     die("Connection failed: " . $conn->connect_error);
   }
 
+
+  if (!empty( $_GET['delete'])) {
+    $sql = "DELETE FROM data WHERE index2=" . $_GET['delete'] . ";";
+    //echo "sql: " . $sql . "<br>";
+    if(!$result = $conn->query($sql)){
+      die('There was an error running the query [' . $conn->error . ']');
+    }
+  }
 
   //$sql = "SELECT * FROM `pics`";
   //$sql =  "SELECT * FROM `data` ORDER BY timestamp DESC LIMIT 32";
@@ -287,7 +313,7 @@ div.desc {
   //echo $sql;
 
   if(!$result = $conn->query($sql)){
-    die('There was an error running the query [' . $db->error . ']');
+    die('There was an error running the query [' . $conn->error . ']');
   }
  $last_lat = 0;
  $last_lon = 0;
@@ -316,6 +342,9 @@ div.desc {
    $total_cal_burn = $total_dist * 88.9;
    $href = '../map.html?json={%22no_icons%22:%221%22,%22lat%22:%22' . $row['lat'] . '%22,%22lon%22:%22' . $row['lon'] . '%22}';
    $link = '<a href="' . $href .'">Map Link</a>';
+   //$index_num = $row['index'];
+   $delete_link = '<img src="../images/delete.png" onclick="confirm_delete('. $row['index2'] .')" /> ';
+   //$delete_link = '<img src="../images/delete.png"  /> ';
    echo '<tr>';
    echo '  <td>' . $row['time'] . '</td>';
    echo '  <td>' . $row['id']. '</td>';
@@ -323,6 +352,7 @@ div.desc {
    echo '  <td>' . round($row['lat'],7) . '</td>';
    echo '  <td>' . round($row['lon'],7) . '</td>';
    echo '  <td>' . $row['type'] . '</td>';
+   echo '  <td>' . $delete_link . '</td>';
    echo '  <td>' . round(($speedmph),2) . '</td>';
    echo '  <td>' . round($distmiles,5) . '</td>';
    echo '  <td>' . round($total_dist,5) . '</td>';
