@@ -48,6 +48,7 @@ p {
   var send_cord_interval = document.getElementById("send_cord_interval"); 
   var send_cord_enable = document.getElementById("send_cord_enable"); 
   var icon_scale = document.getElementById("icon_scale"); 
+  var alarm_radius = document.getElementById("alarm_radius");
 
   var timestamp = Math.floor(Date.now() / 1000);
   
@@ -102,6 +103,15 @@ p {
        min_speed_record.value = localStorage.getItem("min_speed_record");
        max_speed_record.value = localStorage.getItem("max_speed_record");
        icon_scale.value = localStorage.getItem("icon_scale");
+       alarm_radius.value = localStorage.getItem("alarm_radius");
+       if ((alarm_radius.value == null) || ( alarm_radius.value.length == 0)) {
+         console.log("set default alarm_radius");
+         // radius is in meters, 0 = disable alarm, negitive number is min distance from you before alarm triger
+         // positive number is distance from center of map before triger alarm
+         // all reference to track_id as target
+         localStorage.setItem("alarm_radius", "0");
+         alarm_radius.value = "0";
+       }
        if ((icon_scale.value == null) || ( icon_scale.value.length == 0)) {
          console.log("set default icon_scale");
          localStorage.setItem("icon_scale", "1");
@@ -191,6 +201,7 @@ p {
     localStorage.setItem("max_speed_record", max_speed_record.value);
     localStorage.setItem("min_speed_record", min_speed_record.value);
     localStorage.setItem("icon_scale",icon_scale.value);
+    localStorage.setItem("alarm_radius", alarm_radius.value);
   }
 
   function getLocation() {
@@ -380,6 +391,8 @@ a {
 <input class="w3-input" type="text" id="max_speed_record">
 <label class="w3-label">Icon Scale value (set size on map) default 1</label>
 <input class="w3-input" type="text" id="icon_scale">
+<label class="w3-label">Alarm Radius (meters) default 0 (positive trig dist > map center</label>
+<input class="w3-input" type="text" id="alarm_radius">
 
 <input type="button" value="Submit Changes" id="submit" >
 <input type="button" value="Set Map Center to GPS position" id="recenter_map" >

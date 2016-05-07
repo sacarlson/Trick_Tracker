@@ -181,7 +181,7 @@ div.desc {
       console.log("index");
       console.log(index);
       var search = document.getElementById("search");
-      var r = confirm("Delete Confirm?");
+      var r = confirm("Confirm Delete data index: " + index + " ??");
       if (r == true) {
          console.log("You pressed OK! deleted value: " + index);
          location.href='./index2.php?delete=' + index + "&search=" + search.value;

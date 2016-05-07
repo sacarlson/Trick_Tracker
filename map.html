@@ -3,9 +3,9 @@
 <head>
     <title>Real-Time Map</title>
     <meta charset="utf-8" />
-    <meta name="keywords" content="real-time, Map, Track, GPS, Photos, way points, mark, find friends ">
+    <meta name="keywords" content="real-time, map, track, GPS, proximity alarm, alert, Photos, way points, mark, find friends ">
 
-    <meta name="description" content="A real-time GPS updated Map to display Icon markers, tracked object trails, and picture locations. ">
+    <meta name="description" content="A real-time GPS updated Map to display Icon markers, tracked object trails, and picture locations, with added Proximity alert sense. ">
 
     <link rel="stylesheet" href="w3.css">
     <link rel="stylesheet" href="leaflet.css" />
@@ -103,6 +103,8 @@ a {
     var myLines = [];
     var last_marker_count = 0;
     var last_data_marker_count = 0;
+    var last_lat = 0;
+    var last_lon = 0;
     var url_position = 0;
     var timestamp = Math.floor(Date.now() / 1000);
     
@@ -125,6 +127,31 @@ a {
    //var site_hostname = get_site_hostname();
    document.getElementById("site_hostname").innerHTML= get_site_hostname();
    getLocation();
+
+   // preload alarm sound
+   var alarm = new Audio();
+   alarm.autoplay = false;
+   //alarm.src = navigator.userAgent.match(/Firefox/) ? 'shutter.ogg' : 'shutter.mp3';
+   alarm.src = 'alarmsiren.mp3';
+   //alarm.play();
+
+  function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+      var R = 6371; // Radius of the earth in km
+      var dLat = deg2rad(lat2-lat1);  // deg2rad below
+      var dLon = deg2rad(lon2-lon1); 
+      var a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2)
+      ; 
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      var d = R * c; // Distance in km
+      return d;
+    }
+
+    function deg2rad(deg) {
+      return deg * (Math.PI/180)
+    }
 
 
   function get_site_hostname() {
@@ -169,6 +196,8 @@ a {
     console.log("showPosition");
     console.log( position.coords.latitude ); 
     console.log( position.coords.longitude );
+    last_lat = position.coords.latitude;
+    last_lon = position.coords.longitude
     send_cords(position.coords.latitude, position.coords.longitude, 0);
     //alert(" position sent lat: " + position.coords.latitude + " lon: " + position.coords.longitude + " type: " + type + " id: " + id );
   }
@@ -257,6 +286,43 @@ a {
      lines = L.geoJson(mylines2).addTo(map);
    }
 
+    function checkAlarm(lat,lon){
+      console.log("checkAlarm");
+      if (params.alarm_radius == 0){
+        console.log("alarm_radius == 0, disabled");
+        return;
+      }
+      if (params.alarm_radius > 0){
+         ref_lat = params.lat;
+         ref_lon = params.lon;
+      } else {
+         ref_lat = last_lat;
+         ref_lon = last_lon;
+      }
+      var dist_meters = getDistanceFromLatLonInKm(lat,lon,ref_lat,ref_lon) * 1000;
+      console.log("dist: " + dist_meters);
+      // mode 1  trigger dist > alarm_radius from map center
+      console.log("alarm_radius");
+      console.log(params.alarm_radius);
+      if (params.alarm_radius > 0){
+        console.log("check mode 1");
+        if (Math.abs(params.alarm_radius) < dist_meters){
+           console.log("sound alarm mode 1");
+           alarm.play();
+           alert("Proximity Alarm Mode 1 trigered, track_id distance from Map Center > " + params.alarm_radius + " Meters");
+           
+        }
+      } else {
+        // mode 2 trigger dist < alarm_radius from you (device you hold)
+        if (Math.abs(params.alarm_radius) > dist_meters) {
+           console.log("sound alarm mode 2");
+           alarm.play();
+           alert("Proximity Alarm Mode 2 trigered, track_id distance from YOU < " + params.alarm_radius +" Meters");          
+        }
+      }
+    }   
+
+
     function write_icons(points,color) {
       // points is an array
       console.log("points");
@@ -266,6 +332,9 @@ a {
       var i2;
       var flag_break = true;
       for (var i = 0; i < points.length; i++) {
+        if (params.alarm_radius != 0 && points[i]['id'] == params.track_id && points[i]['id'] != params.id) {
+           checkAlarm(points[i]['lat'],points[i]['lon']);
+        }
         info = "";
         if (params.filter.length > 0){
           filter_list = params.filter.split(",");
@@ -329,9 +398,9 @@ a {
           map.addLayer(LamMarker);
         }
         if (points[i]['type'] == 41) {
-          LamMarker.setOpacity(0.75); 
+          LamMarker.setOpacity(0.85); 
         } else {
-          LamMarker.setOpacity(0.50);
+          LamMarker.setOpacity(0.75);
         }              
       }
       console.log("markers");
@@ -560,6 +629,13 @@ a {
        params.min_speed_record = localStorage.getItem("min_speed_record");
        params.max_speed_record = localStorage.getItem("max_speed_record");
        params.icon_scale = localStorage.getItem("icon_scale");
+       params.alarm_radius = localStorage.getItem("alarm_radius");
+       if ((params.alarm_radius == null) || ( params.alarm_radius.length == 0)) {
+         console.log("set default alarm_radius");
+         // 0 disabled
+         localStorage.setItem("alarm_radius", "0");
+         params.alarm_radius = "0";
+       }
        if ((params.icon_scale == null) || ( params.icon_scale.length == 0)) {
          console.log("set default icon_scale");
          localStorage.setItem("icon_scale", "1");
