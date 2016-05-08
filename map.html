@@ -271,7 +271,7 @@ a {
        var last_i = 0;
        info = " id: " + chosen_tracks[key][last_i]['id'] + " lat: " +chosen_tracks[key][last_i]['lat']  + " lon: " +chosen_tracks[key][last_i]['lon'] +" last updated: " + timestampToString(chosen_tracks[key][last_i]['timestamp']) + " type: " + chosen_tracks[key][last_i]['type'];
   
-       add_marker(chosen_tracks[key][last_i]['lat'],chosen_tracks[key][last_i]['lon'],12,info);     
+       add_marker(chosen_tracks[key][last_i]['lat'],chosen_tracks[key][last_i]['lon'],42,info);     
        for (var i = 0; i < chosen_tracks[key].length; ++i) {
          a = [];
          a.push(chosen_tracks[key][i]['lon']);
@@ -376,7 +376,7 @@ a {
         console.log(" info ");
         console.log(info );
         var LamMarker;
-        if (points[i]['type'] > 41) { 
+        if (points[i]['type'] > 42) { 
           LamMarker  = L.marker([points[i]['lat'],points[i]['lon']])
 	  .bindPopup(info);
           markers.push(LamMarker);
@@ -449,7 +449,7 @@ a {
      info = "<h2>" + info + "</h2>";
      var LamMarker;
      
-     if (type > 41 || type < 1) { 
+     if (type > 42 || type < 1) { 
        LamMarker  = L.marker([lat,lon],{icon:make_icon(12,'red')})
        .bindPopup(info);
        markers.push(LamMarker);

@@ -145,6 +145,7 @@ div.desc {
     var last_avg_speed = 0;
     var total_time_min = 0;
     var total_time_min_start = 0;
+    var total_miles_start = 0;
     var type = 0;
 
     var lat_d = document.getElementById('lat');
@@ -157,10 +158,19 @@ div.desc {
     var total_time_start_d = document.getElementById('total_time_start');
     var id_d = document.getElementById('id');
     var timestamp_d = document.getElementById('timestamp');
+    var target_dist_d = document.getElementById('target_dist');
+    var total_miles_start_d = document.getElementById('total_miles_start');
 
     id_d.innerHTML = "<h1> ID: " + params.id + "</h1><br>";  
 
     var http = new XMLHttpRequest();
+
+    // preload alarm sound
+   var alarm = new Audio();
+   alarm.autoplay = false;
+   //alarm.src = navigator.userAgent.match(/Firefox/) ? 'shutter.ogg' : 'shutter.mp3';
+   alarm.src = '../alarmsiren.mp3';
+   //alarm.play();
 
     track_time_min.value = params.track_time_min;
     search1.value = params.id;
@@ -173,6 +183,50 @@ div.desc {
     }
 
     document.getElementById("site_hostname").innerHTML= get_site_hostname();
+
+    function checkAlarm(lat,lon){
+      console.log("checkAlarm");
+     
+      console.log(params.alarm_ref_lat);
+      console.log(params.alarm_ref_lon);
+      console.log("lat, lon: " + lat + ", " + lon);
+      var ref_lat = 0;
+      var ref_lon = 0;
+      // if params.alarm_ref_lat > 0 then judge distance from alarm_ref_lat,lon else judge distance from Map Center config setting
+      if (params.alarm_ref_lat != 0){
+         ref_lat = params.alarm_ref_lat;
+         ref_lon = params.alarm_ref_lon;
+      } else {
+         ref_lat = params.lat;
+         ref_lon = params.lon;
+      }
+      var dist_meters = getDistanceFromLatLonInKm(lat,lon,ref_lat,ref_lon) * 1000;
+      console.log("dist: " + dist_meters);
+      // mode 1  trigger dist > alarm_radius ref lat,lon
+      console.log("alarm_radius");
+      console.log(params.alarm_radius);
+      target_dist_d.innerHTML = "<h1> Target Dist: " + dist_meters.toFixed(2) + "</h1>";
+      if (params.alarm_radius == 0){
+        console.log("alarm_radius == 0, disabled");
+        return;
+      }
+      if (params.alarm_radius > 0){
+        console.log("check mode 1");
+        if (Math.abs(params.alarm_radius) < dist_meters){
+           console.log("sound alarm mode 1");
+           alarm.play();
+           alert("Proximity Alarm Mode 1 trigered, track_id distance from Map Center > " + params.alarm_radius + " Meters");
+           
+        }
+      } else {
+        // mode 2 trigger dist < alarm_radius from you (device you hold)
+        if (Math.abs(params.alarm_radius) > dist_meters) {
+           console.log("sound alarm mode 2");
+           alarm.play();
+           alert("Proximity Alarm Mode 2 trigered, track_id distance from Ref lat,lon < " + params.alarm_radius +" Meters");          
+        }
+      }
+    } 
 
     function get_site_hostname() {
       var a = document.createElement('a');
@@ -223,6 +277,10 @@ div.desc {
        params.enable_send_cord = localStorage.getItem("enable_send_cord");
        params.min_speed_record = localStorage.getItem("min_speed_record");
        params.max_speed_record = localStorage.getItem("max_speed_record");
+       params.icon_scale = localStorage.getItem("icon_scale");
+       params.alarm_radius = localStorage.getItem("alarm_radius");
+       params.alarm_ref_lat = localStorage.getItem("alarm_ref_lat");
+       params.alarm_ref_lon = localStorage.getItem("alarm_ref_lon");
        //params.send_cord_interval = localStorage.getItem("send_cord_interval");
        console.log("typeof send");
        console.log(typeof params.send_cord_interval);
@@ -330,6 +388,7 @@ div.desc {
       var avg_speed = 0;
       console.log("timestamp");
       console.log(timestamp);
+      checkAlarm(lat,lon);
       if (last_lat !=0) {
         distance = getDistanceFromLatLonInKm(last_lat,last_lon,lat,lon);
         // speed in km/sec
@@ -338,16 +397,22 @@ div.desc {
       }
       var speedmph = speed * 2236.94;
       var dist_miles = distance * 0.621371;
+      total_miles_start = total_miles_start + dist_miles;
       if (speedmph < params.max_speed_record && speedmph > params.min_speed_record) {
         total_distance = total_distance + dist_miles;
         total_time_min = total_time_min + ((timestamp - last_timestamp)/60);
-        avg_speed = total_distance /(total_time_min/60);       
+        avg_speed = total_distance /(total_time_min/60); 
+        //last_lat = lat;
+        //last_lon = lon;
+        //last_timestamp = timestamp;      
       } else {
         avg_speed = last_avg_speed;
       }
+
       last_lat = lat;
       last_lon = lon;
       last_timestamp = timestamp;
+      
       last_avg_speed = avg_speed;
       
      
@@ -357,6 +422,8 @@ div.desc {
       console.log("distance: " + distance);
       console.log("speed: " + speed);
       console.log("total_distance: " + total_distance);
+      total_miles_start_d.innerHTML = "<h1> Total Miles Start: " + total_miles_start.toFixed(2) + "</h1>";
+      console.log("tot_d: " + total_miles_start_d);
       lat_d.innerHTML = "<h1> Lat: " + lat.toFixed(6) + "</h1>";
       lon_d.innerHTML = "<h1> Lon: " + lon.toFixed(6) + "</h1>";
       speed_d.innerHTML = "<h1> Speed (mph): " + speedmph.toFixed(2) + "</h1>";
@@ -420,7 +487,7 @@ div.desc {
     </div>
   </div>
   <h2> <span id="site_hostname"></span> </h2>
-  <h3> Walk Mileage Monitor </h3>
+  <h3> Walk Mileage Monitor GPS </h3>
 </div>
 <form action="walker.php" method="get" id="form1">
    <input type="hidden" name="time" id="time" value="none"> 
@@ -430,11 +497,13 @@ div.desc {
 <div class="w3-row" >
  <div class="w3-col s12 w3-teal  w3-center"> 
  <span id="total_time_start">0</span>
+ <span id="total_miles_start">0</span>
  <span id="total_miles">0</span>
  <span id="total_calories">0</span>
  <span id="speed">0</span>
  <span id="avg_speed">0</span>
  <span id="total_time">0</span>
+ <span id="target_dist">0</span>
  <span id="lat">0</span>
  <span id="lon">0</span>
  <span id="timestamp">0</span>
