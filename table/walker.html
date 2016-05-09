@@ -146,6 +146,7 @@ div.desc {
     var total_time_min = 0;
     var total_time_min_start = 0;
     var total_miles_start = 0;
+    var speed_outside_count = 0;
     var type = 0;
 
     var lat_d = document.getElementById('lat');
@@ -399,23 +400,34 @@ div.desc {
       var dist_miles = distance * 0.621371;
       total_miles_start = total_miles_start + dist_miles;
       if (speedmph < params.max_speed_record && speedmph > params.min_speed_record) {
+        // make sure that data is consistent for at least 3 points of >< max min speeds before disable or enable time, dist count
+        speed_outside_count = speed_outside_count -1;
+        if (speed_outside_count < -3) {
+          speed_outside_count = -3;
+        }           
+      } else {
+        speed_outside_count = speed_outside_count + 1;
+        if (speed_outside_count > 3){
+          speed_outside_count = 3;
+        }         
+      }
+    
+      console.log("speed_outside_count");
+      console.log(speed_outside_count);
+
+      if (speed_outside_count < 1) {
         total_distance = total_distance + dist_miles;
         total_time_min = total_time_min + ((timestamp - last_timestamp)/60);
-        avg_speed = total_distance /(total_time_min/60); 
-        //last_lat = lat;
-        //last_lon = lon;
-        //last_timestamp = timestamp;      
+        avg_speed = total_distance /(total_time_min/60);
       } else {
         avg_speed = last_avg_speed;
-      }
+      }    
 
       last_lat = lat;
       last_lon = lon;
-      last_timestamp = timestamp;
-      
+      last_timestamp = timestamp;      
       last_avg_speed = avg_speed;
-      
-     
+           
       //https://www.verywell.com/walking-calories-burned-by-miles-3887154
       // burn rate per mile at walk speed 2.5 - 3.5 mph with 180lb person (me)
       total_cal = total_distance * 96;
@@ -480,7 +492,7 @@ div.desc {
     <div id="myDropdown" class="dropdown-content" >      
       <a href="../chat.html">Real Time Chat</a>
       <a href="../map.html">Map</a>
-      <a href="../send.html">Send Cords</a>
+      <a href="../send.html">Send Coords</a>
       <a href="../config.html">Config</a>
       <a href="../shoot/index.html">Shoot Pictures</a> 
       <a href="../wiki/doku.php">Wiki</a> 
@@ -497,12 +509,13 @@ div.desc {
 <div class="w3-row" >
  <div class="w3-col s12 w3-teal  w3-center"> 
  <span id="total_time_start">0</span>
+ <span id="total_time">0</span>
  <span id="total_miles_start">0</span>
  <span id="total_miles">0</span>
  <span id="total_calories">0</span>
  <span id="speed">0</span>
  <span id="avg_speed">0</span>
- <span id="total_time">0</span>
+ 
  <span id="target_dist">0</span>
  <span id="lat">0</span>
  <span id="lon">0</span>

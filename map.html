@@ -335,7 +335,7 @@ a {
       var info = "";
       var filter_list;
       var i2;
-      var flag_break = true;
+      var flag_filter = true;
       for (var i = 0; i < points.length; i++) {
         if (params.alarm_radius != 0 && points[i]['id'] == params.track_id && points[i]['id'] != params.id) {
            checkAlarm(points[i]['lat'],points[i]['lon']);
@@ -345,16 +345,19 @@ a {
           filter_list = params.filter.split(",");
           console.log("filter list");
           console.log(filter_list);
+          console.log("type");
+          console.log(points[i]['type']);
+          flag_filter = true;
           for ( i2 = 0; i2 < filter_list.length; i2++) {
             if (points[i]['type'] == filter_list[i2]){
               console.log("match filter with: " + points[i]['type']);
               console.log(filter_list[i2]);
-              flag_break = false;
-            }
+              flag_filter = false;
+            } 
           }
-          console.log("flag_break");
-          console.log(flag_break);
-          if (flag_break) { break; }
+          console.log("flag_filter");
+          console.log(flag_filter);
+          if (flag_filter) { continue; }
         }
         console.log("points[i]");
         console.log(points[i]);
@@ -382,23 +385,10 @@ a {
           markers.push(LamMarker);
           map.addLayer(LamMarker);
         } else {
-          if (points[i]['type'] == 41) {
-            console.log("type == 41");
-            console.log("params.icon_scale");
-            var iconURL = 'uploads/' + points[i]['id'] + '_icon.png';
-            console.log(iconURL);
-            var custom_icon = L.icon({
-              iconUrl: iconURL,    
-              iconSize:     [Math.round(57 * params.icon_scale), Math.round(68 * params.icon_scale)], 
-              iconAnchor:   [Math.round(28 * params.icon_scale), Math.round(68 * params.icon_scale)], 
-              popupAnchor:  [0, Math.round(-69 * params.icon_scale)], 
-            });
-            LamMarker = L.marker([points[i]['lat'],points[i]['lon']],{icon: custom_icon})
-	    .bindPopup(info);
-          } else { 
-            LamMarker = L.marker([points[i]['lat'],points[i]['lon']],{icon:make_icon(points[i]['type'],color)})
-	    .bindPopup(info);
-          }
+          
+          LamMarker = L.marker([points[i]['lat'],points[i]['lon']],{icon:make_icon(points[i]['type'],color,points[i]['id'])})
+	  .bindPopup(info);
+          
           markers.push(LamMarker);
           map.addLayer(LamMarker);
         }
@@ -412,8 +402,21 @@ a {
       console.log(markers);
     }
 
-   function make_icon(type,color) {
+   function make_icon(type,color,id) {
      console.log("make_icon");
+     if (type == 41) {
+       console.log("type == 41");
+       console.log("params.icon_scale");
+       var iconURL = 'uploads/' + id + '_icon.png';
+       console.log(iconURL);
+       var custom_icon = L.icon({
+         iconUrl: iconURL,    
+         iconSize:     [Math.round(57 * params.icon_scale), Math.round(68 * params.icon_scale)], 
+         iconAnchor:   [Math.round(28 * params.icon_scale), Math.round(68 * params.icon_scale)], 
+         popupAnchor:  [0, Math.round(-69 * params.icon_scale)], 
+       });
+       return custom_icon;
+     }
      var icon_dir = 'images_red';
      if (color == 'green'){
        icon_dir = 'images_green';
@@ -429,33 +432,19 @@ a {
      return activeIcon;
    }
 
-   function make_icon2(type,color) {
-     var icon_dir = 'images_red';
-     if (color == 'green'){
-       icon_dir = 'images_green';
-     }
-     //params.icon_scale
-     // Math.round( floatvalue )
-     var activeIcon = L.icon({
-       iconUrl: icon_dir + '/icon_' + type + '.png',    
-       iconSize:     [57, 68], // size of the icon
-       iconAnchor:   [28, 68], // point of the icon which will correspond to marker's location
-       popupAnchor:  [0, -69], // point from which the popup should open relative to the iconAnchor
-     });
-     return activeIcon;
-   }
+   
 
    function add_marker(lat,lon,type,info) {
      info = "<h2>" + info + "</h2>";
      var LamMarker;
      
      if (type > 42 || type < 1) { 
-       LamMarker  = L.marker([lat,lon],{icon:make_icon(12,'red')})
+       LamMarker  = L.marker([lat,lon],{icon:make_icon(12,'red',0)})
        .bindPopup(info);
        markers.push(LamMarker);
        map.addLayer(LamMarker);
      } else { 
-        LamMarker = L.marker([lat,lon],{icon:make_icon(type,'red')})
+        LamMarker = L.marker([lat,lon],{icon:make_icon(type,'red',0)})
 	.bindPopup(info);
         markers.push(LamMarker);
         map.addLayer(LamMarker);
@@ -742,12 +731,11 @@ a {
         pop_info = "<h2>" + pop_info + "</h2>";
         if (params.icon_type !== null) {
           console.log("type not null");
-          make_icon(params.icon_type,'green')
-          L.marker([params.lat,params.lon],{icon:make_icon(params.icon_type,'green')})
+          L.marker([params.lat,params.lon],{icon:make_icon(params.icon_type,'green',params.id)})
           .bindPopup(pop_info)
 	  .addTo(map);
         } else {
-          L.marker([params.lat,params.lon],{icon:make_icon(12,'green')})
+          L.marker([params.lat,params.lon],{icon:make_icon(12,'green',0)})
           .bindPopup(pop_info)
 	  .addTo(map);
         }        
