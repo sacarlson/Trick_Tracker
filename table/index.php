@@ -184,7 +184,7 @@ div.desc {
       var r = confirm("Confirm Delete data index: " + index + " ??");
       if (r == true) {
          console.log("You pressed OK! deleted value: " + index);
-         location.href='./index2.php?delete=' + index + "&search=" + search.value;
+         location.href='./index.php?delete=' + index + "&search=" + search.value;
       } else {
          console.log("You pressed Cancel!");
       } 
@@ -212,7 +212,7 @@ div.desc {
   </div>
   <div class="w3-teal w3-container w3-half ">
      <div class="w3-container w3-teal">
-       <form action="index2.php" method="get" class="w3-container center ">
+       <form action="index.php" method="get" class="w3-container center ">
          <input type="hidden" name="time" id="time" value="none">
          <input type="hidden" name="max_speed" id="max_speed_record" value="5"> 
          <input type="hidden" name="min_speed" id="min_speed_record" value="2">  

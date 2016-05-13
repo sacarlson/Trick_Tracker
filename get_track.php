@@ -176,7 +176,7 @@
         if (!empty( $_GET['extra'])) {
           $out = '{"lat":"' . $row['lat']. '","lon":"'. $row['lon']. '","timestamp":"'. $row['timestamp'] . '","speed":"'. $row['speed']. '","bearing":"'. $row['bearing']. '","alt":"'. $row['altitude']. '","id":"'. $row['id'] .'","info":"'. $row['info'] . '","type":"' . $row['type'] . '","distance":"' . $distance;
         } else {
-          $out = '{"id":"'. $row['id'] . '","lat":"' . $row['lat']. '","lon":"'. $row['lon'].'","info":"'. $row['info'] . '","timestamp":"'. $row['timestamp'] . '","type":"'. $row['type'] . '","distance":"' . $distance;
+          $out = '{"id":"'. $row['id'] . '","lat":"' . $row['lat']. '","lon":"'. $row['lon'].'","info":"'. $row['info'] . '","timestamp":"'. $row['timestamp'] . '","type":"'. $row['type'] . '","distance":"' . $distance . '","indx":"' . $row['index2'];
         }
 
         switch($_GET['mode']) {

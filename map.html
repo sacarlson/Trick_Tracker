@@ -74,7 +74,7 @@ a {
         <li><span id="gallery_path"></span></li>
         <li><a href="./wiki/doku.php">Wiki</a></li>
       </ul>
-      <h1><span id="site_hostname"></span> Map</h1>
+      <h1>Map <span id="site_hostname"></span></h1>
     </div>
   </div>
   <div class="w3-row">
@@ -107,6 +107,7 @@ a {
     var last_lon = 0;
     var url_position = 0;
     var timestamp = Math.floor(Date.now() / 1000);
+    var toggle_icon = 0;
     
     var params = {};
     get_config();
@@ -125,7 +126,8 @@ a {
    var last_sent_cords_timestamp = 0;
 
    //var site_hostname = get_site_hostname();
-   document.getElementById("site_hostname").innerHTML= get_site_hostname();
+   //document.getElementById("site_hostname").innerHTML= get_site_hostname();
+   document.getElementById("site_hostname").innerHTML= get_site_hostname() + " ID: " + params.id;
    getLocation();
 
    // preload alarm sound
@@ -327,6 +329,83 @@ a {
       }
     }   
 
+    function iconExists(id) {
+      var http2 = new XMLHttpRequest();
+      var url = "./icon_exist.php?id=" + id;
+      http2.open("GET", url, false);
+      http2.send();
+      if(http2.readyState == 4 && http2.status == 200) {
+         console.log("response2: ");
+         console.log(http2.responseText);
+         return http2.responseText;
+      }
+      return http2.status;
+    } 
+
+    function make_icon(type,color,id) {
+     console.log("make_icon");
+     if (type == 41) {
+       console.log("type == 41");
+       //console.log("params.icon_scale");
+       var iconURL = 'uploads/' + id + '_icon.png';
+       //console.log(iconURL);
+       //var url_status = UrlExists(iconURL);
+       //console.log("url_status");
+       //console.log(url_status);
+       if (iconExists(id) == "yes"){
+         console.log("iconExists = yess"); 
+         var custom_icon = L.icon({
+           iconUrl: iconURL,    
+           iconSize:     [Math.round(57 * params.icon_scale), Math.round(68 * params.icon_scale)], 
+           iconAnchor:   [Math.round(28 * params.icon_scale), Math.round(68 * params.icon_scale)], 
+           popupAnchor:  [0, Math.round(-69 * params.icon_scale)], 
+         });
+         return custom_icon;
+       } else {
+         type = 12;
+       }
+     }
+     var icon_dir = 'images_red';
+     if (color == 'green'){
+       icon_dir = 'images_green';
+     }
+     //params.icon_scale
+     // Math.round( floatvalue )
+     var activeIcon = L.icon({
+       iconUrl: icon_dir + '/icon_' + type + '.png',    
+       iconSize:     [Math.round(57 * params.icon_scale), Math.round(68 * params.icon_scale)], // size of the icon
+       iconAnchor:   [Math.round(28 * params.icon_scale), Math.round(68 * params.icon_scale)], // point of the icon which will correspond to marker's location
+       popupAnchor:  [0, Math.round(-69 * params.icon_scale)], // point from which the popup should open relative to the iconAnchor
+     });
+     return activeIcon;
+   } 
+
+    function fix_overlaped_icons(points){
+      console.log("fix_overlaped_icons");
+      var result = 0;
+      for (var o = 0; o < points.length; o++) {
+        for (var i = 0; i < points.length; i++) {
+          if (o != i) {
+            console.log("test o: " + o + " i: " + i);
+            console.log(points[i]['lat']);
+            console.log(points[o]['lat']);
+            console.log(points[i]['lat'] - points[o]['lat']);
+            if (Math.abs(points[i]['lat'] - points[o]['lat']) < .00013 && Math.abs(points[i]['lon'] - points[o]['lon']) < .00013){
+              console.log("diff < .00013");
+              if (points[i]['lat'] > points[o]['lat'] ){
+                result = 0.00014 + (points[i]['lat'] - points[o]['lat']);
+              } else {
+                result = 0.00014 - (points[i]['lat'] - points[o]['lat']);
+              }
+              console.log("result: " + result);
+              console.log(parseFloat(points[i]['lat']) + parseFloat(result));
+              points[i]['lat'] =  parseFloat(points[i]['lat']) + parseFloat(result)
+            }
+          }
+        }
+      }
+    }
+
 
     function write_icons(points,color) {
       // points is an array
@@ -336,6 +415,7 @@ a {
       var filter_list;
       var i2;
       var flag_filter = true;
+      fix_overlaped_icons(points);
       for (var i = 0; i < points.length; i++) {
         if (params.alarm_radius != 0 && points[i]['id'] == params.track_id && points[i]['id'] != params.id) {
            checkAlarm(points[i]['lat'],points[i]['lon']);
@@ -374,12 +454,20 @@ a {
           pic_url = "../shoot/gallery.php?search=" + points[i]['pic_file'];
           info = info + '<a href="' + pic_url + '">Click to View Pic</a>';
         }
-        info = info + " lat: " + points[i]['lat'] + " long: " + points[i]['lon'] +" last updated: " + timestampToString(points[i]['timestamp']) + " type: " + points[i]['type'] ;
+        info = info + " lat: " + points[i]['lat'] + " long: " + points[i]['lon'] + " indx: " + points[i]['indx'] +" last updated: " + timestampToString(points[i]['timestamp']) + " type: " + points[i]['type'] ;
         info = "<h2>" + info + "</h2>";
         console.log(" info ");
         console.log(info );
+        if (color != "green") {
+          if (toggle_icon == 0){
+            toggle_icon = 1;
+          } else {
+            toggle_icon = 0;
+            points[i]['type'] = 41;
+          }
+        }
         var LamMarker;
-        if (points[i]['type'] > 42) { 
+        if (points[i]['type'] > 43) { 
           LamMarker  = L.marker([points[i]['lat'],points[i]['lon']])
 	  .bindPopup(info);
           markers.push(LamMarker);
@@ -402,43 +490,13 @@ a {
       console.log(markers);
     }
 
-   function make_icon(type,color,id) {
-     console.log("make_icon");
-     if (type == 41) {
-       console.log("type == 41");
-       console.log("params.icon_scale");
-       var iconURL = 'uploads/' + id + '_icon.png';
-       console.log(iconURL);
-       var custom_icon = L.icon({
-         iconUrl: iconURL,    
-         iconSize:     [Math.round(57 * params.icon_scale), Math.round(68 * params.icon_scale)], 
-         iconAnchor:   [Math.round(28 * params.icon_scale), Math.round(68 * params.icon_scale)], 
-         popupAnchor:  [0, Math.round(-69 * params.icon_scale)], 
-       });
-       return custom_icon;
-     }
-     var icon_dir = 'images_red';
-     if (color == 'green'){
-       icon_dir = 'images_green';
-     }
-     //params.icon_scale
-     // Math.round( floatvalue )
-     var activeIcon = L.icon({
-       iconUrl: icon_dir + '/icon_' + type + '.png',    
-       iconSize:     [Math.round(57 * params.icon_scale), Math.round(68 * params.icon_scale)], // size of the icon
-       iconAnchor:   [Math.round(28 * params.icon_scale), Math.round(68 * params.icon_scale)], // point of the icon which will correspond to marker's location
-       popupAnchor:  [0, Math.round(-69 * params.icon_scale)], // point from which the popup should open relative to the iconAnchor
-     });
-     return activeIcon;
-   }
-
-   
+     
 
    function add_marker(lat,lon,type,info) {
      info = "<h2>" + info + "</h2>";
      var LamMarker;
      
-     if (type > 42 || type < 1) { 
+     if (type > 43 || type < 1) { 
        LamMarker  = L.marker([lat,lon],{icon:make_icon(12,'red',0)})
        .bindPopup(info);
        markers.push(LamMarker);
@@ -667,7 +725,7 @@ a {
          localStorage.setItem("info", "");
          localStorage.setItem("tracker_server", "https://www.funtracker.site/record_track.php");
          localStorage.setItem("tracker_get_server", "https://www.funtracker.site/get_track.php");
-         localStorage.setItem("update_interval", "3");
+         localStorage.setItem("update_interval", "5");
          localStorage.setItem("irc_server", "wilhelm.freenode.net");
          localStorage.setItem("cam_resolution", "low");
          localStorage.setItem("filter", "");
@@ -676,7 +734,7 @@ a {
          localStorage.setItem("min_speed_record", "0.2");
          localStorage.setItem("max_speed_record", "9");
          // radius_filter is in Meters
-         localStorage.setItem("radius_filter", "4000");
+         localStorage.setItem("radius_filter", "15000");
          get_config();
        } 
     } else {
@@ -744,7 +802,9 @@ a {
     if (params.no_icons == null){
       console.log("first old icons added");
       //url = params.tracker_get_server + "/?type=99&extra=1&id=1";
-      url = "./get_track.php/?mode=all";
+      //url = "./get_track.php/?mode=all";
+      // filter just last 48 hours
+      url = "./get_track.php/?mode=all&start=" + (timestamp - 172800);
       console.log("url");
       console.log(url);
       http.open("GET", url, true);

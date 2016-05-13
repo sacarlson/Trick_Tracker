@@ -68,9 +68,9 @@ function logsession() {
  }
 
  function wrt_log( $string) {
-   $f = fopen("./session_track.log", "a");
-   fwrite( $f, $string );
-   fclose( $f );
+   //$f = fopen("./session_track.log", "a");
+   //fwrite( $f, $string );
+   //fclose( $f );
    return;
  }  
 
