@@ -51,6 +51,9 @@ p {
   var alarm_radius = document.getElementById("alarm_radius");
   var alarm_ref_lat = document.getElementById("alarm_ref_lat");
   var alarm_ref_lon = document.getElementById("alarm_ref_lon");
+  var disable_cords_ref_lat = document.getElementById("disable_cords_ref_lat");
+  var disable_cords_ref_lon = document.getElementById("disable_cords_ref_lon");
+  var disable_cords_radius = document.getElementById("disable_cords_radius");
 
   var timestamp = Math.floor(Date.now() / 1000);
   
@@ -108,6 +111,19 @@ p {
        alarm_radius.value = localStorage.getItem("alarm_radius");
        alarm_ref_lat.value = localStorage.getItem("alarm_ref_lat");
        alarm_ref_lon.value = localStorage.getItem("alarm_ref_lon");
+       disable_cords_ref_lat.value = localStorage.getItem("disable_cords_ref_lat");
+       disable_cords_ref_lon.value = localStorage.getItem("disable_cords_ref_lon");
+       disable_cords_radius.value = localStorage.getItem("disable_cords_radius");
+       if ((disable_cords_radius.value == null) || ( disable_cords_radius.value.length == 0)) {
+         console.log("set default dis_cords_ values");
+         localStorage.setItem("disable_cords_ref_lat", "0");
+         localStorage.setItem("disable_cords_ref_lon", "0");
+         localStorage.setItem("disable_cords_radius", "0");
+         disable_cords_ref_lat.value = "0";
+         disable_cords_ref_lon.value = "0";
+         disable_cords_radius.value = "0";
+       }
+       
        if ((alarm_ref_lat.value == null) || ( alarm_ref_lat.value.length == 0)) {
          console.log("set default alarm_ref_lat");
          localStorage.setItem("alarm_ref_lat", "0");
@@ -218,6 +234,9 @@ p {
     localStorage.setItem("alarm_radius", alarm_radius.value);
     localStorage.setItem("alarm_ref_lat", alarm_ref_lat.value);
     localStorage.setItem("alarm_ref_lon", alarm_ref_lon.value);
+    localStorage.setItem("disable_cords_ref_lat", disable_cords_ref_lat.value);
+    localStorage.setItem("disable_cords_ref_lon", disable_cords_ref_lon.value);
+    localStorage.setItem("disable_cords_radius", disable_cords_radius.value);
   }
 
   function getLocation() {
@@ -413,6 +432,13 @@ a {
 <input class="w3-input" type="text" id="alarm_ref_lat">
 <label class="w3-label">Alarm Reference long default 0 </label>
 <input class="w3-input" type="text" id="alarm_ref_lon">
+
+<label class="w3-label">Disable Send Coords Radius default 0 </label>
+<input class="w3-input" type="text" id="disable_cords_radius">
+<label class="w3-label">Disable Send Coords Reference Lat default 0 </label>
+<input class="w3-input" type="text" id="disable_cords_ref_lat">
+<label class="w3-label">Disable Send Coords Reference Long default 0 </label>
+<input class="w3-input" type="text" id="disable_cords_ref_lon">
 
 <input type="button" value="Submit Changes" id="submit" >
 <input type="button" value="Set Map Center to GPS position" id="recenter_map" >

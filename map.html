@@ -127,7 +127,7 @@ a {
 
    //var site_hostname = get_site_hostname();
    //document.getElementById("site_hostname").innerHTML= get_site_hostname();
-   document.getElementById("site_hostname").innerHTML= get_site_hostname() + " ID: " + params.id;
+   document.getElementById("site_hostname").innerHTML= get_site_hostname() + " ID: " + params.id + "  V1.00.2";
    getLocation();
 
    // preload alarm sound
@@ -167,9 +167,28 @@ a {
    return a['hostname'];
   } 
 
-  function send_cords(lat, lon, type) {
+    function send_cords(lat, lon, type) {
       var timestamp = Math.floor(Date.now() / 1000);
       //GET /?id=206648&timestamp=1459757028&lat=12.9304184&lon=100.8798106&speed=0.0&bearing=0.0&altitude=0.0&batt=100.0
+
+      if (params.disable_cords_radius !=0) {
+        console.log("disable_cords_radius enabled");     
+        var dist_meters = getDistanceFromLatLonInKm(lat,lon,params.disable_cords_ref_lat,params.disable_cords_ref_lon) * 1000;
+        console.log("dist_meters: " + dist_meters);
+        console.log("radius: " + params.disable_cords_radius);
+        if (params.disable_cords_radius > 0){
+          if (dist_meters > params.disable_cords_radius) {
+            console.log("now outside disable_cords_radius distance, will disable coords");
+            return;
+          }
+        } else {
+          if (dist_meters < Math.abs(params.disable_cords_radius)){
+            console.log("now within disable_cords_radius (-) distance, will disable coords");
+            return;
+          }
+        }
+      }
+      
       if (params.enable_send_cord == 1){
         var url = params.tracker_server + "?id=" + params.id + "&timestamp=" + timestamp + "&lat=" + lat + "&lon=" + lon + "&type=" + type;
         console.log("send_cords");
@@ -230,6 +249,10 @@ a {
 
    function update_tracks(points) {
      console.log("udate_tracks");
+     if (params.track_id.length == 0) {
+       console.log("track_id.length 0 so no tracks ploted");
+       return;
+     }
      remove_markers();    
      map.removeLayer(lines);
      mylines2 = [];
@@ -263,7 +286,8 @@ a {
      if (params.track_id.length > 0) {
        chosen_tracks[params.track_id] = tracks[params.track_id];
      }else {
-       chosen_tracks = tracks;
+        return;
+       //chosen_tracks = tracks;
      }
      console.log("chosen_tracks");
      console.log(chosen_tracks); 
@@ -330,6 +354,7 @@ a {
     }   
 
     function iconExists(id) {
+      // find out if custom icon image file for ID is present on server
       var http2 = new XMLHttpRequest();
       var url = "./icon_exist.php?id=" + id;
       http2.open("GET", url, false);
@@ -362,7 +387,7 @@ a {
          });
          return custom_icon;
        } else {
-         type = 12;
+         type = 0;
        }
      }
      var icon_dir = 'images_red';
@@ -381,24 +406,26 @@ a {
    } 
 
     function fix_overlaped_icons(points){
+      // this is just a hack that only works on zoom 15 and is different bettween devices and screen sizes
       console.log("fix_overlaped_icons");
       var result = 0;
       for (var o = 0; o < points.length; o++) {
         for (var i = 0; i < points.length; i++) {
           if (o != i) {
-            console.log("test o: " + o + " i: " + i);
-            console.log(points[i]['lat']);
-            console.log(points[o]['lat']);
-            console.log(points[i]['lat'] - points[o]['lat']);
+            //console.log("test o: " + o + " i: " + i);
+            //console.log(points[i]['lat']);
+            //console.log(points[o]['lat']);
+            //console.log(points[i]['lat'] - points[o]['lat']);
+            // might want to make .00013 a bit bigger to add more space bettween icons but not much more, .00014?
             if (Math.abs(points[i]['lat'] - points[o]['lat']) < .00013 && Math.abs(points[i]['lon'] - points[o]['lon']) < .00013){
-              console.log("diff < .00013");
+              //console.log("diff < .00013");
               if (points[i]['lat'] > points[o]['lat'] ){
-                result = 0.00014 + (points[i]['lat'] - points[o]['lat']);
+                result = 0.00015 + (points[i]['lat'] - points[o]['lat']);
               } else {
-                result = 0.00014 - (points[i]['lat'] - points[o]['lat']);
+                result = 0.00015 - (points[i]['lat'] - points[o]['lat']);
               }
-              console.log("result: " + result);
-              console.log(parseFloat(points[i]['lat']) + parseFloat(result));
+              //console.log("result: " + result);
+              //console.log(parseFloat(points[i]['lat']) + parseFloat(result));
               points[i]['lat'] =  parseFloat(points[i]['lat']) + parseFloat(result)
             }
           }
@@ -536,7 +563,7 @@ a {
        }
        if (typeof obj['all'][1]['pics'] != 'undefined'){
          if (obj['all'][1]['pics'].length > 0){
-            write_icons(obj['all'][1]['pics'],"green");
+           write_icons(obj['all'][1]['pics'],"green");
          }
        }
        if (typeof obj['all'][2]['data'] != 'undefined'){
@@ -560,13 +587,13 @@ a {
          }
        }
        if (typeof obj['data'] != 'undefined') { 
-         if (obj['data'].length > 0){
+         if (obj['data'].length > 1){
            console.log("obj.data");
            if (obj['data'][0]['type'] == 0) {
              update_tracks(obj['data']);
            } else {
              remove_markers();
-             write_icons(obj['data'],"green"); 
+             //write_icons(obj['data'],"green"); 
            }
          }
        }
@@ -581,7 +608,11 @@ a {
 
   function myTimer() {    
     //var url_list = [params.tracker_get_server + "/?type=99&extra=1&id=1", params.tracker_get_server + "/?last=1", params.tracker_get_server + "/?count=100&extra=1"];
-    var url_list = ["./get_track.php/?mode=all","./get_track.php/?mode=data"];
+    if (params.track_id.length > 0) {
+      var url_list = ["./get_track.php/?mode=all","./get_track.php/?mode=data"];
+    } else {
+      var url_list = ["./get_track.php/?mode=all"];
+    }
     var ts = Date.now() /1000 |0;
     // start time of 25 hours ago
     var start = ts - (60* params.track_time_min);
@@ -684,6 +715,18 @@ a {
        params.alarm_radius = localStorage.getItem("alarm_radius");
        params.alarm_ref_lat = localStorage.getItem("alarm_ref_lat");
        params.alarm_ref_lon = localStorage.getItem("alarm_ref_lon");
+       params.disable_cords_ref_lat = localStorage.getItem("disable_cords_ref_lat");
+       params.disable_cords_ref_lon = localStorage.getItem("disable_cords_ref_lon");
+       params.disable_cords_radius = localStorage.getItem("disable_cords_radius");
+       if ((params.disable_cords_radius == null) || ( params.disable_cords_radius.length == 0)) {
+         console.log("set default dis_cords_ values");
+         localStorage.setItem("disable_cords_ref_lat", "0");
+         localStorage.setItem("disable_cords_ref_lon", "0");
+         localStorage.setItem("disable_cords_radius", "0");
+         params.disable_cords_ref_lat = "0";
+         params.disable_cords_ref_lon = "0";
+         params.disable_cords_radius = "0";
+       }
        if ((params.alarm_ref_lat == null) || ( params.alarm_ref_lat.length == 0)) {
          console.log("set default alarm_ref_lat");
          // 0 sets ref lat,lon to device location

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
+<html>
+<head>
+ <title> Config Settings Preset 1.0 </title>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="keywords" content="configure, custom, map, GPS, real-time, camera, way points, mark locations">
+ <meta name="description" content="Customize the default settings of your FunTracker.site experience with changeable configuration settings (for advanced users) Preset 1.0 . ">
+
+ <!<link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+ <link rel="stylesheet" href="w3.css">
+
+ <style type="text/css">
+.box_auto { 
+  margin: auto;
+  width: 100%;
+  height: auto;
+  margin: 10px;
+}
+
+p {
+	word-wrap: break-word;
+}
+
+ </style>
+
+ <script>
+  "use strict";
+  window.addEventListener("load", function(event) { 
+
+  var params = {};
+  
+
+  var timestamp = Math.floor(Date.now() / 1000);
+  
+  
+  
+  force_reload_config();
+  get_config();
+  //make_map_link();
+  document.getElementById("site_hostname").innerHTML= get_site_hostname() + " ID: " + params.id;
+
+  function get_site_hostname() {
+    var a = document.createElement('a');
+    a.href = window.location.href;
+    console.log("site hostname");
+    console.log(a['hostname']);
+    return a['hostname'];
+  } 
+
+  function reset_default_(){
+    // reset to all default configs
+    localStorage.removeItem('id'); 
+    get_config();
+  }
+
+  function make_map_link() {
+    var info_fixed = encodeURI(info.value);
+    //var link_url = tracker_server.value + "map/?json={%22lat%22:%22" + lat.value + "%22,%22lon%22:%22" + lon.value + "%22,%22zoom%22:%22" + zoom.value + "%22,%22type%22:%22" + icon_type.value + "%22,%22info%22:%22" + info_fixed + "%22,%22timestamp%22:%22" + timestamp + "%22}";
+    var sitehome = get_site_hostname();
+    var link_url = "https://" + sitehome + "/map.html?json={%22no_icons%22:%221%22,%22lat%22:%22" + lat.value + "%22,%22lon%22:%22" + lon.value + "%22,%22zoom%22:%22" + zoom.value + "%22,%22type%22:%22" + icon_type.value + "%22,%22info%22:%22" + info_fixed + "%22,%22timestamp%22:%22" + timestamp + "%22}";
+
+    map_link.innerHTML = '<h4>' + link_url + '</h4>'; 
+  } 
+
+  function get_config() {
+    if (typeof(Storage) !== "undefined") {
+       params.id = localStorage.getItem("id");
+    } else {
+       params.id = randomIntFromInterval(300000,999000);
+       alert("Sorry, your browser does not support Web Storage.. your ID now: " + params.id);       
+    }
+  }
+
+  function force_reload_config() {
+    if (typeof(Storage) !== "undefined") { 
+      params.id = localStorage.getItem("id");
+      if ( params.id == null || params.id.length == 0) {
+        console.log("id was undefined will create one");
+        params.id = randomIntFromInterval(300000,999000);
+        localStorage.setItem("id", params.id);
+      }    
+      localStorage.setItem("disable_cords_ref_lat", "0");
+      localStorage.setItem("disable_cords_ref_lon", "0");
+      localStorage.setItem("disable_cords_radius", "0");       
+      localStorage.setItem("alarm_ref_lat", "0"); 
+      localStorage.setItem("alarm_ref_lon", "0");        
+      localStorage.setItem("alarm_radius", "0");         
+      localStorage.setItem("icon_scale", "1");
+      localStorage.setItem("send_cord_interval", "60");       
+      localStorage.setItem("enable_send_cord", "1");         
+      localStorage.setItem("min_speed_record", "1");         
+      localStorage.setItem("max_speed_record", "9");      
+      localStorage.setItem("lat", 12.93419);
+      localStorage.setItem("lon", 100.892515 );
+      localStorage.setItem("zoom", 15);
+      localStorage.setItem("track_id", 206648);
+      localStorage.setItem("track_time_min", 121); //1500 = 25 hours
+      localStorage.setItem("icon_type", 12);
+      localStorage.setItem("info", "");
+      localStorage.setItem("tracker_server", "https://www.funtracker.site/record_track.php");
+      localStorage.setItem("tracker_get_server", "https://www.funtracker.site/get_track.php");
+      localStorage.setItem("update_interval", "5");
+      localStorage.setItem("irc_server", "wilhelm.freenode.net");
+      localStorage.setItem("cam_resolution", "low");
+      localStorage.setItem("filter", "");
+      // radius_filter is in Meters
+      localStorage.setItem("radius_filter", "15000");
+      localStorage.setItem("send_cord_interval", "60");
+      localStorage.setItem("enable_send_cord", "1");
+      localStorage.setItem("disable_cords_ref_lat", "0");
+      localStorage.setItem("disable_cords_ref_lon", "0");
+      localStorage.setItem("disable_cords_radius", "0");         
+      get_config();
+    } else {
+       id = randomIntFromInterval(300000,999000);
+       alert("Sorry, your browser does not support Web Storage.. your ID now: " + id);       
+    }
+  }
+
+  function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+  }
+
+  function save_configs() {
+    localStorage.setItem("id", id.value);
+    localStorage.setItem("lat", lat.value);
+    localStorage.setItem("lon", lon.value );
+    localStorage.setItem("zoom", zoom.value);
+    localStorage.setItem("track_id", track_id.value);
+    localStorage.setItem("track_time_min", track_time_min.value);
+    localStorage.setItem("icon_type", icon_type.value);
+    localStorage.setItem("info", info.value);
+    localStorage.setItem("tracker_server", tracker_server.value);
+    localStorage.setItem("tracker_get_server", tracker_get_server.value);
+    localStorage.setItem("irc_server", irc_server.value);
+    localStorage.setItem("cam_resolution", cam_resolution.value);
+    localStorage.setItem("filter", filter.value);
+    localStorage.setItem("radius_filter", radius_filter.value);
+    localStorage.setItem("update_interval", update_interval.value);
+    if (update_interval.value < 3){
+      if (id.value > 300000){
+        update_interval.value = 2;
+      }
+    }        
+    localStorage.setItem("send_cord_interval", send_cord_interval.value);
+    localStorage.setItem("enable_send_cord", enable_send_cord.value);
+    localStorage.setItem("max_speed_record", max_speed_record.value);
+    localStorage.setItem("min_speed_record", min_speed_record.value);
+    localStorage.setItem("icon_scale",icon_scale.value);
+    localStorage.setItem("alarm_radius", alarm_radius.value);
+    localStorage.setItem("alarm_ref_lat", alarm_ref_lat.value);
+    localStorage.setItem("alarm_ref_lon", alarm_ref_lon.value);
+    localStorage.setItem("disable_cords_ref_lat", disable_cords_ref_lat.value);
+    localStorage.setItem("disable_cords_ref_lon", disable_cords_ref_lon.value);
+    localStorage.setItem("disable_cords_radius", disable_cords_radius.value);
+  }
+
+  function getLocation() {
+    if (navigator.geolocation) {
+        //navigator.geolocation.watchPosition(showPosition);
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+       alert("Geolocation is not supported by this browser.");
+    }
+  }
+
+  function showPosition(position) {
+    console.log( position.coords.latitude ); 
+    console.log( position.coords.longitude );
+    var timestamp = Math.floor(Date.now() / 1000);
+    lat.value = position.coords.latitude;
+    lon.value = position.coords.longitude;
+    save_configs();
+    make_map_link();
+    alert(" Map position now set to present location: lat: " + position.coords.latitude + " lon: " + position.coords.longitude  );
+  }
+
+
+  //function dropDown() {
+  //  document.getElementById("myDropdown").classList.toggle("show");
+  //}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+ submit.addEventListener("click", function(event) {
+    console.log("submit clicked");
+    save_configs();
+    make_map_link();  
+ });
+
+  recenter_map.addEventListener("click", function(event) {
+    console.log("recenter_map clicked");
+    getLocation();
+ });
+
+  reset_default.addEventListener("click", function(event) {
+    console.log("reset_default clicked");
+    reset_default_();
+ });
+
+
+  console.log("page loaded");
+ }); // end  window.addEventListener("load", function(event) { 
+     function dropDown() {
+       document.getElementById("myDropdown").classList.toggle("show");
+     } 
+     console.log("page loaded2");                         
+  </script>
+<style>
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #3e8e41;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #f1f1f1}
+
+.show {display:block;}
+
+a {
+  font-size: calc(1vw + 1vh + 1vmin);
+}
+
+.button {
+  font-size: 22px;
+}
+</style>
+</head>
+<body>
+
+<div class="w3-container w3-teal">
+  <div class="dropdown">
+    <button onclick="dropDown()" class="dropbtn">Menu</button>
+    <div id="myDropdown" class="dropdown-content">
+      <a href="chat.html">Real Time Chat</a>
+      <a href="map.html">Map</a> 
+      <a href="config.html">Config</a>      
+      <a href="send.html">Send Coords</a>
+      <a href="change_icon.html">Change Icon</a>
+      <a href="./shoot/index.html">Shoot Pictures</a> 
+      <a href="./shoot/gallery.php">Gallery</a>
+      <a href="./table/user_table.php">Members List</a>
+      <a href="./table/index.php">Tracker Event Table</a>
+      <a href="./table/pic_table.php">Picture Event Table</a>
+      <a href="./table/walker.html">Walk Mileage Monitor</a>
+      <a href="up_custom.php">Customize Icon</a>
+      <a href="./wiki/doku.php">Wiki</a>   
+    </div>
+  </div>
+  <h1><span id="site_hostname"></span> Configure Preset 1 (Version: 1.0) </h1>
+</div>
+
+<div class="w3-row-padding w3-margin-top">
+ 
+<h3> You have now installed Preset 1  ( version 1.0), You can now go to this link <a href="map.html">Map</a> page and do a page reload on map page to be sure the latist version of Map is in your cache mem.  Preset 1 does a complete factory reset of all Map config values to default settings </h3>
+ 
+</div>
+
+
+</body>
+</html>

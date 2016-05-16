@@ -340,7 +340,7 @@ div.desc {
      $speedmph = 0;
    }
    $total_cal_burn = $total_dist * 88.9;
-   $href = '../map.html?json={%22no_icons%22:%221%22,%22lat%22:%22' . $row['lat'] . '%22,%22lon%22:%22' . $row['lon'] . '%22}';
+   $href = '../map.html?json={%22no_icons%22:%221%22,%22lat%22:%22' . $row['lat'] . '%22,%22lon%22:%22' . $row['lon'] . '%22,%22icon_type%22:%22' . $row['type'] . '%22}';
    $link = '<a href="' . $href .'">Map Link</a>';
    //$index_num = $row['index'];
    $delete_link = '<img src="../images/delete.png" onclick="confirm_delete('. $row['index2'] .')" /> ';
