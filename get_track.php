@@ -173,10 +173,16 @@
          // skip distance too far a way
          //echo "skip";
       } else {
-        if (!empty( $_GET['extra'])) {
-          $out = '{"lat":"' . $row['lat']. '","lon":"'. $row['lon']. '","timestamp":"'. $row['timestamp'] . '","speed":"'. $row['speed']. '","bearing":"'. $row['bearing']. '","alt":"'. $row['altitude']. '","id":"'. $row['id'] .'","info":"'. $row['info'] . '","type":"' . $row['type'] . '","distance":"' . $distance;
+        $custom_icon_file = "./uploads/" . $row['id'] . "_icon.png";
+        if (file_exists ( $custom_icon_file )) {
+          $custom_icon = "true";
         } else {
-          $out = '{"id":"'. $row['id'] . '","lat":"' . $row['lat']. '","lon":"'. $row['lon'].'","info":"'. $row['info'] . '","timestamp":"'. $row['timestamp'] . '","type":"'. $row['type'] . '","distance":"' . $distance . '","indx":"' . $row['index2'];
+          $custom_icon = "false";
+        }
+        if (!empty( $_GET['extra'])) {
+          $out = '{"lat":"' . $row['lat']. '","lon":"'. $row['lon']. '","timestamp":"'. $row['timestamp'] . '","speed":"'. $row['speed']. '","bearing":"'. $row['bearing']. '","alt":"'. $row['altitude']. '","id":"'. $row['id'] .'","info":"'. $row['info'] . '","type":"' . $row['type'] . '","distance":"' . $distance . '","custom_icon":"' . $custome_icon;
+        } else {
+          $out = '{"id":"'. $row['id'] . '","lat":"' . $row['lat']. '","lon":"'. $row['lon'].'","info":"'. $row['info'] . '","timestamp":"'. $row['timestamp'] . '","type":"'. $row['type'] . '","distance":"' . $distance . '","indx":"' . $row['index2']. '","custom_icon":"' . $custom_icon;
         }
 
         switch($_GET['mode']) {

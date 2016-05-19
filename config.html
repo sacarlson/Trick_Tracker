@@ -24,6 +24,8 @@ p {
 
  </style>
 
+ <script src="tt_lib.js"></script>
+
  <script>
   "use strict";
   window.addEventListener("load", function(event) { 
@@ -55,26 +57,18 @@ p {
   var disable_cords_ref_lon = document.getElementById("disable_cords_ref_lon");
   var disable_cords_radius = document.getElementById("disable_cords_radius");
 
+  //var params = {};
+
   var timestamp = Math.floor(Date.now() / 1000);
   
   document.getElementById("site_hostname").innerHTML= get_site_hostname();
   
   get_config();
+  put_params();
   make_map_link();
 
-  function get_site_hostname() {
-    var a = document.createElement('a');
-    a.href = window.location.href;
-    console.log("site hostname");
-    console.log(a['hostname']);
-    return a['hostname'];
-  } 
-
-  function reset_default_(){
-    // reset to all default configs
-    localStorage.removeItem('id'); 
-    get_config();
-  }
+  console.log("params3");
+  console.log(params);
 
   function make_map_link() {
     var info_fixed = encodeURI(info.value);
@@ -83,188 +77,10 @@ p {
     var link_url = "https://" + sitehome + "/map.html?json={%22no_icons%22:%221%22,%22lat%22:%22" + lat.value + "%22,%22lon%22:%22" + lon.value + "%22,%22zoom%22:%22" + zoom.value + "%22,%22type%22:%22" + icon_type.value + "%22,%22info%22:%22" + info_fixed + "%22,%22timestamp%22:%22" + timestamp + "%22}";
 
     map_link.innerHTML = '<h4>' + link_url + '</h4>'; 
-  } 
-
-  function get_config() {
-    if (typeof(Storage) !== "undefined") {
-       id.value = localStorage.getItem("id");
-       lat.value = localStorage.getItem("lat");
-       lon.value = localStorage.getItem("lon");
-       zoom.value = localStorage.getItem("zoom");
-       track_id.value = localStorage.getItem("track_id");
-       track_time_min.value = localStorage.getItem("track_time_min");
-       icon_type.value = localStorage.getItem("icon_type");
-       info.value = localStorage.getItem("info");
-       tracker_server.value = localStorage.getItem("tracker_server");
-       tracker_get_server.value = localStorage.getItem("tracker_get_server");
-       update_interval.value = localStorage.getItem("update_interval");
-       irc_server.value = localStorage.getItem("irc_server");
-       cam_resolution.value = localStorage.getItem("cam_resolution");
-       filter.value = localStorage.getItem("filter");
-       radius_filter.value = localStorage.getItem("radius_filter");
-       
-       send_cord_interval.value = localStorage.getItem("send_cord_interval");
-       enable_send_cord.value = localStorage.getItem("enable_send_cord");
-       min_speed_record.value = localStorage.getItem("min_speed_record");
-       max_speed_record.value = localStorage.getItem("max_speed_record");
-       icon_scale.value = localStorage.getItem("icon_scale");
-       alarm_radius.value = localStorage.getItem("alarm_radius");
-       alarm_ref_lat.value = localStorage.getItem("alarm_ref_lat");
-       alarm_ref_lon.value = localStorage.getItem("alarm_ref_lon");
-       disable_cords_ref_lat.value = localStorage.getItem("disable_cords_ref_lat");
-       disable_cords_ref_lon.value = localStorage.getItem("disable_cords_ref_lon");
-       disable_cords_radius.value = localStorage.getItem("disable_cords_radius");
-       if ((disable_cords_radius.value == null) || ( disable_cords_radius.value.length == 0)) {
-         console.log("set default dis_cords_ values");
-         localStorage.setItem("disable_cords_ref_lat", "0");
-         localStorage.setItem("disable_cords_ref_lon", "0");
-         localStorage.setItem("disable_cords_radius", "0");
-         disable_cords_ref_lat.value = "0";
-         disable_cords_ref_lon.value = "0";
-         disable_cords_radius.value = "0";
-       }
-       
-       if ((alarm_ref_lat.value == null) || ( alarm_ref_lat.value.length == 0)) {
-         console.log("set default alarm_ref_lat");
-         localStorage.setItem("alarm_ref_lat", "0");
-         alarm_ref_lat.value = "0";
-       }
-       if ((alarm_ref_lon.value == null) || ( alarm_ref_lon.value.length == 0)) {
-         console.log("set default alarm_ref_lon");
-         localStorage.setItem("alarm_ref_lon", "0");
-         alarm_ref_lon.value = "0";
-       }
-       if ((alarm_radius.value == null) || ( alarm_radius.value.length == 0)) {
-         console.log("set default alarm_radius");
-         // radius is in meters, 0 = disable alarm, negitive number is min distance from you before alarm triger
-         // positive number is distance from center of map before triger alarm
-         // all reference to track_id as target
-         localStorage.setItem("alarm_radius", "0");
-         alarm_radius.value = "0";
-       }
-       if ((icon_scale.value == null) || ( icon_scale.value.length == 0)) {
-         console.log("set default icon_scale");
-         localStorage.setItem("icon_scale", "1");
-         icon_scale.value = "1";
-       }
-       if ((send_cord_interval.value == null) || (send_cord_interval.value.length == 0)) {
-         console.log("set send_cord_interval");
-         localStorage.setItem("send_cord_interval", "60");
-         send_cord_interval.value = 60;
-       }
-       if ((enable_send_cord.value == null) || ( enable_send_cord.value.length == 0)) {
-         console.log("set enable_send_cord");
-         localStorage.setItem("enable_send_cord", "1");
-         enable_send_cord.value = "1";
-       }
-       if ((min_speed_record.value == null) || ( min_speed_record.value.length == 0)) {
-         console.log("set min_speed_record");
-         localStorage.setItem("min_speed_record", "1");
-         min_speed_record.value = "1";
-       }
-       if ((max_speed_record.value == null) || ( max_speed_record.value.length == 0)) {
-         console.log("set max_speed_record");
-         localStorage.setItem("max_speed_record", "9");
-         max_speed_record.value = "6";
-       }
-       console.log("id");
-       console.log(id.value);
-       console.log(typeof id.value);
-       console.log(id.value.length);
-        if ( id.value == null || id.value.length == 0) {
-         console.log("id was undefined will create one");
-         id.value = randomIntFromInterval(300000,999000);
-         localStorage.setItem("id", id.value);
-         localStorage.setItem("lat", 12.93419);
-         localStorage.setItem("lon", 100.892515 );
-         localStorage.setItem("zoom", 15);
-         localStorage.setItem("track_id", 206648);
-         localStorage.setItem("track_time_min", 120); //1500 = 25 hours
-         localStorage.setItem("icon_type", 12);
-         localStorage.setItem("info", "");
-         localStorage.setItem("tracker_server", "https://www.funtracker.site/record_track.php");
-         localStorage.setItem("tracker_get_server", "https://www.funtracker.site/get_track.php");
-         localStorage.setItem("update_interval", "5");
-         localStorage.setItem("irc_server", "wilhelm.freenode.net");
-         localStorage.setItem("cam_resolution", "low");
-         localStorage.setItem("filter", "");
-         // radius_filter is in Meters
-         localStorage.setItem("radius_filter", "15000");
-         localStorage.setItem("send_cord_interval", "60");
-         localStorage.setItem("enable_send_cord", "1");
-         
-         get_config();
-       } 
-    } else {
-       id = randomIntFromInterval(300000,999000);
-       alert("Sorry, your browser does not support Web Storage.. your ID now: " + id);       
-    }
-  }
-
-  function randomIntFromInterval(min,max) {
-    return Math.floor(Math.random()*(max-min+1)+min);
-  }
-
-  function save_configs() {
-    localStorage.setItem("id", id.value);
-    localStorage.setItem("lat", lat.value);
-    localStorage.setItem("lon", lon.value );
-    localStorage.setItem("zoom", zoom.value);
-    localStorage.setItem("track_id", track_id.value);
-    localStorage.setItem("track_time_min", track_time_min.value);
-    localStorage.setItem("icon_type", icon_type.value);
-    localStorage.setItem("info", info.value);
-    localStorage.setItem("tracker_server", tracker_server.value);
-    localStorage.setItem("tracker_get_server", tracker_get_server.value);
-    localStorage.setItem("irc_server", irc_server.value);
-    localStorage.setItem("cam_resolution", cam_resolution.value);
-    localStorage.setItem("filter", filter.value);
-    localStorage.setItem("radius_filter", radius_filter.value);
-    localStorage.setItem("update_interval", update_interval.value);
-    if (update_interval.value < 3){
-      if (id.value > 300000){
-        update_interval.value = 2;
-      }
-    }        
-    localStorage.setItem("send_cord_interval", send_cord_interval.value);
-    localStorage.setItem("enable_send_cord", enable_send_cord.value);
-    localStorage.setItem("max_speed_record", max_speed_record.value);
-    localStorage.setItem("min_speed_record", min_speed_record.value);
-    localStorage.setItem("icon_scale",icon_scale.value);
-    localStorage.setItem("alarm_radius", alarm_radius.value);
-    localStorage.setItem("alarm_ref_lat", alarm_ref_lat.value);
-    localStorage.setItem("alarm_ref_lon", alarm_ref_lon.value);
-    localStorage.setItem("disable_cords_ref_lat", disable_cords_ref_lat.value);
-    localStorage.setItem("disable_cords_ref_lon", disable_cords_ref_lon.value);
-    localStorage.setItem("disable_cords_radius", disable_cords_radius.value);
-  }
-
-  function getLocation() {
-    if (navigator.geolocation) {
-        //navigator.geolocation.watchPosition(showPosition);
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else { 
-       alert("Geolocation is not supported by this browser.");
-    }
-  }
-
-  function showPosition(position) {
-    console.log( position.coords.latitude ); 
-    console.log( position.coords.longitude );
-    var timestamp = Math.floor(Date.now() / 1000);
-    lat.value = position.coords.latitude;
-    lon.value = position.coords.longitude;
-    save_configs();
-    make_map_link();
-    alert(" Map position now set to present location: lat: " + position.coords.latitude + " lon: " + position.coords.longitude  );
   }
 
 
-  //function dropDown() {
-  //  document.getElementById("myDropdown").classList.toggle("show");
-  //}
-
-// Close the dropdown if the user clicks outside of it
+  
 window.onclick = function(event) {
   if (!event.target.matches('.dropbtn')) {
 
@@ -287,7 +103,8 @@ window.onclick = function(event) {
 
   recenter_map.addEventListener("click", function(event) {
     console.log("recenter_map clicked");
-    getLocation();
+    //getLocation();
+    getLocation_config();
  });
 
   reset_default.addEventListener("click", function(event) {
