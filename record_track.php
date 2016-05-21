@@ -5,7 +5,8 @@
   header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT');
 
  include('config.php');
- 
+ //echo "start";
+
  $id = $_GET['id'];
  $timestamp = $_GET['timestamp'];
  $lat = $_GET['lat'];
@@ -52,11 +53,38 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+ 
+ if ($mysql_enable == "true"){
+   //echo " mysql enabled";
+   check_id_user_exists();
+   insert_data(); 
+   $conn->close();
+ }
 
- check_id_user_exists();
- insert_data(); 
- $conn->close();
+ if ($repeater_enable == "true"){
+   // echo " repeater enabled";
+   api_repeater($repeater_url,$_GET);
+ }
+
  logsession();
+
+function api_repeater($url,$data){
+  // repeat data to chained api server
+  //$response = file_get_contents('http://example.com/path/to/api/call?param1=5');  
+  $string = "";
+  $first = true;
+  foreach($data as $k => $v){
+    if ($first) {
+      $first = false;
+      $string .= "?" . $k . "=" . $v;
+    } else {
+      $string .= '&' . $k . '=' . $v;
+    }
+  }
+  $url .=  $string;
+  $response = file_get_contents($url);
+  return $response;
+}
 
 function logsession() {
  global $datetime, $id, $timestamp, $lat, $lon, $speed, $bearing, $altitude, $status,$type,$batt;

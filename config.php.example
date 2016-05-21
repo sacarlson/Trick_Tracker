@@ -1,0 +1,12 @@
+<?php
+  $servername = "localhost";
+  $username = "user";
+  $password = "password";
+  $dbname = "tricktracker";
+  $mysql_enable = "true";
+  $repeater_enable = "false";
+  //$repeater_enable = "true";
+  $repeater_url = "http://b.funtracker.site/record_track.php";
+  //$repeater_url = "https://www.funtracker.site/record_track.php";   
+?>
+

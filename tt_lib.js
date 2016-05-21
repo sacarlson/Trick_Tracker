@@ -337,7 +337,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
                 points[o]['overlap_count'] = 1;
               }
               console.log("id: " + points[o]['id'] + " count: " + points[o]['overlap_count']);
-              if (points[i]['moved'] != true && map._zoom == 19){
+              if (points[i]['moved'] != true && map._zoom == 19){              
                 if (points[i]['lat'] > points[o]['lat'] ){
                   result = 0.00021 + (points[i]['lat'] - points[o]['lat']);
                 } else {
@@ -392,7 +392,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
         flag_filter = false;
         if (points[i]['moved'] == true){
           console.log("moved id: " + points[i]['id']);
-          if (map._zoom < 17) {
+          if (map._zoom < 19) {
             points[i]['type'] = 44;
             console.log("hit continue");
             //continue;
@@ -403,10 +403,10 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
         console.log("get here?");
         if (points[i]['overlap_count'] > 0){
           console.log("overlap_count > 0");
-          if (map._zoom < 17) {
+          if (map._zoom < 19) {
             var change_type = 43 + points[i]['overlap_count'];
-            if (change_type > 47) {
-              change_type = 47;
+            if (change_type > 52) {
+              change_type = 52;
             }
             console.log("change to type: " + change_type);
             points[i]['type'] = change_type;
@@ -454,7 +454,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
      
    function add_marker_point(point,icon,info){
      var LamMarker;
-     if (point['type'] > 47) { 
+     if (point['type'] > 52) { 
        LamMarker  = L.marker([point['lat'],point['lon']])
        .bindPopup(info);
         markers.push(LamMarker);
@@ -476,7 +476,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
      info = "<h2>" + info + "</h2>";
      var LamMarker;
      
-     if (type > 47 || type < 1) { 
+     if (type > 52 || type < 1) { 
        LamMarker  = L.marker([lat,lon],{icon:icon})
        .bindPopup(info);
        markers.push(LamMarker);
@@ -495,7 +495,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
      info = "<h2>" + info + "</h2>";
      var LamMarker;
      
-     if (type > 47 || type < 1) { 
+     if (type > 52 || type < 1) { 
        LamMarker  = L.marker([lat,lon],{icon:make_icon(12,'red',0)})
        .bindPopup(info);
        markers.push(LamMarker);
