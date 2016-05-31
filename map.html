@@ -74,7 +74,7 @@ a {
         <li><span id="gallery_path"></span></li>
         <li><a href="./wiki/doku.php">Wiki</a></li>
       </ul>
-      <h1>Map <span id="site_hostname"></span></h1>
+      <h1>Map V1.00.4 <span id="site_hostname"></span></h1>
     </div>
   </div>
   <div class="w3-row">
@@ -129,7 +129,7 @@ a {
 
    //var site_hostname = get_site_hostname();
    //document.getElementById("site_hostname").innerHTML= get_site_hostname();
-   document.getElementById("site_hostname").innerHTML= get_site_hostname() + " ID: " + params.id + "  V1.00.3";
+   document.getElementById("site_hostname").innerHTML= get_site_hostname() + " ID: " + params.id ;
    getLocation();
 
    // preload alarm sound
@@ -177,7 +177,9 @@ a {
             maxZoom: 19,
             });
          
-          
+        console.log("map center start");
+        console.log("lat: " + params.lat + " Lon: " + params.lon);
+  
         map = new L.Map('map', {
 			layers: [base],
                         zoomControl:false,

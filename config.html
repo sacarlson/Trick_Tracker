@@ -56,6 +56,7 @@ p {
   var disable_cords_ref_lat = document.getElementById("disable_cords_ref_lat");
   var disable_cords_ref_lon = document.getElementById("disable_cords_ref_lon");
   var disable_cords_radius = document.getElementById("disable_cords_radius");
+  var map_center_mode = document.getElementById("map_center_mode");
 
   //var params = {};
 
@@ -256,6 +257,8 @@ a {
 <input class="w3-input" type="text" id="disable_cords_ref_lat">
 <label class="w3-label">Disable Send Coords Reference Long default 0 </label>
 <input class="w3-input" type="text" id="disable_cords_ref_lon">
+<label class="w3-label">Map Center Mode, default 0</label>
+<input class="w3-input" type="text" id="map_center_mode">
 
 <input type="button" value="Submit Changes" id="submit" >
 <input type="button" value="Set Map Center to GPS position" id="recenter_map" >

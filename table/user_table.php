@@ -275,7 +275,8 @@ div.desc {
    if ($row['type'] == 41) {
      $image_html = '<img src="../uploads/' . $row['id'] . '_icon.png" >';
    } else {
-     $image_html = '<img src="../images/icon_0.png" >';
+     // $image_html = '<img src="../images/icon_0.png" >';
+     $image_html = '<img src="../images_red/icon_' . $row['type'] . '.png" >';
    }
 
    echo '<tr>';

@@ -10,11 +10,16 @@ var last_marker_count = 0;
 var last_data_marker_count = 0;
 var last_lat = 0;
 var last_lon = 0;
+var first_coord = 0;
 var url_position = 0;
 var timestamp = Math.floor(Date.now() / 1000);
 var toggle_icon = 0;
 var last_sent_cords_timestamp = 0;
 var map;
+
+function change_map_center(lat,lon,zoom){
+  map.setView([lat,lon], zoom);
+}
 
 function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
       var R = 6371; // Radius of the earth in km
@@ -80,10 +85,10 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
     }
 
   function getLocation() {
-    if (params.enable_send_cord != 1) {
-      console.log("getLocation disabled");
-      return;
-    }
+    //if (params.enable_send_cord != 1) {
+    //  console.log("getLocation disabled");
+    //  return;
+   // }
     if (navigator.geolocation) {
         //navigator.geolocation.watchPosition(showPosition);
         navigator.geolocation.getCurrentPosition(showPosition);
@@ -124,6 +129,27 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
     console.log( position.coords.longitude );
     last_lat = position.coords.latitude;
     last_lon = position.coords.longitude
+    if (first_coord == 0){
+      console.log("first_coord == 0");
+      console.log("lat: " + last_lat + " lon " + last_lon); 
+      if (params.map_center_mode == 1) {
+        params.lat = last_lat;
+        params.lon = last_lon;
+        map.setView([last_lat,last_lon],params.zoom);
+        localStorage.setItem("lat", last_lat);
+        localStorage.setItem("lon", last_lon);
+      }
+      first_coord = 1;
+    }
+    if (params.map_center_mode == 2) {
+      console.log("map_center_mode 2");
+      console.log("lat: " + last_lat + " lon " + last_lon);
+      map.setView([last_lat,last_lon],params.zoom);
+    }
+    if (params.enable_send_cord != 1) {
+      console.log("getLocation disabled");
+      return;
+    }
     send_cords(position.coords.latitude, position.coords.longitude, 0);
     //alert(" position sent lat: " + position.coords.latitude + " lon: " + position.coords.longitude + " type: " + type + " id: " + id );
   }
@@ -405,6 +431,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
           console.log("overlap_count > 0");
           if (map._zoom < 19) {
             var change_type = 43 + points[i]['overlap_count'];
+            // don't change these 52 as we only go to >9 = icon_52
             if (change_type > 52) {
               change_type = 52;
             }
@@ -445,7 +472,8 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
             points[i]['type'] = 12;
           }
         }
-        add_marker_point(points[i],make_icon(points[i]['type'],'red',points[i]['id']),info);      
+        //add_marker_point(points[i],make_icon(points[i]['type'],'red',points[i]['id']),info); 
+        add_marker_point(points[i],make_icon(points[i]['type'],color,points[i]['id']),info);     
       }
       console.log("markers");
       console.log(markers);
@@ -454,7 +482,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
      
    function add_marker_point(point,icon,info){
      var LamMarker;
-     if (point['type'] > 52) { 
+     if (point['type'] > 53) { 
        LamMarker  = L.marker([point['lat'],point['lon']])
        .bindPopup(info);
         markers.push(LamMarker);
@@ -476,7 +504,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
      info = "<h2>" + info + "</h2>";
      var LamMarker;
      
-     if (type > 52 || type < 1) { 
+     if (type > 53 || type < 1) { 
        LamMarker  = L.marker([lat,lon],{icon:icon})
        .bindPopup(info);
        markers.push(LamMarker);
@@ -495,7 +523,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
      info = "<h2>" + info + "</h2>";
      var LamMarker;
      
-     if (type > 52 || type < 1) { 
+     if (type > 53 || type < 1) { 
        LamMarker  = L.marker([lat,lon],{icon:make_icon(12,'red',0)})
        .bindPopup(info);
        markers.push(LamMarker);
@@ -688,6 +716,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
     localStorage.setItem("disable_cords_ref_lat", disable_cords_ref_lat.value);
     localStorage.setItem("disable_cords_ref_lon", disable_cords_ref_lon.value);
     localStorage.setItem("disable_cords_radius", disable_cords_radius.value);
+    localStorage.setItem("map_center_mode", map_center_mode.value);
   }
 
   function put_params(){ 
@@ -717,6 +746,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
     disable_cords_ref_lat.value = params.disable_cords_ref_lat;
     disable_cords_ref_lon.value = params.disable_cords_ref_lon;
     disable_cords_radius.value = params.disable_cords_radius;
+    map_center_mode.value = params.map_center_mode;
   }
 
   function get_config() {
@@ -748,6 +778,12 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
        params.disable_cords_ref_lat = localStorage.getItem("disable_cords_ref_lat");
        params.disable_cords_ref_lon = localStorage.getItem("disable_cords_ref_lon");
        params.disable_cords_radius = localStorage.getItem("disable_cords_radius");
+       params.map_center_mode = localStorage.getItem("map_center_mode");
+       if ((params.map_center_mode == null) || ( params.map_center_mode.length == 0)) {
+         // mode 1 center on present device position, mode 0 center on map lat lon
+         localStorage.setItem("map_center_mode", "1");
+         params.map_center_mode = "1";
+       }
        if ((params.disable_cords_radius == null) || ( params.disable_cords_radius.length == 0)) {
          console.log("set default dis_cords_ values");
          localStorage.setItem("disable_cords_ref_lat", "0");
@@ -808,6 +844,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
          localStorage.setItem("max_speed_record", "9");
          // radius_filter is in Meters
          localStorage.setItem("radius_filter", "15000");
+         //localStorage.setItem("map_center_mode", "1");
          get_config();
        } 
     } else {

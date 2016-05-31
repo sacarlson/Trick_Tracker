@@ -145,8 +145,8 @@ function insert_data() {
   //$sql2 = "UPDATE users SET lat=$lat, lon=$lon, timestamp=$timestamp, type=$type2 WHERE id=$id"; 
 
 
-  $sql = $sql = "INSERT INTO data (id, timestamp, lat,lon,speed,bearing,altitude,type)
-  VALUES ( $id, $timestamp, $lat, $lon, $speed, $bearing,$altitude, $type)";
+  $sql = $sql = "INSERT INTO data (id, timestamp, lat,lon,speed,bearing,altitude,type,batt)
+  VALUES ( $id, $timestamp, $lat, $lon, $speed, $bearing,$altitude, $type, $batt)";
   //$sql = "DELETE FROM data";
 
   if ($conn->query($sql) === TRUE) {

@@ -242,6 +242,7 @@ div.desc {
   <th data-sort-method='number'>total distance</th>
   <th data-sort-method='number'>total cal burn</th>
   <th>Map Link</th>
+  <th>Batt</th>
   <th>Info</th>
 </tr>
 </thead>
@@ -358,6 +359,7 @@ div.desc {
    echo '  <td>' . round($total_dist,5) . '</td>';
    echo '  <td>' . round($total_cal_burn,2) . '</td>';
    echo '  <td>' . $link . '</td>'; 
+   echo '  <td>' . $row['batt']. '</td>';
    //echo '  <td>' . $row['info'] . '</td>';
    echo '  <td>' . $row['timestamp'] . " " . $row['info'] . '</td>';
    echo '</tr>';
