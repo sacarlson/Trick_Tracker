@@ -6,7 +6,7 @@
 
  include('config.php');
  //echo "start";
-
+  // test: http://b.funtracker.site/record_track2.php?id=123456&chain=false
  $id = $_GET['id'];
  $timestamp = $_GET['timestamp'];
  $lat = $_GET['lat'];
@@ -61,14 +61,18 @@ if ($conn->connect_error) {
    $conn->close();
  }
 
- if ($repeater_enable == "true"){
-   // echo " repeater enabled";
-   api_repeater($repeater_url,$_GET);
+ if (($repeater_enable == "true") && empty($_GET['chain'])){
+    //echo " repeater enabled";
+   if ($chain_repeat == "true") {    
+     api_repeater($repeater_url,$_GET,1);
+   } else {
+     api_repeater($repeater_url,$_GET,0);
+   }
  }
 
  logsession();
 
-function api_repeater($url,$data){
+function api_repeater($url,$data,$chain){
   // repeat data to chained api server
   //$response = file_get_contents('http://example.com/path/to/api/call?param1=5');  
   $string = "";
@@ -81,7 +85,11 @@ function api_repeater($url,$data){
       $string .= '&' . $k . '=' . $v;
     }
   }
+  if ($chain == 0) {
+    $string = $string . "&chain=false";
+  }
   $url .=  $string;
+  //echo "<br> ". $url;
   $response = file_get_contents($url);
   return $response;
 }

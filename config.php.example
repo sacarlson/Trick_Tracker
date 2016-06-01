@@ -7,6 +7,10 @@
   $repeater_enable = "false";
   //$repeater_enable = "true";
   $repeater_url = "http://b.funtracker.site/record_track.php";
-  //$repeater_url = "https://www.funtracker.site/record_track.php";   
+  //$repeater_url = "https://www.funtracker.site/record_track.php";
+  // $chain_repeat informs next repeater in chain to continue to repeat to next in chain when recieved (default false)
+  // this prevents feedback loop to forever repeat the repeater between two chained (mirrored) sites 
+  //$chain_repeat = "true"; 
+  $chain_repeat = "false";    
 ?>
 
