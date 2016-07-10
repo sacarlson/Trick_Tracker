@@ -74,7 +74,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
       }
       
       if (params.enable_send_cord == 1){
-        var url = params.tracker_server + "?id=" + params.id + "&timestamp=" + timestamp + "&lat=" + lat + "&lon=" + lon + "&type=" + type;
+        var url = params.tracker_server + "?id=" + params.id + "&passkey=" + params.passkey + "&timestamp=" + timestamp + "&lat=" + lat + "&lon=" + lon + "&type=" + type;
         console.log("send_cords");
         console.log("url: " + url);	
         http.open("GET", url, true);
@@ -679,7 +679,8 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
 
   function reset_default_(){
     // reset to all default configs
-    localStorage.removeItem('id'); 
+    localStorage.removeItem('id');
+    //localStorage.removeItem('passkey'); 
     get_config();
     put_params();
   }
@@ -717,6 +718,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
     localStorage.setItem("disable_cords_ref_lon", disable_cords_ref_lon.value);
     localStorage.setItem("disable_cords_radius", disable_cords_radius.value);
     localStorage.setItem("map_center_mode", map_center_mode.value);
+    localStorage.setItem("passkey",passkey.value);
   }
 
   function put_params(){ 
@@ -747,6 +749,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
     disable_cords_ref_lon.value = params.disable_cords_ref_lon;
     disable_cords_radius.value = params.disable_cords_radius;
     map_center_mode.value = params.map_center_mode;
+    passkey.value = params.passkey;
   }
 
   function get_config() {
@@ -778,6 +781,12 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
        params.disable_cords_ref_lat = localStorage.getItem("disable_cords_ref_lat");
        params.disable_cords_ref_lon = localStorage.getItem("disable_cords_ref_lon");
        params.disable_cords_radius = localStorage.getItem("disable_cords_radius");
+       params.passkey = localStorage.getItem("passkey");
+       if ((params.passkey == null) || ( params.passkey.length == 0)) {
+         // new passkey to secure cord updates          
+         localStorage.setItem("passkey", Math.random().toString(36).substring(7));
+         params.passkey = localStorage.getItem("passkey");
+       }
        params.map_center_mode = localStorage.getItem("map_center_mode");
        if ((params.map_center_mode == null) || ( params.map_center_mode.length == 0)) {
          // mode 1 center on present device position, mode 0 center on map lat lon
@@ -828,7 +837,8 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
          localStorage.setItem("lat", 12.93419);
          localStorage.setItem("lon", 100.892515 );
          localStorage.setItem("zoom", 15);
-         localStorage.setItem("track_id", 206648);
+         //localStorage.setItem("track_id", 206648);
+         localStorage.setItem("track_id", 951342);
          localStorage.setItem("track_time_min", 120);
          localStorage.setItem("icon_type", 12);
          localStorage.setItem("info", "");

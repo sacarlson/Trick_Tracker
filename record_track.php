@@ -7,6 +7,9 @@
  include('config.php');
  //echo "start";
   // test: http://b.funtracker.site/record_track2.php?id=123456&chain=false
+ //$mode = "traccar";  // this mode disables passkey check
+ //$mode = "browser";
+
  $id = $_GET['id'];
  $timestamp = $_GET['timestamp'];
  $lat = $_GET['lat'];
@@ -56,6 +59,9 @@ if ($conn->connect_error) {
  
  if ($mysql_enable == "true"){
    //echo " mysql enabled";
+   if ($mode == "browser"){
+     fix_passkey();
+   }
    check_id_user_exists();
    insert_data(); 
    $conn->close();
@@ -104,13 +110,86 @@ function logsession() {
  }
 
  function wrt_log( $string) {
-   //$f = fopen("./session_track.log", "a");
-   //fwrite( $f, $string );
-   //fclose( $f );
+   $f = fopen("./session_track.log", "a");
+   fwrite( $f, $string );
+   fclose($f);
    return;
  }  
 
- 
+function check_id_passkey(){
+  global $conn;
+  if (isset($_GET['passkey'])) {
+    $sql = "SELECT * FROM `users` WHERE `id` = ". $_GET['id'] . " AND `password` = '" . $_GET['passkey'] . "'";
+  } else {
+    $sql = "SELECT * FROM `users` WHERE `id` = ". $_GET['id'] . " AND `password` = '" . $_GET['id'] . "'";
+  }
+  wrt_log("check_id sql: " . $sql . "\n");
+  if(!$result = $conn->query($sql)){
+    wrt_log("check id query fail: " . mysqli_error($conn) . "\n");
+    //die('There was an error running the query [' . $conn->error . ']');
+    return FALSE;
+  }
+  if ($result->num_rows > 0) {
+    wrt_log("check_id true \n");
+    return TRUE;
+  } else {
+    wrt_log("check_id false \n");
+    return FALSE;
+  }
+}
+
+function fix_passkey(){
+  global $conn;
+  if (check_id_with_no_passkey_exists() and check_passkey_not_exists()) {
+     $sql = "UPDATE `users` SET `password` = '". $_GET['passkey'] . "' WHERE id = '" . $_GET['id'] . "'";
+     wrt_log("fix_passkey sql: " . $sql . "\n");
+     if(!$result = $conn->query($sql)){
+       wrt_log("check id query fail: " . mysqli_error($conn) . "\n");
+       return FALSE;
+     } 
+     return TRUE;
+  } else {
+    wrt_log("fix_passkey false \n");
+    return FALSE;
+  } 
+}
+
+function check_id_with_no_passkey_exists() {
+  global $conn;
+  $sql = "SELECT * FROM `users` WHERE `id` = ". $_GET['id'] . " AND `password` = '" . $_GET['id'] . "'";
+  if(!$result = $conn->query($sql)){
+    wrt_log("check id query fail: " . mysqli_error($conn) . "\n");
+    return FALSE;
+  }
+  
+  if ($result->num_rows > 0) {
+    wrt_log("check_id_no_passkey true \n");
+    return TRUE;
+  } else {
+    wrt_log("check_id_no_passkey false \n");
+    return FALSE;
+  }
+}
+
+function check_passkey_not_exists(){
+  global $conn;
+  if (isset($_GET['passkey'])) {
+    $sql = "SELECT * FROM `users` WHERE  `password` = '" . $_GET['passkey'] . "'";
+    if(!$result = $conn->query($sql)){
+      wrt_log("check id query fail: " . mysqli_error($conn) . "\n");
+      return FALSE;
+    }
+  } else {
+    return FALSE;
+  }
+  if ($result->num_rows > 0) {
+    wrt_log("passkey not exists false \n");
+    return FALSE;
+  } else {
+    wrt_log("passkey not exists true \n");
+    return TRUE;
+  }
+}
 
 function check_id_user_exists() {
   global $datetime, $id, $timestamp, $lat, $lon, $speed, $bearing, $altitude, $status,$type,$batt, $conn;
@@ -122,26 +201,44 @@ function check_id_user_exists() {
   $sql = "SELECT * FROM `users` WHERE id = ". $_GET['id'];
 
   if(!$result = $conn->query($sql)){
-    die('There was an error running the query [' . $db->error . ']');
+    die('There was an error running the query [' . $conn->error . ']');
   }
  
   if ($result->num_rows > 0) {
-    wrt_log("user exists: " . $id );
+    wrt_log("user exists: " . $id . "\n");
   } else {
-    wrt_log("add user: " . $id);
-    if ($type == 0) {
-      $type2 = 12;
-    } else {
-      $type2 = $type;
-    }
-    $sql = "INSERT INTO users (id, username, password, timestamp,type) VALUES ( $id, $id, $id , $timestamp, $type2)";
-    $conn->query($sql);
+    
+      wrt_log("add user: " . $id);
+      if ($type == 0) {
+        $type2 = 12;
+      } else {
+        $type2 = $type;
+      }
+      if (isset($_GET['passkey'])) {
+        $sql = "INSERT INTO users (id, username, password, timestamp,type) VALUES ( $id, $id, '" . $_GET['passkey']. "' , $timestamp, $type2)";
+        //$sql = "INSERT INTO users (id, username, password, timestamp,type) VALUES ( $id, $id,$id, $timestamp, $type2)";
+      } else {
+        $sql = "INSERT INTO users (id, username, password, timestamp,type) VALUES ( $id, $id,$id, $timestamp, $type2)";
+      }
+      wrt_log("sql: " . $sql . "\n");
+      $result = $conn->query($sql);
+      if ($result === TRUE) {
+        wrt_log("query result ok: \n");
+      } else {
+        wrt_log("mysqli_error: " . mysqli_error($conn) . "\n");
+      }
+    
   }
 }
 
 function insert_data() {
-  global $datetime, $id, $timestamp, $lat, $lon, $speed, $bearing, $altitude, $status,$type,$batt, $conn;  
-  
+  global $datetime, $id, $timestamp, $lat, $lon, $speed, $bearing, $altitude, $status,$type,$batt, $conn, $mode;
+  if ($mode == "browser"){  
+    if (!check_id_passkey()){
+      wrt_log("bad passkey id: " . $id . " passkey: " . $_GET['passkey'] . "\n"); 
+      return;
+    }
+  }
   if ($type > 1000) {    
     $type2 = $type - 1000;
     $type = 0;

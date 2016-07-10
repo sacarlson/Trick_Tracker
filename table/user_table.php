@@ -233,7 +233,7 @@ div.desc {
 // Copyright (c) 2016  Sacarlson  sacarlson_2000@yahoo.com -->
 
   include('../config.php');
-  
+  //date_default_timezone_set('UTC');
   // Create connection
   $conn = new mysqli($servername, $username, $password, $dbname);
   // Check connection
@@ -271,7 +271,8 @@ div.desc {
    
    $href = '../map.html?json={%22no_icons%22:%221%22,%22lat%22:%22' . $row['lat'] . '%22,%22lon%22:%22' . $row['lon'] . '%22,%22icon_type%22:%22' . $row['type'] . '%22,%22username%22:%22' . $row['username'] . '%22,%22timestamp%22:%22'. $row['timestamp'] . '%22,%22id%22:%22' . $row['id'] .'%22}';
    $link = '<a href="' . $href .'">Map Link</a>';
-   $timedate = date('m/d/Y H:i:s', $row['timestamp']);
+   //$timedate = date('m/d/Y H:i:s', $row['timestamp']);
+   $timedate = date('m/d/Y H:i:s T', $row['timestamp']);
    if ($row['type'] == 41) {
      $image_html = '<img src="../uploads/' . $row['id'] . '_icon.png" >';
    } else {

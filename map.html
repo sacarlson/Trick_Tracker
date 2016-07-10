@@ -130,7 +130,9 @@ a {
    //var site_hostname = get_site_hostname();
    //document.getElementById("site_hostname").innerHTML= get_site_hostname();
    document.getElementById("site_hostname").innerHTML= get_site_hostname() + " ID: " + params.id ;
-   getLocation();
+   if (params.enable_send_cord == 1){
+     getLocation();
+   }
 
    // preload alarm sound
    var alarm = new Audio();
