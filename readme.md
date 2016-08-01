@@ -123,7 +123,7 @@ https://api.tricktraker.com/track.php/?mode=user&lat=12.9304697&lon=100.8798447
 
 {"users":[{"id":"206648","lat":"12.9304646","lon":"100.8798169","info":"Scotty is a cool dude.","timestamp":"1461126764","type":"1","distance":"3.0650795037254","username":"Scotty"},{"id":"333333","lat":"12.949247521683759","lon":"100.88449001312256","info":"This is just a fake user used for test to check new distance measurement software","timestamp":"1461117693","type":"12","distance":"2147.3662969949","username":"fake_guy"},{"id":"951342","lat":"12.9304292","lon":"100.8797761","info":"the white acer android phone used in test","timestamp":"1461004164","type":"0","distance":"8.6902532798667","username":"acer"}],"count":"3"}
 
-https://api.tricktraker.com/track.php/?mode=user&lat=12.9304697&lon=100.8798447&radius=500
+http://api.tricktraker.com/track.php/?mode=user&lat=12.9304697&lon=100.8798447&radius=500
 
 {"users":[{"id":"206648","lat":"12.9304597","lon":"100.8798149","info":"Scotty is a cool dude.","timestamp":"1461128866","type":"1","distance":"3.4149112922656","username":"Scotty"},skip{"id":"951342","lat":"12.9304292","lon":"100.8797761","info":"the white acer android phone used in test","timestamp":"1461004164","type":"0","distance":"8.6902532798667","username":"acer"}],"count":"3"}
 
@@ -140,3 +140,10 @@ for use type indicates a stationary icon or a mobile icon.  we consider over 100
 
 if type is not present in data then it is assumed to be or defaults to type value of 0.
 
+
+
+New changes in tricktraker modified traccar API format input with added passkey and value for added security July 10, 2016:
+example:
+https://www.funtracker.site/record_track.php/id=951342&timestamp=1470023212&lat=12.9304879&lon=100.8798295&speed=0.0&bearing=0.0&altitude=0.0&batt=93.0&passkey=abcdabcd
+
+When the added passkey security is active, then the database will not be updated unless the Id of the user matches with the passkey for that user.  This was implemented due to people exploiting the lack of security in the GPS stream that was causeing peoples markers and tracks to be corrupted by other users.  At present only the built in tracking client in trick tracker and now running on funtracker.site in the browser mode supports the new security measure.  The API for the android Traccar app has not yet been changed or branched yet to provide this security feature.  If we start finding people exploit the traccar api path (not the same as browser path), then we will be forced to disable all android and other traccar clients  from at least the funtracker.site until we have the clients fixed with the added security measure. Our present temp work around at this time is that if passkey is not present in the stream then it is accepted as good or matched.  This presently allows traccar clients to continue to be used but again with no security.

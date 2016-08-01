@@ -158,7 +158,7 @@ div.desc {
     <div class="dropdown">
     <button onclick="dropDown()" class="dropbtn">Menu</button>
     <div id="myDropdown" class="dropdown-content" >      
-      <a href="../chat.html">Real Time Chat</a>
+      <a href="https://chat.funtracker.site/channel/pattaya_gossip_room">Real Time Chat</a>
       <a href="../map.html">Map</a>
       <a href="../send.html">Send Cords</a>
       <a href="../config.html">Config</a>

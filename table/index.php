@@ -199,13 +199,14 @@ div.desc {
     <div class="dropdown">
     <button onclick="dropDown()" class="dropbtn">Menu</button>
     <div id="myDropdown" class="dropdown-content" >      
-      <a href="../chat.html">Real Time Chat</a>
+      <a href="https://chat.funtracker.site/channel/pattaya_gossip_room">Real Time Chat</a>
       <a href="../map.html">Map</a>
       <a href="../send.html">Send Cords</a>
       <a href="../config.html">Config</a>
       <a href="../shoot/index.html">Shoot Pictures</a> 
       <a href="../wiki/doku.php">Wiki</a>
       <a href="./walker.html">Mileage Monitor</a>
+      <a href="./user_table.php">User List Table</a>
     </div>
   </div>
   <h1><span id="site_hostname"></span> Event History Table (sortable)</h1>
