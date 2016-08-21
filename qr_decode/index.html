@@ -176,8 +176,14 @@ div.desc {
       console.log(result);
       qr.stop();
       shutter.play();
-      
-      var link = ' <a href="' + result + '">' + result + '</a> ';
+      var link;
+      // https://wallet.funtracker.site/?json={%22seed%22:%22aaabbbccccddd%22}
+      if (result.length == 56) {
+        link = ' <a href="https://wallet.funtracker.site/?json={%22seed%22:%22' + result + '%22}">' + result + '</a> ';
+      } else {      
+        link = ' <a href="' + result + '">' + result + '</a> ';
+      }
+
       link_d.innerHTML = link;
       qr = "";
       //alert("link: " + link + "raw: " +result);
