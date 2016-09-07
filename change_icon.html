@@ -11,7 +11,7 @@
  <script>
   "use strict";
  window.addEventListener("load", function(event) { 
-  var id = localStorage.getItem("id");;
+  var id = localStorage.getItem("id");
   
 
   document.getElementById("site_hostname").innerHTML= get_site_hostname();
@@ -33,7 +33,7 @@
     
   var id = 0;
   var http = new XMLHttpRequest();
-
+  var passkey;
   
   
   getId(); 
@@ -46,11 +46,14 @@
     return Math.floor(Math.random()*(max-min+1)+min);
   }
 
+ 
+
   function getId() {
     if (typeof(Storage) !== "undefined") {
        id = localStorage.getItem("id");
        info = encodeURI(localStorage.getItem("info"));
        tracker_server = localStorage.getItem("tracker_server");
+       passkey = localStorage.getItem("passkey");
        console.log("tracker_server");
        console.log(tracker_server);
        if (id == null || id.length == 0) {
@@ -85,7 +88,7 @@ function showPosition(position) {
     var timestamp = Math.floor(Date.now() / 1000);
     
 //GET /?id=206648&timestamp=1459757028&lat=12.9304184&lon=100.8798106&speed=0.0&bearing=0.0&altitude=0.0&batt=100.0
-    var url = tracker_server + "?id=" + id + "&timestamp=" + timestamp + "&lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&type=" + type;
+    var url = tracker_server + "?id=" + id + "&passkey=" + passkey + "&timestamp=" + timestamp + "&lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&type=" + type;
     
     console.log("url: " + url);	
     http.open("GET", url, true);

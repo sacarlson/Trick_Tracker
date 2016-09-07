@@ -3,7 +3,7 @@
   //header('Content-type: text/html'); 
   header('Access-Control-Allow-Origin: *'); 
   header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT');
-
+ //echo "start record_track.php <br>";
  include('config.php');
  //echo "start";
   // test: http://b.funtracker.site/record_track2.php?id=123456&chain=false
@@ -131,8 +131,10 @@ function check_id_passkey(){
   }
   if ($result->num_rows > 0) {
     wrt_log("check_id true \n");
+    echo "check_id true <br>";
     return TRUE;
   } else {
+    echo "check_id false <br>";
     wrt_log("check_id false \n");
     return FALSE;
   }
@@ -232,6 +234,7 @@ function check_id_user_exists() {
 }
 
 function insert_data() {
+  echo "start insert_data <br>";
   global $datetime, $id, $timestamp, $lat, $lon, $speed, $bearing, $altitude, $status,$type,$batt, $conn, $mode;
   if ($mode == "browser"){  
     if (!check_id_passkey()){
@@ -249,16 +252,15 @@ function insert_data() {
 
   //$sql2 = "UPDATE users SET lat=$lat, lon=$lon, timestamp=$timestamp, type=$type2 WHERE id=$id"; 
 
-
   $sql = $sql = "INSERT INTO data (id, timestamp, lat,lon,speed,bearing,altitude,type,batt)
   VALUES ( $id, $timestamp, $lat, $lon, $speed, $bearing,$altitude, $type, $batt)";
   //$sql = "DELETE FROM data";
-
+  echo "sql: " . $sql . "<br>";
   if ($conn->query($sql) === TRUE) {
-    //echo "New record created successfully";
-    $status2 = " record success";
+    echo "New record created successfully";
+    $status2 = " record success <br>";
   } else {
-    //echo "Error: " . $sql . "<br>" . $conn->error;
+    echo "Error: " . $sql . "<br>" . $conn->error;
     $status2 = "Error: " . $conn->error;
   }
 
@@ -270,7 +272,7 @@ function insert_data() {
     $status = "Error: " . $conn->error;
     //$status = $sql;
   }
-  //echo "ok";
+  echo "insert ok <br>";
   //$status = $sql;  
 }
 
