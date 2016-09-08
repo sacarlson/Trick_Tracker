@@ -680,7 +680,8 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
   function reset_default_(){
     // reset to all default configs
     localStorage.removeItem('id');
-    //localStorage.removeItem('passkey'); 
+    //localStorage.removeItem('passkey');
+    localStorage.setItem("passkey", ""); 
     get_config();
     put_params();
   }
@@ -784,7 +785,7 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
        params.passkey = localStorage.getItem("passkey");
        if ((params.passkey == null) || ( params.passkey.length == 0)) {
          // new passkey to secure cord updates          
-         localStorage.setItem("passkey", Math.random().toString(36).substring(7));
+         localStorage.setItem("passkey", Math.random().toString(16).substring(2,8).toUpperCase() );
          params.passkey = localStorage.getItem("passkey");
        }
        params.map_center_mode = localStorage.getItem("map_center_mode");

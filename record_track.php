@@ -226,15 +226,18 @@ function check_id_user_exists() {
       $result = $conn->query($sql);
       if ($result === TRUE) {
         wrt_log("query result ok: \n");
+        echo "insert new user ok: <br>";
       } else {
         wrt_log("mysqli_error: " . mysqli_error($conn) . "\n");
+        //echo "insert new user failed: " . $sql . "<br>";
+        //echo "mysqli_error: " . mysqli_error($conn) . "<br>";
       }
     
   }
 }
 
 function insert_data() {
-  echo "start insert_data <br>";
+  //echo "start insert_data <br>";
   global $datetime, $id, $timestamp, $lat, $lon, $speed, $bearing, $altitude, $status,$type,$batt, $conn, $mode;
   if ($mode == "browser"){  
     if (!check_id_passkey()){
@@ -255,24 +258,25 @@ function insert_data() {
   $sql = $sql = "INSERT INTO data (id, timestamp, lat,lon,speed,bearing,altitude,type,batt)
   VALUES ( $id, $timestamp, $lat, $lon, $speed, $bearing,$altitude, $type, $batt)";
   //$sql = "DELETE FROM data";
-  echo "sql: " . $sql . "<br>";
+  //echo "sql: " . $sql . "<br>";
   if ($conn->query($sql) === TRUE) {
-    echo "New record created successfully";
+    //echo "New record created successfully";
     $status2 = " record success <br>";
   } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    //echo "Error: " . $sql . "<br>" . $conn->error;
     $status2 = "Error: " . $conn->error;
   }
 
   if ($conn->query($sql2) === TRUE) {
-    //echo "New record created successfully";
+    //echo "New record sql2 created successfully <br>";
+    //echo "sql2: " . sql2;
     $status = " record success";
   } else {
-    //echo "Error: " . $sql . "<br>" . $conn->error;
+    //echo "Error: " . $sql2 . "<br>" . $conn->error;
     $status = "Error: " . $conn->error;
     //$status = $sql;
   }
-  echo "insert ok <br>";
+  echo "insert data ok <br>";
   //$status = $sql;  
 }
 
