@@ -10,22 +10,34 @@
  //$mode = "traccar";  // this mode disables passkey check
  //$mode = "browser";
 
+  // Create connection
+ $conn = new mysqli($servername, $username, $password, $dbname);
+ // Check connection
+ if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+ }
+
+ $_GET['id'] = mysqli_real_escape_string($conn,$_GET['id']);
+ $_GET['passkey'] = mysqli_real_escape_string($conn,$_GET['passkey']);
+ $_GET['lat'] = mysqli_real_escape_string($conn,$_GET['lat']);
+ $_GET['lon'] = mysqli_real_escape_string($conn,$_GET['lon']);
+
  $id = $_GET['id'];
- $timestamp = $_GET['timestamp'];
- $lat = $_GET['lat'];
- $lon = $_GET['lon'];
+ $timestamp = mysqli_real_escape_string($conn,$_GET['timestamp']);
+ $lat = mysqli_real_escape_string($conn,$_GET['lat']);
+ $lon = mysqli_real_escape_string($conn,$_GET['lon']);
  //$speed = $_GET['speed'];
  //$bearing = $_GET['bearing'];
  //$altitude = $_GET['altitude'];
  if (empty( $_GET['batt'])) {
    $batt = "0";
  } else {
-   $batt = $_GET['batt'];
+   $batt = mysqli_real_escape_string($conn,$_GET['batt']);
  }
  if (empty( $_GET['type'])) {
    $type = "0";
  } else {
-   $type = $_GET['type'];
+   $type = mysqli_real_escape_string($conn,$_GET['type']);
  }
  date_default_timezone_set('Asia/Bangkok');
  $time = date("F j, Y, g:i a");
@@ -33,29 +45,27 @@
  if (empty( $_GET['speed'])) {
    $speed = "0";
  } else {
-   $speed = $_GET['speed'];
+   $speed = mysqli_real_escape_string($conn,$_GET['speed']);
  }
  if (empty( $_GET['bearing'])) {
    $bearing = "0";
  } else {
-   $bearing = $_GET['bearing'];
+   mysqli_real_escape_string($conn,$_GET['bearing']);
  }
  if (empty( $_GET['altitude'])) {
    $altitude = "0";
  } else {
-   $altitude = $_GET['altitude'];
+   mysqli_real_escape_string($conn,$_GET['altitude']);
  }
 
  if (empty($_GET['id']) || (strlen( $_GET['id']) == 0)) {
    return;
  }
 
- // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+
+
+
+
  
  if ($mysql_enable == "true"){
    //echo " mysql enabled";

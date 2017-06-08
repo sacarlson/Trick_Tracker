@@ -28,6 +28,18 @@
     die("Connection failed: " . $conn->connect_error);
  }
 
+ $_GET['id'] = mysqli_real_escape_string($conn,$_GET['id']);
+ $_GET['limit'] = mysqli_real_escape_string($conn,$_GET['limit']);
+ $_GET['start'] = mysqli_real_escape_string($conn,$_GET['start']);
+ $_GET['stop'] = mysqli_real_escape_string($conn,$_GET['stop']);
+ $_GET['extra'] = mysqli_real_escape_string($conn,$_GET['extra']);
+ $_GET['type'] = mysqli_real_escape_string($conn,$_GET['type']);
+ $_GET['mode'] = mysqli_real_escape_string($conn,$_GET['mode']);
+ $_GET['lat'] = mysqli_real_escape_string($conn,$_GET['lat']);
+ $_GET['lon'] = mysqli_real_escape_string($conn,$_GET['lon']);
+ $_GET['radius'] = mysqli_real_escape_string($conn,$_GET['radius']);
+ $_GET['sort'] = mysqli_real_escape_string($conn,$_GET['sort']);
+
   switch($_GET['mode']) {
     case 'all':
         echo '{"all":[';
